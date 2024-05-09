@@ -57,7 +57,7 @@ const LoginForm = ({ setToken, token }) => {
     logout();
   }
   return (
-    <div>
+    <div className="flex">
       <div style={{ color: "red" }}>{error}</div>
       {token && (
         <div>
@@ -68,13 +68,12 @@ const LoginForm = ({ setToken, token }) => {
         </div>
       )}
       {!token && (
-        <div
-          style={{ border: "2px solid black", width: "20%", borderRadius: 10 }}
-        >
+        <div className="flex basis-28 justify-center border-2  border-neutral-950 border-radius-2">
           <form onSubmit={handleLogin}>
             <div style={{ margin: "10px" }}>
               Username:
               <input
+                className="border-b-2 border-b-solid border-b-black"
                 value={credientals.username}
                 onChange={(event) =>
                   setCredientals({
@@ -87,6 +86,7 @@ const LoginForm = ({ setToken, token }) => {
             <div style={{ margin: "10px" }}>
               Password:
               <input
+                className="border-b-2 border-b-solid border-b-black"
                 value={credientals.password}
                 onChange={(event) =>
                   setCredientals({
@@ -96,7 +96,10 @@ const LoginForm = ({ setToken, token }) => {
                 }
               />
             </div>
-            <button type="submit" style={{ margin: "10px" }}>
+            <button
+              type="submit"
+              className="rounded-lg border-solid border-2 border-black m-2 p-1"
+            >
               Log in
             </button>
           </form>

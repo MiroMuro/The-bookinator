@@ -8,9 +8,10 @@ import RegisterForm from "./components/RegisterForm";
 import Recommendations from "./components/Recommendations";
 import { useSubscription, useApolloClient } from "@apollo/client";
 import { BOOK_ADDED, ALL_BOOKS } from "./components/queries.js";
+import styles from "./index.css";
 
 export const updateCache = (cache, query, addedBook) => {
-  //This is used to eliminate duplicates from saving
+  //This is used to eliminate duplicate books from from saving to the cache
   const uniqByName = (a) => {
     let seen = new Set();
     return a.filter((item) => {
@@ -39,27 +40,35 @@ const App = () => {
   });
   return (
     <Router>
-      <div>
+      <div className="font-body">
         <div></div>
         <div>
           {!token && (
-            <div>
-              <Link style={padding} to="/">
-                authors
-              </Link>
-              <Link style={padding} to="/books">
-                books
-              </Link>
-              <Link style={padding} to="/login">
-                Login
-              </Link>
-              <Link style={padding} to="/register">
-                Register
-              </Link>
-            </div>
+            <header>
+              <div className="text-red-400 text-xl">
+                <div className="flex flex-col border-2 border-black items-start sm:items-center">
+                  <Link style={padding} to="/">
+                    <h2>Authors</h2>
+                  </Link>
+                  <Link style={padding} to="/books">
+                    <h2>Books</h2>
+                  </Link>
+                </div>
+                <main>
+                  <div className="flex-col flex border-2 border-black items-start sm:items-center">
+                    <Link style={padding} to="/login">
+                      <h2>Login</h2>
+                    </Link>
+                    <Link style={padding} to="/register">
+                      <h2>Register</h2>
+                    </Link>
+                  </div>
+                </main>
+              </div>
+            </header>
           )}
           {token && (
-            <div>
+            <div className="bg-blue">
               <Link style={padding} to="/">
                 authors
               </Link>

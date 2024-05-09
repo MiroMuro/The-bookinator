@@ -39,6 +39,7 @@ const RegisterForm = () => {
           Username
           <div>
             <input
+              className="border-b-2 border-b-solid border-b-black"
               value={accountDetails.username}
               onChange={(event) =>
                 setAccounDetails({
@@ -53,6 +54,7 @@ const RegisterForm = () => {
           Password
           <div>
             <input
+              className="border-b-2 border-b-solid border-b-black"
               value={accountDetails.password}
               onChange={(event) =>
                 setAccounDetails({
@@ -67,6 +69,7 @@ const RegisterForm = () => {
           Favorite genre
           <div>
             <input
+              className="border-b-2 border-b-solid border-b-black"
               value={accountDetails.favoriteGenre}
               onChange={(event) =>
                 setAccounDetails({
@@ -77,7 +80,10 @@ const RegisterForm = () => {
             />
           </div>
         </div>
-        <button type="submit" style={{ margin: "10px" }}>
+        <button
+          type="submit"
+          className="rounded-lg border-solid border-black border-2 m-2 p-1"
+        >
           Register
         </button>
       </form>
