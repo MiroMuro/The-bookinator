@@ -2,6 +2,7 @@ import { ALL_BOOKS, ALL_GENRES } from "./queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import Genres from "./Genres";
+import image from "../static/images/book.jpg";
 const Books = (props) => {
   const [currentGenre, setCurrentGenre] = useState("");
   const [currentBooks, setCurrentBooks] = useState([]);
@@ -23,35 +24,44 @@ const Books = (props) => {
     console.log(data);
   };
   return (
-    <div className="bg-blue-50">
-      <h2 className="text-4xl font-bold underline uppercase p-4  font-Teachers">
-        Books
-      </h2>
-      <span>In genre: {currentGenre}</span>
-      <div className="p-6">
-        <table className="table-auto rounded-lg border-solid border-black border-2">
-          <tbody className="">
-            <tr className="text-xl px-30 border-b-2 border-black bg-gray-200 ">
-              <th>title</th>
-              <th>author</th>
-              <th>born</th>
-              <th>published</th>
-            </tr>
-            {data.allBooks.map((a) => (
-              <tr key={a.title} className="border-b-2">
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>born: {a.author.born}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="flex flex-wrap bg-blue-50  w-8/12 m-auto">
+      {/* Cards go here*/}
+      {data.allBooks.map((book) => (
+        <div className="bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden">
+          <img className="p-4" src={image} alt="book" />
+          <div className="flex justify-center">
+            <div className="flex flex-col  border-2 border-black">
+              <span>Title: </span>
+              <span>Author: </span>
+              <span>Author born: </span>
+              <span>Published:</span>
+            </div>
+            <div className=" flex flex-col items-end  border-2 border-black">
+              <span>{book.title}</span>
+              <span>{book.author.name} </span>
+              <span>{book.author.born} </span>
+              <span>{book.published}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+      <div className="bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden">
+        <img className="p-4" src={image} alt="book" />
+        <div className="flex justify-center">
+          <div className="flex flex-col  border-2 border-black">
+            <span>Title: </span>
+            <span>Author: </span>
+            <span>Author born: </span>
+            <span>Published:</span>
+          </div>
+          <div className=" flex flex-col items-end  border-2 border-black">
+            <span>Scary Book</span>
+            <span>Pekka Haavistöö </span>
+            <span>1959 </span>
+            <span>2001</span>
+          </div>
+        </div>
       </div>
-      <Genres
-        genres={genresResult.data.allGenres}
-        setCurrentGenre={setCurrentGenre}
-      />
     </div>
   );
 };
