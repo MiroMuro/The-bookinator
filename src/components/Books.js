@@ -18,25 +18,20 @@ const Books = (props) => {
     return <div>loading...</div>;
   }
 
-  const onGenreChange = async (event) => {
-    event.preventDefault();
-    refetch();
-    console.log(data);
-  };
   return (
     <div className="flex flex-wrap bg-blue-50  w-8/12 m-auto">
       {/* Cards go here*/}
       {data.allBooks.map((book) => (
-        <div className="bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden">
+        <div className="card">
           <img className="p-4" src={image} alt="book" />
-          <div className="flex justify-center">
-            <div className="flex flex-col  border-2 border-black">
+          <div className="bookInfo">
+            <div className="flex flex-col ">
               <span>Title: </span>
               <span>Author: </span>
               <span>Author born: </span>
               <span>Published:</span>
             </div>
-            <div className=" flex flex-col items-end  border-2 border-black">
+            <div className=" flex flex-col items-end    ">
               <span>{book.title}</span>
               <span>{book.author.name} </span>
               <span>{book.author.born} </span>
@@ -45,16 +40,16 @@ const Books = (props) => {
           </div>
         </div>
       ))}
-      <div className="bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden">
+      <div className="card">
         <img className="p-4" src={image} alt="book" />
-        <div className="flex justify-center">
-          <div className="flex flex-col  border-2 border-black">
+        <div className="bookInfo">
+          <div className="flex flex-col ">
             <span>Title: </span>
             <span>Author: </span>
             <span>Author born: </span>
             <span>Published:</span>
           </div>
-          <div className=" flex flex-col items-end  border-2 border-black">
+          <div className=" flex flex-col items-end  ">
             <span>Scary Book</span>
             <span>Pekka Haavistöö </span>
             <span>1959 </span>
