@@ -12,7 +12,7 @@ const Authors = ({ token }) => {
   return (
     <body className=" flex justify-center items-center-h-screen">
       {!token && (
-        <table className="shadow-2xl border-2 border-gray-400 w-5/12 ">
+        <table className="authorsTable ">
           <thead className="">
             <tr className="w-8/12">
               <th className="py-3 bg-red-400">Author</th>
@@ -22,7 +22,7 @@ const Authors = ({ token }) => {
           </thead>
           <tbody className="text-center">
             {authors.map((author) => (
-              <tr className=" bg-red-100 hover:bg-red-200 cursor-pointer duration-300">
+              <tr className="authorsTableRow">
                 <td className="py-3 px-6">{author.name}</td>
                 <td className="py-3 px-6">{author.born}</td>
                 <td className="py-3 px-6">{author.bookCount}</td>

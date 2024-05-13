@@ -46,7 +46,7 @@ const App = () => {
           {!token && (
             <header>
               <div className="text-red-400 text-xl">
-                <div className="flex flex-col border-2 border-black items-start sm:items-center">
+                <div className="navBarLinks">
                   <Link style={padding} to="/">
                     <h2>Authors</h2>
                   </Link>
@@ -55,7 +55,7 @@ const App = () => {
                   </Link>
                 </div>
                 <main>
-                  <div className="flex-col flex border-2 border-black items-start sm:items-center">
+                  <div className="navBarLinks">
                     <Link style={padding} to="/login">
                       <h2>Login</h2>
                     </Link>
