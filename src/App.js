@@ -40,12 +40,11 @@ const App = () => {
   });
   return (
     <Router>
-      <div className="font-body">
-        <div></div>
-        <div>
+      <div className="flex  font-body">
+        <div className="w-4/12 mt-80  h-1/4 overflow-auto sticky top-0">
           {!token && (
             <header>
-              <div className="text-red-400 text-xl">
+              <div className="text-red-400 text-xl  ">
                 <div className="navBarLinks">
                   <Link style={padding} to="/">
                     <h2>Authors</h2>

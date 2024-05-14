@@ -18,15 +18,17 @@ const Books = (props) => {
   if (result.loading || loading) {
     return <div>loading...</div>;
   }
-
+  console.log(data.allBooks);
   return (
-    <div>
-      <div></div>
-      <GenresDropdown
-        genres={genresResult.data.allGenres}
-        setCurrentGenre={setCurrentGenre}
-      />
-      <div className="flex flex-wrap bg-blue-50  w-8/12 m-auto">
+    <div className="flex flex-col w-8/12">
+      <div className="flex bg-blue-50   m-auto">
+        <GenresDropdown
+          genres={genresResult.data.allGenres}
+          setCurrentGenre={setCurrentGenre}
+        />
+      </div>
+
+      <div className="flex flex-wrap bg-blue-50   m-auto">
         {/* Cards go here*/}
         {data.allBooks.map((book) => (
           <div className="card">
@@ -38,7 +40,7 @@ const Books = (props) => {
                 <span>Author born: </span>
                 <span>Published:</span>
               </div>
-              <div className=" flex:1 flex-col items-end    ">
+              <div className="flex flex-col items-end">
                 <span>{book.title}</span>
                 <span>{book.author.name} </span>
                 <span>{book.author.born} </span>

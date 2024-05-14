@@ -11,12 +11,11 @@ const GenresDropdown = ({ genres, setCurrentGenre }) => {
     event.preventDefault();
     setSelectedGenre(event.target.value);
   };
-  console.log("Selected Genre: ", selectedGenre);
   return (
     <div style={containerStyle}>
-      Filter by Genre: {selectedGenre}
+      Currently selected genre: {selectedGenre}
       <form>
-        <label for="genres">Choose genre</label>
+        <label for="genres">Choose genre </label>
         <select
           name="genres"
           id="genres"
@@ -28,6 +27,7 @@ const GenresDropdown = ({ genres, setCurrentGenre }) => {
           ))}
         </select>
         <input
+          className="filterButton"
           type="submit"
           value="Filter"
           onClick={() => setCurrentGenre(selectedGenre)}
