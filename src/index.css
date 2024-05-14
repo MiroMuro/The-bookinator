@@ -14,7 +14,7 @@
   @apply flex flex-col  items-end sm:items-end;
 }
 .authorsTable {
-  @apply shadow-2xl border-2 border-gray-400 w-5/12;
+  @apply grow-0 shadow-2xl border-2 border-gray-400 w-5/12;
 }
 .authorsTableRow {
   @apply bg-red-100 hover:bg-red-200 cursor-pointer duration-300;

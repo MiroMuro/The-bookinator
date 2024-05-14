@@ -1,16 +1,35 @@
 import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "./queries";
 import BirthyearForm from "./BirthyearForm";
+import AuthorFilter from "./AuthorFilter";
+import { useMemo, useState } from "react";
 const Authors = ({ token }) => {
   const result = useQuery(ALL_AUTHORS);
 
+  const [authorToSearch, setAuthorToSearch] = useState("");
+
+  console.log("Author to search for: ", authorToSearch);
   if (result.loading) {
     return <div>loading...</div>;
   }
   const authors = result.data.allAuthors;
 
+  console.log("AUTHROS: ", authors);
+  const filteredAuthors = () => {
+    return authors.filter((author) =>
+      author.name.toLowerCase().includes(authorToSearch)
+    );
+  };
+  console.log(filteredAuthors());
   return (
-    <body className=" flex justify-center items-center-h-screen">
+    <div className=" flex flex-col justify-center items-center-h-screen w-8/12">
+      <div>
+        <h2>HELLO</h2>
+        <AuthorFilter
+          authorToSearch={authorToSearch}
+          setAuthorToSearch={setAuthorToSearch}
+        />
+      </div>
       {!token && (
         <table className="authorsTable ">
           <thead className="">
@@ -20,9 +39,20 @@ const Authors = ({ token }) => {
               <th className="py-3 bg-red-400">Books</th>
             </tr>
           </thead>
+          {/*
           <tbody className="text-center">
             {authors.map((author) => (
-              <tr className="authorsTableRow">
+              <tr key={author.id} className="authorsTableRow">
+                <td className="py-3 px-6">{author.name}</td>
+                <td className="py-3 px-6">{author.born}</td>
+                <td className="py-3 px-6">{author.bookCount}</td>
+              </tr>
+            ))}
+          </tbody>
+            */}
+          <tbody className="text-center">
+            {filteredAuthors().map((author) => (
+              <tr key={author.id} className="authorsTableRow">
                 <td className="py-3 px-6">{author.name}</td>
                 <td className="py-3 px-6">{author.born}</td>
                 <td className="py-3 px-6">{author.bookCount}</td>
@@ -57,7 +87,7 @@ const Authors = ({ token }) => {
           <BirthyearForm authors={authors} />
         </div>
       )}
-    </body>
+    </div>
   );
 };
 
