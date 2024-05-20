@@ -11,7 +11,7 @@ const LoginForm = ({ setToken, token }) => {
   const [loginStatus, setLoginStatus] = useState(false);
   const [message, setMessage] = useState({
     text: "Welcome back",
-    style: "border-2 border-black py-2 text-center bg-red-200 ",
+    style: " py-2 text-center bg-red-200 bg rounded mb-2",
   });
 
   const [isAnimating, setIsAnimating] = useState(false);
@@ -23,6 +23,9 @@ const LoginForm = ({ setToken, token }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
+      setTimeout(() => {
+        console.log("ERROR");
+      }, 1000);
       setError(
         error.graphQLErrors[0].message +
           "code: " +
@@ -31,10 +34,16 @@ const LoginForm = ({ setToken, token }) => {
       triggerAnimation();
       setMessage({
         text: "Login failed!",
+        style: `bg-red-500 py-2 text-center bg rounded mb-2 `,
       });
     },
     onCompleted: () => {
-      setMessage("Login successful! Redirecting...");
+      setLoginStatus(true);
+      triggerAnimation();
+      setMessage({
+        text: "Login successful! Redirecting...",
+        style: `bg-green-500 py-2 text-center bg rounded mb-2 `,
+      });
     },
   });
 
@@ -45,21 +54,23 @@ const LoginForm = ({ setToken, token }) => {
 
   useEffect(() => {
     if (result.data) {
-      const token = result.data.login.value;
-      setToken(token);
-      localStorage.setItem("library-user-token", token);
+      setTimeout(() => {
+        const token = result.data.login.value;
+        setToken(token);
+        localStorage.setItem("library-user-token", token);
+      }, 1000);
     }
   }, [result.data]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
     login({
       variables: {
         username: credientals.username,
         password: credientals.password,
       },
     });
-    console.log("Loggin in...");
   };
 
   const logout = () => {
@@ -84,17 +95,17 @@ const LoginForm = ({ setToken, token }) => {
         </div>
       )}
       {!token && (
-        <div className="flex flex-col justify-end basis-28 border-black border-2">
+        <div className="flex flex-col justify-end basis-28">
           <div
-            className={`bg-red-200 py-2 text-center bg rounded ${
-              isAnimating ? "animate-scaleUpAndDown bg-red-500" : ""
+            className={` ${message.style} ${
+              isAnimating ? "animate-scaleUpAndDown" : ""
             }`}
           >
             {message.text}
           </div>
           <form
             onSubmit={handleLogin}
-            className="border-black border-2 border rounded-md"
+            className="border-black border-2 rounded-md"
           >
             <div style={{ margin: "10px" }}>
               Username:
