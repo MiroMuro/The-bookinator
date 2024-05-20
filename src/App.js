@@ -42,18 +42,18 @@ const App = () => {
     <Router>
       <div className="flex  font-body">
         <div className="w-4/12 mt-80  h-1/4 overflow-auto sticky top-0">
-          {!token && (
-            <header>
-              <div className="text-red-400 text-xl  ">
-                <div className="navBarLinks">
-                  <Link style={padding} to="/">
-                    <h2 className="linksOnHover">Authors</h2>
-                  </Link>
-                  <Link style={padding} to="/books">
-                    <h2 className="linksOnHover">Books</h2>
-                  </Link>
-                </div>
-                <main>
+          <header>
+            <div className="text-red-400 text-xl  ">
+              <div className="navBarLinks">
+                <Link style={padding} to="/">
+                  <h2 className="linksOnHover">Authors</h2>
+                </Link>
+                <Link style={padding} to="/books">
+                  <h2 className="linksOnHover">Books</h2>
+                </Link>
+              </div>
+              <main>
+                {!token && (
                   <div className="navBarLinks">
                     <Link style={padding} to="/login">
                       <h2 className="linksOnHover">Login</h2>
@@ -62,29 +62,30 @@ const App = () => {
                       <h2 className="linksOnHover">Register</h2>
                     </Link>
                   </div>
-                </main>
-              </div>
-            </header>
-          )}
-          {token && (
-            <div className="bg-blue">
-              <Link style={padding} to="/">
-                authors
-              </Link>
-              <Link style={padding} to="/books">
-                books
-              </Link>
-              <Link style={padding} to="/add">
-                add book
-              </Link>
-              <Link style={padding} to="/recommendations ">
-                recommendations
-              </Link>
-              <Link style={padding} to="/login" state={{ logoutStatus: true }}>
-                Logout
-              </Link>
+                )}
+
+                {token && (
+                  <div className="text-red-400 text-xl">
+                    <div className="navBarLinks">
+                      <Link style={padding} to="/add">
+                        <h2 className="linksOnHover">Add book</h2>
+                      </Link>
+                      <Link style={padding} to="/recommendations ">
+                        <h2 className="linksOnHover">Suggestions</h2>
+                      </Link>
+                      <Link
+                        style={padding}
+                        to="/login"
+                        state={{ logoutStatus: true }}
+                      >
+                        <h2 className="linksOnHover">Logout</h2>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </main>
             </div>
-          )}
+          </header>
         </div>
         <Routes>
           <Route path="/" element={<Authors token={token} />} />
