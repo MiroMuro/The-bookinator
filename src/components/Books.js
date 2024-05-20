@@ -35,37 +35,22 @@ const Books = (props) => {
             <img className="p-4" src={image} alt="book" />
             <div className="bookInfo">
               <div className="flex flex-col ">
-                <span>Title: </span>
-                <span>Author: </span>
-                <span>Author born: </span>
-                <span>Published:</span>
-              </div>
-              <div className="flex flex-col items-end">
-                <span>{book.title}</span>
-                <span>{book.author.name} </span>
-                <span>{book.author.born} </span>
-                <span>{book.published}</span>
+                <span>
+                  <strong>Title:</strong> {book.title}{" "}
+                </span>
+                <span>
+                  <strong>Author:</strong> {book.author.name}{" "}
+                </span>
+                <span>
+                  <strong>Author born:</strong> {book.author.born}{" "}
+                </span>
+                <span>
+                  <strong>Published:</strong> {book.published}
+                </span>
               </div>
             </div>
           </div>
         ))}
-        <div className="card">
-          <img className="p-4" src={image} alt="book" />
-          <div className="bookInfo">
-            <div className="flex flex-col ">
-              <span>Title: </span>
-              <span>Author: </span>
-              <span>Author born: </span>
-              <span>Published:</span>
-            </div>
-            <div className=" flex flex-col items-end  ">
-              <span>Scary Book</span>
-              <span>Pekka Haavistöö </span>
-              <span>1959 </span>
-              <span>2001</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

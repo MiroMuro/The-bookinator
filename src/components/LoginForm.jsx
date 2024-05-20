@@ -8,6 +8,18 @@ const LoginForm = ({ setToken, token }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
+  const [message, setMessage] = useState({
+    text: "Welcome back",
+    style: "border-2 border-black py-2 text-center bg-red-200 ",
+  });
+
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const triggerAnimation = () => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 1000); // Reset the state after 1 second
+  };
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
@@ -16,9 +28,13 @@ const LoginForm = ({ setToken, token }) => {
           "code: " +
           error.graphQLErrors[0].extensions.code
       );
+      triggerAnimation();
+      setMessage({
+        text: "Login failed!",
+      });
     },
     onCompleted: () => {
-      setError("Login successful");
+      setMessage("Login successful! Redirecting...");
     },
   });
 
@@ -58,7 +74,7 @@ const LoginForm = ({ setToken, token }) => {
   }
   return (
     <div className="flex">
-      <div style={{ color: "red" }}>{error}</div>
+      {/* <div style={{ color: "red" }}>{error}</div> */}
       {token && (
         <div>
           <h2>Already logged in</h2>
@@ -68,8 +84,18 @@ const LoginForm = ({ setToken, token }) => {
         </div>
       )}
       {!token && (
-        <div className="flex basis-28 justify-center border-2  border-neutral-950 border-radius-2">
-          <form onSubmit={handleLogin}>
+        <div className="flex flex-col justify-end basis-28 border-black border-2">
+          <div
+            className={`bg-red-200 py-2 text-center bg rounded ${
+              isAnimating ? "animate-scaleUpAndDown bg-red-500" : ""
+            }`}
+          >
+            {message.text}
+          </div>
+          <form
+            onSubmit={handleLogin}
+            className="border-black border-2 border rounded-md"
+          >
             <div style={{ margin: "10px" }}>
               Username:
               <input
@@ -98,7 +124,7 @@ const LoginForm = ({ setToken, token }) => {
             </div>
             <button
               type="submit"
-              className="rounded-lg border-solid border-2 border-black m-2 p-1"
+              className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110"
             >
               Log in
             </button>
