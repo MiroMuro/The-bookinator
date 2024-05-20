@@ -47,19 +47,19 @@ const App = () => {
               <div className="text-red-400 text-xl  ">
                 <div className="navBarLinks">
                   <Link style={padding} to="/">
-                    <h2>Authors</h2>
+                    <h2 className="linksOnHover">Authors</h2>
                   </Link>
                   <Link style={padding} to="/books">
-                    <h2>Books</h2>
+                    <h2 className="linksOnHover">Books</h2>
                   </Link>
                 </div>
                 <main>
                   <div className="navBarLinks">
                     <Link style={padding} to="/login">
-                      <h2>Login</h2>
+                      <h2 className="linksOnHover">Login</h2>
                     </Link>
                     <Link style={padding} to="/register">
-                      <h2>Register</h2>
+                      <h2 className="linksOnHover">Register</h2>
                     </Link>
                   </div>
                 </main>

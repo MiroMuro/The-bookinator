@@ -12,6 +12,7 @@ const Authors = ({ token }) => {
   if (result.loading) {
     return <div>loading...</div>;
   }
+  console.log("RESULT: ", result);
   const authors = result.data.allAuthors;
 
   console.log("AUTHROS: ", authors);
@@ -22,7 +23,7 @@ const Authors = ({ token }) => {
   };
   console.log(filteredAuthors());
   return (
-    <div className=" flex flex-col justify-center items-center-h-screen w-8/12">
+    <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
       <div>
         <h2>HELLO</h2>
         <AuthorFilter

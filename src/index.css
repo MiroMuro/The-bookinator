@@ -4,7 +4,7 @@
 @import "tailwindcss/utilities";
 
 .card {
-  @apply bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden;
+  @apply bg-red-200 m-8 shadow-md w-3/12 rounded-md overflow-hidden hover:shadow-lg duration-300;
 }
 
 .bookInfo {
@@ -12,6 +12,9 @@
 }
 .navBarLinks {
   @apply flex flex-col  items-end sm:items-end;
+}
+.linksOnHover {
+  @apply transition px-2 rounded-md hover:bg-red-400 hover:text-white hover:scale-110;
 }
 .authorsTable {
   @apply grow-0 shadow-2xl border-2 border-gray-400 w-5/12;
