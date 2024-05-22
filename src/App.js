@@ -63,7 +63,6 @@ const App = () => {
                     </Link>
                   </div>
                 )}
-
                 {token && (
                   <div className="text-red-400 text-xl">
                     <div className="navBarLinks">
