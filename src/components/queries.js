@@ -13,7 +13,14 @@ const BOOK_DETAILS = gql`
     id
   }
 `;
-
+const AUTHOR_DETAILS = gql`
+  fragment AuthorDetails on Author {
+    name
+    born
+    bookcount
+    id
+  }
+`;
 const BOOK_ADDED = gql`
   subscription {
     bookAdded {
@@ -21,6 +28,14 @@ const BOOK_ADDED = gql`
     }
   }
   ${BOOK_DETAILS}
+`;
+const AUTHOR_UPDATED = gql`
+  subscription {
+    authorUpdated {
+      ...AuthorDetails
+    }
+  }
+  ${AUTHOR_DETAILS}
 `;
 const ALL_AUTHORS = gql`
   query {
@@ -88,7 +103,6 @@ const UPDATE_AUTHOR = gql`
       name
       born
       bookCount
-      id
     }
   }
 `;
@@ -121,4 +135,5 @@ export {
   GET_USER,
   BOOK_ADDED,
   REGISTER,
+  AUTHOR_UPDATED,
 };

@@ -7,7 +7,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Recommendations from "./components/Recommendations";
 import { useSubscription, useApolloClient } from "@apollo/client";
-import { BOOK_ADDED, ALL_BOOKS } from "./components/queries.js";
+import { BOOK_ADDED, ALL_BOOKS, AUTHOR_UPDATED } from "./components/queries.js";
 
 export const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from from saving to the cache
@@ -32,12 +32,19 @@ const App = () => {
   const padding = { padding: 5 };
   const client = useApolloClient();
 
+  //Subscription to listen for new books added and update the cache.
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded;
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
+    },
+  });
+  useSubscription(AUTHOR_UPDATED, {
+    onData: ({ data }) => {
+      const updatedAuthor = data.data.authorUpdated;
+      console.log("Updated author", updatedAuthor);
     },
   });
 

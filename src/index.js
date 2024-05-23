@@ -13,6 +13,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import "./index.css";
+
+//Set the authorization token to the request headers
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("library-user-token");
   return {
@@ -22,6 +24,7 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 const httpLink = createHttpLink({
   uri: "http://localhost:4000",
 });
@@ -41,9 +44,9 @@ const splitLink = split(
       definition.operation === "subscription"
     );
   },
-  // * The Link to use for an operation if the function returns a "truthy" value
+  // * The Link to use for an operation if the function returns a "truthy" value. (eg. subscription)
   wsLink,
-  // * The Link to use for an operation if the function returns a "falsy" value
+  // * The Link to use for an operation if the function returns a "falsy" value. (eg. query or mutation)
   authLink.concat(httpLink)
 );
 

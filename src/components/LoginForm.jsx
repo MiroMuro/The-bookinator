@@ -1,7 +1,7 @@
 import { useApolloClient, useMutation } from "@apollo/client";
 import { LOGIN } from "./queries";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setToken, token }) => {
   const client = useApolloClient();
@@ -26,6 +26,7 @@ const LoginForm = ({ setToken, token }) => {
   };
 
   const [login, result] = useMutation(LOGIN, {
+    //Here we play the animation and set the message based on the result of the mutation
     onError: (error) => {
       console.log(
         error.graphQLErrors[0].message +
@@ -57,15 +58,20 @@ const LoginForm = ({ setToken, token }) => {
         localStorage.setItem("library-user-token", token);
       }, 1000);
     }
-  }, [result.data]);
+  }, [result.data, setToken]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCredientals((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     login({
-      variables: {
-        username: credientals.username,
-        password: credientals.password,
-      },
+      variables: { ...credientals },
     });
   };
 
@@ -92,6 +98,7 @@ const LoginForm = ({ setToken, token }) => {
       {/*If user isn't logged in display login form*/}
       {!token && (
         <div className="flex flex-col justify-end basis-28">
+          {/*Animation is in tailwind.config.js*/}
           <div
             className={` ${message.style} ${
               isAnimating ? "animate-scaleUpAndDown" : ""
@@ -106,14 +113,10 @@ const LoginForm = ({ setToken, token }) => {
             <div style={{ margin: "10px" }}>
               Username:
               <input
+                name="username"
                 className="border-b-2 border-b-solid border-b-black"
                 value={credientals.username}
-                onChange={(event) =>
-                  setCredientals({
-                    ...credientals,
-                    username: event.target.value,
-                  })
-                }
+                onChange={handleChange}
               />
             </div>
             <div style={{ margin: "10px" }}>
@@ -121,12 +124,8 @@ const LoginForm = ({ setToken, token }) => {
               <input
                 className="border-b-2 border-b-solid border-b-black"
                 value={credientals.password}
-                onChange={(event) =>
-                  setCredientals({
-                    ...credientals,
-                    password: event.target.value,
-                  })
-                }
+                name="password"
+                onChange={handleChange}
               />
             </div>
             <button

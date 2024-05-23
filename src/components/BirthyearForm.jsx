@@ -1,12 +1,28 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { UPDATE_AUTHOR } from "./queries";
+import { UPDATE_AUTHOR, ALL_AUTHORS } from "./queries";
 const BirthyearForm = ({ authors }) => {
-  console.log("AUTHROS:", authors);
   const [birthyear, setBirthyear] = useState("");
   const [name, setName] = useState("");
 
-  const [updateAuthor] = useMutation(UPDATE_AUTHOR);
+  const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
+    onError: (error, data) => {
+      const messages = error.graphQLErrors.map((e) => e.message).join("\n");
+      console.log(data);
+      console.log("Error messages", messages);
+    },
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_AUTHORS }, (data) => {
+        console.log("DATA:", data);
+        console.log("RESPONSE:", response.data.editAuthor);
+        const updatedAuthor = response.data.editAuthor;
+        const authors = data.allAuthors.map((author) =>
+          author.name === updatedAuthor.name ? updatedAuthor : author
+        );
+        return { allAuthors: authors };
+      });
+    },
+  });
 
   const submit = async (event) => {
     event.preventDefault();
