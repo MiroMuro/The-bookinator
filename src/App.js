@@ -8,7 +8,6 @@ import RegisterForm from "./components/RegisterForm";
 import Recommendations from "./components/Recommendations";
 import { useSubscription, useApolloClient } from "@apollo/client";
 import { BOOK_ADDED, ALL_BOOKS } from "./components/queries.js";
-import styles from "./index.css";
 
 export const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from from saving to the cache
@@ -26,7 +25,10 @@ export const updateCache = (cache, query, addedBook) => {
 };
 
 const App = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(
+    localStorage.getItem("library-user-token")
+  );
+
   const padding = { padding: 5 };
   const client = useApolloClient();
 
@@ -38,6 +40,7 @@ const App = () => {
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
     },
   });
+
   return (
     <Router>
       <div className="flex  font-body">

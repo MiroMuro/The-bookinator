@@ -5,16 +5,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginForm = ({ setToken, token }) => {
   const client = useApolloClient();
-  const location = useLocation();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const [loginStatus, setLoginStatus] = useState(false);
+
   const [message, setMessage] = useState({
     text: "Welcome back",
     style: " py-2 text-center bg-red-200 bg rounded mb-2",
   });
 
+  //Flag to check if the animation is playing.
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const [credientals, setCredientals] = useState({
+    username: "",
+    password: "",
+  });
 
   const triggerAnimation = () => {
     setIsAnimating(true);
@@ -23,10 +27,7 @@ const LoginForm = ({ setToken, token }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      setTimeout(() => {
-        console.log("ERROR");
-      }, 1000);
-      setError(
+      console.log(
         error.graphQLErrors[0].message +
           "code: " +
           error.graphQLErrors[0].extensions.code
@@ -38,7 +39,6 @@ const LoginForm = ({ setToken, token }) => {
       });
     },
     onCompleted: () => {
-      setLoginStatus(true);
       triggerAnimation();
       setMessage({
         text: "Login successful! Redirecting...",
@@ -47,12 +47,9 @@ const LoginForm = ({ setToken, token }) => {
     },
   });
 
-  const [credientals, setCredientals] = useState({
-    username: "",
-    password: "",
-  });
-
   useEffect(() => {
+    //If result is succesful, set the token and save it to local storage
+    //Wait for 1 second before redirecting, for an cool animation to play.
     if (result.data) {
       setTimeout(() => {
         const token = result.data.login.value;
@@ -64,7 +61,6 @@ const LoginForm = ({ setToken, token }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     login({
       variables: {
         username: credientals.username,
@@ -80,20 +76,20 @@ const LoginForm = ({ setToken, token }) => {
     navigate("/");
   };
 
-  if (location.state) {
-    logout();
-  }
   return (
     <div className="flex">
-      {/* <div style={{ color: "red" }}>{error}</div> */}
+      {/*If user is logged in display this*/}
       {token && (
-        <div>
-          <h2>Already logged in</h2>
-          <div>
+        <div className="flex flex-col justify-center items-start">
+          <h2 className="p-2 text-center bg-red-200 bg rounded mb-2">
+            Already logged in
+          </h2>
+          <div className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110">
             <button onClick={logout}>Logout</button>
           </div>
         </div>
       )}
+      {/*If user isn't logged in display login form*/}
       {!token && (
         <div className="flex flex-col justify-end basis-28">
           <div

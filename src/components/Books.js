@@ -1,12 +1,10 @@
-import { ALL_BOOKS, ALL_GENRES } from "./queries";
+import { ALL_BOOKS } from "./queries";
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import GenresDropdown from "./GenresDropdown";
-import Genres from "./Genres";
 import image from "../static/images/book.jpg";
 const Books = (props) => {
   const [currentGenre, setCurrentGenre] = useState("");
-  const [currentBooks, setCurrentBooks] = useState([]);
   const result = useQuery(ALL_BOOKS);
 
   const { loading, error, data, refetch } = useQuery(ALL_BOOKS, {
@@ -25,14 +23,17 @@ const Books = (props) => {
       );
     }
   };
-  console.log(data.allBooks);
+
   return (
-    <div className="flex flex-col w-8/12">
-      <div className="flex bg-blue-50   m-auto">
-        <GenresDropdown setCurrentGenre={setCurrentGenre} />
+    <div className="flex flex-col w-7/12">
+      <div className="flex bg-red-200 rounded-md border-2 my-4 p-2 border-red-400  m-auto">
+        <GenresDropdown
+          setCurrentGenre={setCurrentGenre}
+          currentGenre={currentGenre}
+        />
       </div>
 
-      <div className="flex flex-wrap bg-blue-50   m-auto">
+      <div className="flex flex-wrap bg-blue-50">
         {/* Cards go here*/}
         {filteredBooks().map((book) => (
           <div className="card">

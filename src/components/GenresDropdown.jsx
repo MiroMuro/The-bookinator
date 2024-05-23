@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ALL_GENRES } from "./queries";
-const GenresDropdown = ({ genres, setCurrentGenre }) => {
-  const containerStyle = {
-    border: "3px solid #fff",
-    marginTop: "10px",
-  };
+const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const genresResult = useQuery(ALL_GENRES);
 
@@ -13,12 +9,13 @@ const GenresDropdown = ({ genres, setCurrentGenre }) => {
     event.preventDefault();
     setSelectedGenre(event.target.value);
   };
+
   if (genresResult.loading) {
     return <div>loading...</div>;
   }
   return (
-    <div style={containerStyle}>
-      Currently selected genre: {selectedGenre}
+    <div>
+      Currently selected genre: {currentGenre}
       <form>
         <label for="genres">Choose genre </label>
         <select
