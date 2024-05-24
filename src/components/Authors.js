@@ -1,26 +1,25 @@
 import { useQuery } from "@apollo/client";
-import { ALL_AUTHORS } from "./queries";
+import { ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
 import BirthyearForm from "./BirthyearForm";
 import AuthorFilter from "./AuthorFilter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Authors = ({ token }) => {
-  const result = useQuery(ALL_AUTHORS);
+  const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS);
 
   const [authorToSearch, setAuthorToSearch] = useState("");
 
-  if (result.loading) {
+  if (loading) {
     return <div>loading...</div>;
   }
-  console.log("REsult data", result.data);
   //Initially all authors are displayed
-  const authors = result.data.allAuthors;
+  const authors = data.allAuthors;
   //Filter authors based on the search input
   const filteredAuthors = () => {
     return authors.filter((author) =>
       author.name.toLowerCase().includes(authorToSearch)
     );
   };
-  console.log(filteredAuthors());
+  console.log("Authors", authors);
   return (
     <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
       <div>

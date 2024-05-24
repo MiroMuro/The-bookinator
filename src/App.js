@@ -23,6 +23,7 @@ export const updateCache = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
+
   cache.updateQuery(query, ({ allBooks }) => {
     return { allBooks: uniqByName(allBooks.concat(addedBook)) };
   });
@@ -41,15 +42,14 @@ const App = () => {
   );
 
   const padding = { padding: 5 };
-  const client = useApolloClient();
 
-  //Subscription to listen for new books added and update the cache.
+  //Subscription to listen for new books and alert if adding is succesful.
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded;
-      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
+      //updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
     },
   });
 

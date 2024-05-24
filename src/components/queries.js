@@ -18,7 +18,7 @@ const AUTHOR_DETAILS = gql`
   fragment AuthorDetails on Author {
     name
     born
-    bookcount
+    bookCount
     id
   }
 `;
