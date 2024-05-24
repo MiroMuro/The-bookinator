@@ -7,10 +7,15 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Recommendations from "./components/Recommendations";
 import { useSubscription, useApolloClient } from "@apollo/client";
-import { BOOK_ADDED, ALL_BOOKS, AUTHOR_UPDATED } from "./components/queries.js";
+import {
+  BOOK_ADDED,
+  ALL_BOOKS,
+  AUTHOR_UPDATED,
+  ALL_AUTHORS,
+} from "./components/queries.js";
 
 export const updateCache = (cache, query, addedBook) => {
-  //This is used to eliminate duplicate books from from saving to the cache
+  //This is used to eliminate duplicate books from saving to the cache
   const uniqByName = (a) => {
     let seen = new Set();
     return a.filter((item) => {
@@ -18,12 +23,18 @@ export const updateCache = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-
   cache.updateQuery(query, ({ allBooks }) => {
     return { allBooks: uniqByName(allBooks.concat(addedBook)) };
   });
 };
 
+export const updateAuthorCache = (cache, query, updatedAuthor) => {
+  cache.updateQuery(query, ({ allAuthors }) => {
+    return allAuthors.map((author) =>
+      author.name === updatedAuthor.name ? updatedAuthor : author
+    );
+  });
+};
 const App = () => {
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
@@ -39,12 +50,6 @@ const App = () => {
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
-    },
-  });
-  useSubscription(AUTHOR_UPDATED, {
-    onData: ({ data }) => {
-      const updatedAuthor = data.data.authorUpdated;
-      console.log("Updated author", updatedAuthor);
     },
   });
 

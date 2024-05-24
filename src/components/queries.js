@@ -8,6 +8,7 @@ const BOOK_DETAILS = gql`
       name
       born
       id
+      bookCount
     }
     genres
     id
@@ -86,6 +87,8 @@ const CREATE_BOOK = gql`
       title
       author {
         name
+        born
+        bookCount
       }
       published
       genres
@@ -100,6 +103,7 @@ const ALL_GENRES = gql`
 const UPDATE_AUTHOR = gql`
   mutation ($name: String!, $born: Int!) {
     editAuthor(name: $name, setBornTo: $born) {
+      id
       name
       born
       bookCount

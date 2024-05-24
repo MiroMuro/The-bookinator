@@ -8,13 +8,11 @@ const BirthyearForm = ({ authors }) => {
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
     onError: (error, data) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
-      console.log(data);
       console.log("Error messages", messages);
     },
     update: (cache, response) => {
+      //Update cache with the edited author.
       cache.updateQuery({ query: ALL_AUTHORS }, (data) => {
-        console.log("DATA:", data);
-        console.log("RESPONSE:", response.data.editAuthor);
         const updatedAuthor = response.data.editAuthor;
         const authors = data.allAuthors.map((author) =>
           author.name === updatedAuthor.name ? updatedAuthor : author

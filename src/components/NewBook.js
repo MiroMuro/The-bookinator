@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { updateCache } from "../App";
+import { updateCache, updateAuthorCache } from "../App";
 import { useMutation } from "@apollo/client";
 
-import { CREATE_BOOK, ALL_BOOKS } from "./queries";
+import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from "./queries";
 const NewBook = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -16,8 +16,10 @@ const NewBook = (props) => {
       console.log(messages);
     },
     update: (cache, response) => {
+      console.log("Author here", response.data.addBook);
       updateCache(cache, { query: { ALL_BOOKS } }, response.data.addBook);
     },
+    refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
   const submit = async (event) => {

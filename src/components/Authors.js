@@ -11,6 +11,7 @@ const Authors = ({ token }) => {
   if (result.loading) {
     return <div>loading...</div>;
   }
+  console.log("REsult data", result.data);
   //Initially all authors are displayed
   const authors = result.data.allAuthors;
   //Filter authors based on the search input
