@@ -45,16 +45,18 @@ const NewBook = (props) => {
     },
     update: (cache, response) => {
       //Update the cache with the new book
-      //updateCache(cache, { query: { ALL_BOOKS } }, response.data.addBook);
+      updateCache(cache, { query: { ALL_BOOKS } }, response.data.addBook);
     },
     refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
   const submit = async (event) => {
     event.preventDefault();
+
     addBook({
       variables: { title, author, published: parseInt(published), genres },
     });
+
     setTitle("");
     setPublished("");
     setAuthor("");
