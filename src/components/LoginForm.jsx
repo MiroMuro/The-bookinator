@@ -86,12 +86,14 @@ const LoginForm = ({ setToken, token }) => {
     <div className="flex">
       {/*If user is logged in display this*/}
       {token && (
-        <div className="flex flex-col justify-center items-start">
-          <h2 className="p-2 text-center bg-red-200 bg rounded mb-2">
-            Already logged in
-          </h2>
-          <div className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110">
-            <button onClick={logout}>Logout</button>
+        <div className="flex flex-col justify-end items-start ">
+          <div className="border-black border-2  p-4 rounded-md">
+            <h2 className="p-2 text-center bg-red-200 bg rounded mb-2">
+              Already logged in
+            </h2>
+            <div className="rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110">
+              <button onClick={logout}>Logout</button>
+            </div>
           </div>
         </div>
       )}

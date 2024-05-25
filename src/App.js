@@ -37,6 +37,7 @@ export const updateAuthorCache = (cache, query, updatedAuthor) => {
   });
 };
 const App = () => {
+  //Get the token from local storage to check if the user is logged in.
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
   );

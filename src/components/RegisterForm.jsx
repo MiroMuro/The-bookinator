@@ -42,7 +42,7 @@ const RegisterForm = () => {
       triggerAnimation();
 
       setMessage({
-        text: "Login successful! Redirecting...",
+        text: "Registration successful! Redirecting...",
         style: `bg-green-500 py-2 text-center bg rounded mb-2 `,
       });
     },
@@ -53,7 +53,7 @@ const RegisterForm = () => {
     //Wait for 1 second before redirecting, for an cool animation to play.
     if (result.data) {
       setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 1000);
     }
   }, [result.data, navigate]);

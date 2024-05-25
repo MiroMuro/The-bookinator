@@ -70,41 +70,54 @@ const NewBook = (props) => {
   };
 
   return (
-    <div>
-      <form onSubmit={submit}>
-        <div>
-          title
+    <div className="flex flex-col justify-end border-gray-200 border-2 basis-84">
+      <form className="flex flex-col border-black border-2" onSubmit={submit}>
+        <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
+          Title
           <input
+            id="title"
+            className="relative border-gray-400 border-2 mx-2 "
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
-        <div>
-          author
+        <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
+          Author
           <input
+            className="relative border-gray-400 border-2 mx-2 "
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
-        <div>
-          published
+        <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
+          Published
           <input
+            className="relative border-gray-400 border-2 mx-2 "
             type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
-        <div>
+        <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
+          <button
+            className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
+            onClick={addGenre}
+            type="button"
+          >
+            Add genre
+          </button>
           <input
+            className="relative border-gray-400 border-2 mx-2 "
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">
-            add genre
-          </button>
         </div>
-        <div>genres: {genres.join(" ")}</div>
-        <button type="submit">create book</button>
+        <div className=" border-b-2 border-gray-200 p-2 bg-red-200">
+          <span>Genres: {genres.join(" ")}</span>
+        </div>
+        <div className="flex flex-col ml-3 items-center rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110">
+          <button type="submit">Create book</button>
+        </div>
       </form>
     </div>
   );

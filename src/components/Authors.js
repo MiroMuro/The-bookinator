@@ -23,7 +23,6 @@ const Authors = ({ token }) => {
   return (
     <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
       <div>
-        <h2>HELLO</h2>
         <AuthorFilter
           authorToSearch={authorToSearch}
           setAuthorToSearch={setAuthorToSearch}
