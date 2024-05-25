@@ -11,7 +11,7 @@ const NewBook = (props) => {
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
-
+  const [message, setMessage] = useState("Create new book");
   const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
   });
@@ -70,11 +70,17 @@ const NewBook = (props) => {
   };
 
   return (
-    <div className="flex flex-col justify-end border-gray-200 border-2 basis-84">
-      <form className="flex flex-col border-black border-2" onSubmit={submit}>
+    <div className="flex flex-col justify-end  basis-84">
+      <h2 className="text-2xl font-bold">{message}</h2>
+      <form
+        className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
+        onSubmit={submit}
+      >
         <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
           Title
           <input
+            minLength={2}
+            required
             id="title"
             className="relative border-gray-400 border-2 mx-2 "
             value={title}
@@ -84,6 +90,8 @@ const NewBook = (props) => {
         <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
           Author
           <input
+            minLength={4}
+            required
             className="relative border-gray-400 border-2 mx-2 "
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
@@ -92,6 +100,7 @@ const NewBook = (props) => {
         <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
           Published
           <input
+            required
             className="relative border-gray-400 border-2 mx-2 "
             type="number"
             value={published}
@@ -100,7 +109,7 @@ const NewBook = (props) => {
         </div>
         <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
           <button
-            className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
+            className="rounded-lg border-solid bg-white border-2 border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
             onClick={addGenre}
             type="button"
           >
@@ -115,8 +124,13 @@ const NewBook = (props) => {
         <div className=" border-b-2 border-gray-200 p-2 bg-red-200">
           <span>Genres: {genres.join(" ")}</span>
         </div>
-        <div className="flex flex-col ml-3 items-center rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110">
-          <button type="submit">Create book</button>
+        <div>
+          <button
+            className="flex flex-col ml-3 items-center rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110"
+            type="submit"
+          >
+            Create book
+          </button>
         </div>
       </form>
     </div>
