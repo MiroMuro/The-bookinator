@@ -2,7 +2,9 @@
 # Book-App frontend
 
 Front end for a React web-app made by me. My main motivation for creating this was to learn Tailwind and graphQL. <br/> 
-This app has authentication. An authenticated user has more access to the app than an unauthenticated one. Below are the possible actions of both <br/>
+
+# Features
+This app has user authentication. An authenticated user has more access to the app than an unauthenticated one. Below are the possible actions of both. <br/>
 
 UNAUTHENTICATED
 - Browse and filter Books by genre
