@@ -1,95 +1,129 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Book-App frontend
 
-## Available Scripts
+Front end for a React web-app made by me. My main motivation for creating this was to learn Tailwind and graphQL. <br/> 
+This app has authentication. An authenticated user has more access to the app than an unauthenticated one. Below are the possible actions of both <br/>
 
-In the project directory, you can run:
+UNAUTHENTICATED
+- Browse and filter Books by genre
+- Browse and search authors
+- Register for the application
 
-### `npm start`
+AUTHENTICATED 
+- ... Same as unauthenticated
+- Add books
+- Add authors (while creating books)
+- Modify author birthyear
+- Login
+- Logout
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies used
+Code quality
+- Prettier
+- ESLint
+App logic
+- React and JavaScript
+- React router
+- Apollo client for state management with GraphQL
+Data fetching
+- GraphQL
+Visuals
+- Tailwind
+Testing
+- Jest
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Layout structure of the app
+The application is initialized in index.js which wraps App.js in the ApolloClient. App.js handle the routing and organization of the components.
 
-### `npm run eject`
+```bash
+.
+└── BAfront/
+    ├── src/
+    │   ├── components/
+    │   │   ├── AuthorFilter.jsx
+    │   │   ├── Authors.js
+    │   │   ├── BirthyearForm.jsx
+    │   │   ├── Books.js
+    │   │   ├── Genres.jsx
+    │   │   ├── GenresDropdown.jsx
+    │   │   ├── LoginForm.jsx
+    │   │   ├── NewBooks.jsx
+    │   │   ├── Recommendations.jsx
+    │   │   ├── Registerform.jsx
+    │   │   └── queries.js
+    │   ├── static/images
+    │   ├── App.js
+    │   ├── index.css
+    │   ├── index.js
+    │   └── output.css
+    ├── .gitignore
+    ├── README.md
+    ├── package-lock.json
+    ├── package.json
+    └── tailwind.config.js
+```
+## Book-App backend
+For running this app (frontend + backend) completely locally follow this link and setup the backend for this project: https://github.com/MiroMuro/BABack 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Run this frontend Locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Clone the project
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  git clone https://github.com/MiroMuro/BAfront.git
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Go to the project directory
 
-## Learn More
+```bash
+  cd BAfront
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Install dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+  npm install
+```
 
-### Code Splitting
+Start the server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+  npm run start
+```
 
-### Analyzing the Bundle Size
+By default starts the development server at port 3000, and this will appear in the console.
+```bash
+Compiled successfully!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+You can now view frontend in the browser.        
 
-### Making a Progressive Web App
+http://localhost:3000
+```
+The page will reload if you make edits.
+Refer to this link if you wish to change the default port: https://tech.amikelive.com/node-830/reactjs-changing-default-port-3000-in-create-react-app/ 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## GraphQL API Reference
 
-### Advanced Configuration
+You can find all the Queries, Subscriptions, Mutations and Fragments in src/queries.js Knowledge of GraphQL is required to interpret them. <br/> Further info about the API can be found in README.md of the backend over here: https://github.com/MiroMuro/BABack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## Example usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Below is an demo-video of using the app. You can register yourself in the app and play around.
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-BAfront
-  src
-    components
-      AuthorFilter.jsx
-      Authors.js
-      BirthyearForm.jsx
-      Books.js
-      Genres.jsx
-      GenresDropdown.jsx
-      LoginForm.jsx
-      NewBooks.jsx
-      Recommendations.jsx
-      Registerform.jsx
-      queries.js
-    static/images
-    App.js
-    index.css
-    index.js
-    output.css
-  .gitignore
-  README.md
-  package-lock.json
-  package.json
-  tailwind.config.js
+
+## TO-DO
+A list of features that will ship out later
+- Custom book images
+- Own profile page
+- Single book page
+- Single book deletion
+- Book ratings
