@@ -22,6 +22,11 @@ const Authors = ({ token }) => {
   console.log("Authors", authors);
   return (
     <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
+      {token && (
+        <div>
+          <BirthyearForm authors={authors} />
+        </div>
+      )}
       <div>
         <AuthorFilter
           authorToSearch={authorToSearch}
@@ -47,12 +52,6 @@ const Authors = ({ token }) => {
           ))}
         </tbody>
       </table>
-
-      {token && (
-        <div>
-          <BirthyearForm authors={authors} />
-        </div>
-      )}
     </div>
   );
 };

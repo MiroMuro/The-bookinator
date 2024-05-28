@@ -115,6 +115,7 @@ const LoginForm = ({ setToken, token }) => {
             <div style={{ margin: "10px" }}>
               Username:
               <input
+                autoComplete="off"
                 name="username"
                 className="border-b-2 border-b-solid border-b-black"
                 value={credientals.username}
@@ -124,6 +125,7 @@ const LoginForm = ({ setToken, token }) => {
             <div style={{ margin: "10px" }}>
               Password:
               <input
+                autoComplete="off"
                 className="border-b-2 border-b-solid border-b-black"
                 value={credientals.password}
                 name="password"

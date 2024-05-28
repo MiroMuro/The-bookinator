@@ -12,9 +12,10 @@ import {
   ALL_BOOKS,
   AUTHOR_UPDATED,
   ALL_AUTHORS,
+  ALL_GENRES,
 } from "./components/queries.js";
 
-export const updateCache = (cache, query, addedBook) => {
+const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from saving to the cache
   const uniqByName = (a) => {
     let seen = new Set();
@@ -23,20 +24,40 @@ export const updateCache = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-
+  const anotherBook = addedBook;
+  //Update the genres cache with the added book
+  updateCacheWithGenres(cache, { query: ALL_GENRES }, anotherBook);
+  // Update the books cache with the added book
   cache.updateQuery(query, ({ allBooks }) => {
     return { allBooks: uniqByName(allBooks.concat(addedBook)) };
   });
+  console.log("Genre of the added book", addedBook.genres);
 };
 
-export const updateAuthorCache = (cache, query, updatedAuthor) => {
+export const updateCacheWithGenres = (cache, query, addedBook) => {
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+  console.log("Genre of the added book", addedBook.genres);
+  cache.updateQuery(query, ({ allGenres }) => {
+    return { allGenres: uniqByName(allGenres.concat(addedBook.genres[0])) };
+  });
+};
+
+/*export const updateAuthorCache = (cache, query, updatedAuthor) => {
   cache.updateQuery(query, ({ allAuthors }) => {
     return allAuthors.map((author) =>
       author.name === updatedAuthor.name ? updatedAuthor : author
     );
   });
 };
+*/
 const App = () => {
+  const client = useApolloClient();
   //Get the token from local storage to check if the user is logged in.
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
@@ -48,9 +69,19 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       const addedBook = data.data.bookAdded;
+
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
-      //updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+      // console.log("HELLO FORM GERE", copyOfAddedBook);
+      /*updateCacheWithGenres(
+        client.cache,
+        { query: ALL_GENRES },
+        copyOfAddedBook
+      );*/
+      /*console.log("Added book below the cache update", addedBook);
+      const addedBook2 = data.data.bookAdded;
+      updateCacheWithGenres(client.cache, { query: ALL_GENRES }, addedBook2);*/
     },
   });
 
