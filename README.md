@@ -120,6 +120,10 @@ Below is an demo-video of using the app. You can register yourself in the app an
 
 
 
+https://github.com/MiroMuro/BAfront/assets/95426094/988cba01-184b-49d1-ae88-f41963529a3f
+
+
+
 ## TO-DO
 A list of features that will ship out later
 - Custom book images
