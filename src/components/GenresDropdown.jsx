@@ -5,13 +5,17 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const genresResult = useQuery(ALL_GENRES);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("event.target.value", event.target.value);
+    setCurrentGenre("");
+  };
+
   const handleGenreChange = (event) => {
     event.preventDefault();
     console.log("event.target.value", event.target.value);
-    setSelectedGenre(event.target.value);
     setCurrentGenre(event.target.value);
   };
-
   console.log("currentGenre", currentGenre);
   if (genresResult.loading) {
     return <div>loading...</div>;
@@ -20,25 +24,20 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
     <div>
       Currently selected genre:
       {currentGenre ? currentGenre : " No genre selected"}
-      <form>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <label for="genres">Choose genre </label>
         <select
           name="genres"
           id="genres"
-          value={"-- select an option --"}
+          value={""}
           onChange={(e) => handleGenreChange(e)}
         >
-          <option selected>-- select an option --</option>
+          <option selected>bruh</option>
           {genresResult.data.allGenres.map((genre) => (
             <option value={genre}>{genre}</option>
           ))}
         </select>
-        <button
-          className="filterButton"
-          type="submit"
-          value="Filter"
-          onClick={() => setCurrentGenre("")}
-        >
+        <button className="filterButton" type="submit" value="Filter">
           Reset filter
         </button>
       </form>

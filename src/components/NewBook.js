@@ -4,13 +4,7 @@ import { useApolloClient } from "@apollo/client";
 
 import { useMutation } from "@apollo/client";
 
-import {
-  CREATE_BOOK,
-  ALL_BOOKS,
-  ALL_AUTHORS,
-  AUTHOR_UPDATED,
-  BOOK_ADDED,
-} from "./queries";
+import { CREATE_BOOK, ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
 const NewBook = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -18,10 +12,9 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
   const [message, setMessage] = useState("Create new book");
-  const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS, {
+  const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
   });
-  const client = useApolloClient();
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
   useEffect(() => {
@@ -40,23 +33,7 @@ const NewBook = (props) => {
         };
       },
     });
-    /*const unsubscribeNewGenres = subscribeToMore({
-      document: BOOK_ADDED,
-      updateQuery: (prev, { subscriptionData }) => {
-        console.log("Subscription data", subscriptionData.data);
-        console.log("Previous data", prev);
-        if (!subscriptionData.data) return prev;
-        const prevGenres = subscriptionData.data.allBooks
-          .map((book) => book.genres)
-          .flat();
-        console.log("Previous genres", prevGenres);
-        const addedBookGenre = subscriptionData.data.bookAdded.genres;
-        console.log("Added book genre", addedBookGenre);
-        return {
-          allGenres: prevGenres.concat(addedBookGenre),
-        };
-      },
-    });*/
+
     return () => {
       unsubscribe();
       /*unsubscribeNewGenres();*/
@@ -69,10 +46,7 @@ const NewBook = (props) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       console.log(messages);
     },
-    update: (cache, response) => {
-      //Update the cache with the new book
-      //updateCache(cache, { query: { ALL_BOOKS } }, response.data.addBook);
-    },
+
     refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
