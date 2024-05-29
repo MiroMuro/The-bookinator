@@ -27,15 +27,16 @@ const authLink = setContext((_, { headers }) => {
 
 //Create the http link for connecting to backend server, in this case, an apollo server.
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000",
+  uri: "https://baback.onrender.com/",
 });
-// Create a WebSocket link sor subscriptions to the apollo server.
+// Create a WebSocket link for subscriptions to the apollo server.
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000",
+    url: "wss://baback.onrender.com/",
   })
 );
-
+console.log("wsLink", wsLink);
+console.log("httpLink", httpLink);
 const splitLink = split(
   // * A function that's called for each operation to execute
   ({ query }) => {
