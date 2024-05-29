@@ -2,7 +2,9 @@
 # Book-App frontend
 
 Front end for a React web-app made by me. My main motivation for creating this was to learn Tailwind and graphQL. <br/> 
-This app has authentication. An authenticated user has more access to the app than an unauthenticated one. Below are the possible actions of both <br/>
+
+# Features
+This app has user authentication. An authenticated user has more access to the app than an unauthenticated one. Below are the possible actions of both. <br/>
 
 UNAUTHENTICATED
 - Browse and filter Books by genre
@@ -117,6 +119,10 @@ You can find all the Queries, Subscriptions, Mutations and Fragments in src/quer
 
 Below is an demo-video of using the app. You can register yourself in the app and play around.
 
+
+
+
+https://github.com/MiroMuro/BAfront/assets/95426094/988cba01-184b-49d1-ae88-f41963529a3f
 
 
 
