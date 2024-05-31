@@ -1,5 +1,5 @@
 
-# Book-App frontend
+# The-Bookinator
 
 Front end for a React web-app made by me. My main motivation for creating this was to learn Tailwind and graphQL. <br/> 
 
