@@ -36,20 +36,11 @@ export const updateCacheWithGenres = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-  console.log("Genre of the added book", addedBook.genres);
   cache.updateQuery(query, ({ allGenres }) => {
     return { allGenres: uniqByName(allGenres.concat(addedBook.genres[0])) };
   });
 };
 
-/*export const updateAuthorCache = (cache, query, updatedAuthor) => {
-  cache.updateQuery(query, ({ allAuthors }) => {
-    return allAuthors.map((author) =>
-      author.name === updatedAuthor.name ? updatedAuthor : author
-    );
-  });
-};
-*/
 const App = () => {
   const client = useApolloClient();
   //Get the token from local storage to check if the user is logged in.

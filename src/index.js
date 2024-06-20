@@ -42,8 +42,7 @@ const wsLink = new GraphQLWsLink(
     url: wsUri,
   })
 );
-console.log("wsLink", wsLink);
-console.log("httpLink", httpLink);
+
 const splitLink = split(
   // * A function that's called for each operation to execute
   ({ query }) => {
