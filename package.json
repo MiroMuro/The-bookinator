@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.9.10",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.8",
@@ -23,9 +21,16 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "^.+\\.svg$": "jest-svg-transformer",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    }}
+  ,
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -45,6 +50,14 @@
     ]
   },
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "@babel/preset-env": "^7.24.6",
+    "@babel/preset-react": "^7.24.6",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^16.0.0",
+    "cross-env": "^7.0.3",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.1.0",
+    "ts-node": "^10.9.2",
+    "vitest": "^1.6.0"
   }
 }

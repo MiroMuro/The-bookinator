@@ -3,16 +3,13 @@ import { useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import GenresDropdown from "./GenresDropdown";
 import image from "../static/images/book.jpg";
-const Books = (props) => {
+const Books = () => {
   const [currentGenre, setCurrentGenre] = useState("");
   const result = useQuery(ALL_BOOKS);
 
-  const { loading, error, data, refetch, subscribeToMore } = useQuery(
-    ALL_BOOKS,
-    {
-      variables: { genre: currentGenre },
-    }
-  );
+  const { loading, subscribeToMore } = useQuery(ALL_BOOKS, {
+    variables: { genre: currentGenre },
+  });
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({

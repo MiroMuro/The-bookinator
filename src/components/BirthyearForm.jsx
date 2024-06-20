@@ -3,8 +3,10 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "./queries";
 const BirthyearForm = ({ authors }) => {
   const [birthyear, setBirthyear] = useState("");
-  const [name, setName] = useState("");
+  const [selectedAuthorName, setSelectedAuthorName] = useState(authors[0].name);
+  console.log("updateAuthor", selectedAuthorName);
 
+  //Function to update the author's birthyear
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
     onError: (error, data) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
@@ -24,24 +26,26 @@ const BirthyearForm = ({ authors }) => {
 
   const submit = async (event) => {
     event.preventDefault();
-    console.log("update birthyear...");
-
-    updateAuthor({ variables: { name, born: parseInt(birthyear) } });
-    setName("");
+    updateAuthor({
+      variables: { name: selectedAuthorName, born: parseInt(birthyear) },
+    });
+    setSelectedAuthorName(authors[0].name);
     setBirthyear("");
   };
   return (
     <>
       {authors && (
         <div className="flex flex-col bg-red-200 border-gray-400 border-2 rounded-md w-5/12 mt-2">
-          <h1 className="my-2 ml-2 font-semibold">Update birthyear</h1>
+          <h1 className="my-2 ml-2 font-semibold">
+            Update birthyear of an author
+          </h1>
           <form onSubmit={submit}>
             <div className="flex justify-between m-2">
-              <p>Name</p>
+              <p>Select an author</p>
               <select
                 className="border-black border-2 rounded-lg p-1 hover:bg-gray-300"
-                value={name}
-                onChange={({ target }) => setName(target.value)}
+                onChange={({ target }) => setSelectedAuthorName(target.value)}
+                value={selectedAuthorName}
               >
                 {authors.map((author) => (
                   <option key={author.id} value={author.name}>
@@ -51,7 +55,7 @@ const BirthyearForm = ({ authors }) => {
               </select>
             </div>
             <div className="flex justify-between m-2">
-              <p>Born: </p>
+              <p>Birthyear: </p>
               <input
                 maxLength={4}
                 value={birthyear}
@@ -59,7 +63,7 @@ const BirthyearForm = ({ authors }) => {
               />
             </div>
             <button
-              className="rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
+              className="rounded-lg bg-white border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
               type="submit"
             >
               Update author

@@ -14,7 +14,11 @@
   @apply flex flex-col  items-end sm:items-end;
 }
 .linksOnHover {
-  @apply transition px-2 rounded-md hover:bg-red-400 hover:text-white hover:scale-110;
+  @apply mr-1 transition px-2 rounded-md hover:bg-red-400 hover:text-white hover:scale-110;
+}
+/* Active button styles */
+.active {
+  @apply bg-red-400 text-white ring-2 ring-red-500/50 ring-offset-0;
 }
 .authorsTable {
   @apply grow-0 shadow-2xl border-2 border-gray-400 w-5/12;

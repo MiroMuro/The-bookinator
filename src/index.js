@@ -24,15 +24,22 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
-//Create the http link for connecting to backend server, in this case, an apollo server.
+// Create an http link for the apollo server. The uri is different depending on the environment.
+const httpUri =
+  process.env.NODE_ENV === "production"
+    ? "https://baback.onrender.com"
+    : "http://localhost:4000/";
 const httpLink = createHttpLink({
-  uri: "https://baback.onrender.com/",
+  uri: httpUri,
 });
-// Create a WebSocket link for subscriptions to the apollo server.
+// Create a websocket link for the apollo server. The uri is different depending on the environment.
+const wsUri =
+  process.env.NODE_ENV === "production"
+    ? "wss://baback.onrender.com"
+    : "ws://localhost:4000/";
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "wss://baback.onrender.com/",
+    url: wsUri,
   })
 );
 console.log("wsLink", wsLink);

@@ -5,16 +5,10 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
-import Recommendations from "./components/Recommendations";
+import Suggestions from "./components/Suggestions.jsx";
 import { useSubscription, useApolloClient } from "@apollo/client";
-import {
-  BOOK_ADDED,
-  ALL_BOOKS,
-  AUTHOR_UPDATED,
-  ALL_AUTHORS,
-  ALL_GENRES,
-} from "./components/queries.js";
-
+import { BOOK_ADDED, ALL_BOOKS, ALL_GENRES } from "./components/queries.js";
+import NavLink from "./components/NavLink.jsx";
 const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from saving to the cache
   const uniqByName = (a) => {
@@ -73,59 +67,53 @@ const App = () => {
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
-      // console.log("HELLO FORM GERE", copyOfAddedBook);
-      /*updateCacheWithGenres(
-        client.cache,
-        { query: ALL_GENRES },
-        copyOfAddedBook
-      );*/
-      /*console.log("Added book below the cache update", addedBook);
-      const addedBook2 = data.data.bookAdded;
-      updateCacheWithGenres(client.cache, { query: ALL_GENRES }, addedBook2);*/
     },
   });
 
   return (
     <Router>
       <div className="flex  font-body">
-        <div className="w-4/12 mt-80  h-1/4 overflow-auto sticky top-0">
+        <div className="w-4/12 mt-80 py-3 h-1/4 overflow-auto sticky top-0">
           <header>
             <div className="text-red-400 text-xl  ">
               <div className="navBarLinks">
-                <Link style={padding} to="/">
-                  <h2 className="linksOnHover">Authors</h2>
-                </Link>
-                <Link style={padding} to="/books">
-                  <h2 className="linksOnHover">Books</h2>
-                </Link>
+                <NavLink style={padding} to="/" label="Authors"></NavLink>
+                <NavLink style={padding} to="/books" label="Books"></NavLink>
               </div>
               <main>
                 {!token && (
                   <div className="navBarLinks">
-                    <Link style={padding} to="/login">
-                      <h2 className="linksOnHover">Login</h2>
-                    </Link>
-                    <Link style={padding} to="/register">
-                      <h2 className="linksOnHover">Register</h2>
-                    </Link>
+                    <NavLink
+                      style={padding}
+                      to="/login"
+                      label="Login"
+                    ></NavLink>
+                    <NavLink
+                      style={padding}
+                      to="/register"
+                      label="Register"
+                    ></NavLink>
                   </div>
                 )}
                 {token && (
                   <div className="text-red-400 text-xl">
                     <div className="navBarLinks">
-                      <Link style={padding} to="/add">
-                        <h2 className="linksOnHover">Add book</h2>
-                      </Link>
-                      <Link style={padding} to="/recommendations ">
-                        <h2 className="linksOnHover">Suggestions</h2>
-                      </Link>
-                      <Link
+                      <NavLink
+                        style={padding}
+                        to="/add"
+                        label="Add book"
+                      ></NavLink>
+                      <NavLink
+                        style={padding}
+                        to="/suggestions"
+                        label="Suggestions"
+                      ></NavLink>
+                      <NavLink
                         style={padding}
                         to="/login"
                         state={{ logoutStatus: true }}
-                      >
-                        <h2 className="linksOnHover">Logout</h2>
-                      </Link>
+                        label="Logout"
+                      ></NavLink>
                     </div>
                   </div>
                 )}
@@ -141,7 +129,7 @@ const App = () => {
             path="/login"
             element={<LoginForm token={token} setToken={setToken} />}
           />
-          <Route path="/recommendations" element={<Recommendations />}></Route>
+          <Route path="/suggestions" element={<Suggestions />}></Route>
           <Route path="/register" element={<RegisterForm />}></Route>
         </Routes>
       </div>
