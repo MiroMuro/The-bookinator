@@ -1,15 +1,26 @@
 import { useQuery } from "@apollo/client";
-import { ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
+import { ALL_AUTHORS } from "./queries";
 import BirthyearForm from "./BirthyearForm";
 import AuthorFilter from "./AuthorFilter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import TimeOutDialog from "./TimeOutDialog";
 const Authors = ({ token }) => {
   const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS);
-
+  console.log("HELLO FROM AUTHORS", error, loading, data);
   const [authorToSearch, setAuthorToSearch] = useState("");
-
+  const [errorDialogOpen, setErrorDialogOpen] = useState(true);
+  const handleClose = () => {
+    setErrorDialogOpen(false);
+  };
   if (loading) {
     return <div>loading...</div>;
+  } else if (
+    error.networkError.result.name ===
+    ("TokenExpiredError" || "JsonWebTokenError")
+  ) {
+    return <TimeOutDialog open={errorDialogOpen} onClose={handleClose} />;
+  } else if (error) {
+    return <div>Error fetching the authors...</div>;
   }
   //Initially all authors are displayed
   const authors = data.allAuthors;
@@ -19,7 +30,6 @@ const Authors = ({ token }) => {
       author.name.toLowerCase().includes(authorToSearch)
     );
   };
-  console.log("Authors", authors);
   return (
     <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
       {token && (

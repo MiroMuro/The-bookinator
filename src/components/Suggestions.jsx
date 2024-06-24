@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { GET_USER, ALL_BOOKS } from "./queries";
 import image from "../static/images/book.jpg";
 
-const Recommendations = () => {
+const Suggestions = () => {
   const userInfo = useQuery(GET_USER);
 
   const favoriteGenre = userInfo.loading ? "" : userInfo.data.me.favoriteGenre;
@@ -52,4 +52,4 @@ const Recommendations = () => {
     </div>
   );
 };
-export default Recommendations;
+export default Suggestions;
