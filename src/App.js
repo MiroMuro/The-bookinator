@@ -113,7 +113,10 @@ const App = () => {
           </header>
         </div>
         <Routes>
-          <Route path="/" element={<Authors token={token} />} />
+          <Route
+            path="/"
+            element={<Authors token={token} setToken={setToken} />}
+          />
           <Route path="/books" element={<Books />} />
           <Route path="/add" element={<NewBook />} />
           <Route

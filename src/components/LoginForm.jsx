@@ -1,12 +1,13 @@
 import { useApolloClient, useMutation } from "@apollo/client";
 import { LOGIN } from "./queries";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LoginForm = ({ setToken, token }) => {
   const client = useApolloClient();
   const navigate = useNavigate();
-
+  //Get the address of the page the user was redirected from.
+  const loc = useLocation();
   const [message, setMessage] = useState({
     text: "Welcome back",
     style: " py-2 text-center bg-red-200 bg rounded mb-2",
@@ -51,6 +52,7 @@ const LoginForm = ({ setToken, token }) => {
   useEffect(() => {
     //If result is succesful, set the token and save it to local storage
     //Wait for 1 second before redirecting, for an cool animation to play.
+
     if (result.data) {
       setTimeout(() => {
         const token = result.data.login.value;
@@ -58,7 +60,10 @@ const LoginForm = ({ setToken, token }) => {
         localStorage.setItem("library-user-token", token);
       }, 1000);
     }
-  }, [result.data, setToken]);
+    if (loc.state && loc.state.logout) {
+      logout();
+    }
+  }, [result.data, setToken, loc.state]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -79,7 +84,10 @@ const LoginForm = ({ setToken, token }) => {
     setToken(null);
     localStorage.clear();
     client.resetStore();
-    navigate("/");
+    setMessage({
+      text: "Welcome back",
+      style: " py-2 text-center bg-red-200 bg rounded mb-2",
+    });
   };
 
   return (
