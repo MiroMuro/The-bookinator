@@ -14,6 +14,9 @@ const TimeOutDialog = ({ open, onClose, onRetry, errorMessage, setToken }) => {
   }, [open]);
 
   const handleClick = (e) => {
+    setToken(null);
+    localStorage.clear();
+    client.resetStore();
     navigate("/login", { state: { logout: true } });
   };
 
