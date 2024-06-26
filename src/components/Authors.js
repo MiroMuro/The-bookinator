@@ -6,15 +6,16 @@ import { useState } from "react";
 import TimeOutDialog from "./TimeOutDialog";
 const Authors = ({ token, setToken }) => {
   const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS);
-  console.log("HELLO FROM AUTHORS", { error }, loading, data);
   const [authorToSearch, setAuthorToSearch] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
+
   const handleClose = () => {
     setErrorDialogOpen(false);
   };
   if (loading) {
-    return <div>loading...</div>;
+    return <div>Loading authors...</div>;
   } else if (
+    //Triggered if login token has expired or is invalid. e.g user is timed out.
     error &&
     error.networkError.result.name ===
       ("TokenExpiredError" || "JsonWebTokenError")

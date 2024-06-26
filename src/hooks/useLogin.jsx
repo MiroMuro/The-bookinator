@@ -25,21 +25,24 @@ const useLogin = (setToken) => {
   };
 
   const [login, result] = useMutation(LOGIN, {
+    //Handle the errors from the login mutation for different scenarios.
     onError: (error) => {
-      console.log({ error });
-      /*console.error(
-        `${error.graphQLErrors[0].message} code: ${error.graphQLErrors[0].extensions.code}`
-      );*/
-      //Reset the loading spinner and trigger the info animation.
-      triggerAnimation(false);
-      if (error.graphQLErrors[0].extensions.code === "WRONG_CREDENTIALS")
+      if (error.networkError.code === "NETWORK_ERROR") {
+        triggerAnimation(false);
         setMessage({
-          text: "Login failed! Invalid credentials. Please try again.",
+          text: error.networkError.message,
           style: "bg-red-500 py-2 text-center rounded mb-2",
         });
-      else {
+      } else if (error.networkError.code === "WRONG_CREDENTIALS") {
+        console.log({ error });
+        triggerAnimation(false);
         setMessage({
-          text: "Login failed! Please try again.",
+          text: error.networkError.message,
+          style: "bg-red-500 py-2 text-center rounded mb-2",
+        });
+      } else {
+        setMessage({
+          text: "An error occurred. Please try again later.",
           style: "bg-red-500 py-2 text-center rounded mb-2",
         });
       }

@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { setContext } from "@apollo/client/link/context";
+
 import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
   createHttpLink,
   split,
+  ApolloLink,
+  Observable,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
@@ -32,17 +36,44 @@ const httpUri =
 const httpLink = createHttpLink({
   uri: httpUri,
 });
-// Create a websocket link for the apollo server. The uri is different depending on the environment.
+
 const wsUri =
   process.env.NODE_ENV === "production"
     ? "wss://baback.onrender.com"
     : "ws://localhost:4000/";
+// Create a websocket link for the apollo server. The uri is different depending on the environment.
 const wsLink = new GraphQLWsLink(
   createClient({
     url: wsUri,
   })
 );
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  //Instatiate the custom error object
+  let customError;
+  if (graphQLErrors) {
+    //Handle GraphQL query errors. e.g. wrong credentials
+    customError = {
+      ...graphQLErrors[0],
+      code: graphQLErrors[0].extensions.code,
+    };
+    customError.name = "GraphQL error";
+  }
+  if (networkError) {
+    //Handle network errors. e.g. no internet connection, server down.
+    //Attach a custom error message to the network error for the end user.
+    customError = {
+      ...networkError,
+      message: "a network error occurred. Please try again later.",
+      code: "NETWORK_ERROR",
+    };
+    customError.name = "Network error";
+  }
+  //
+  return new Observable((observer) => {
+    observer.error(customError);
+  });
+});
 const splitLink = split(
   // * A function that's called for each operation to execute
   ({ query }) => {
@@ -59,7 +90,7 @@ const splitLink = split(
 );
 
 const client = new ApolloClient({
-  link: splitLink,
+  link: ApolloLink.from([errorLink, splitLink]),
   cache: new InMemoryCache(),
 });
 

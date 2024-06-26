@@ -14,7 +14,6 @@ const Suggestions = () => {
   if (userInfo.loading || loading) {
     return <div>Loading...</div>;
   }
-  console.log(data);
   return (
     <div className="flex flex-col w-7/12">
       <div className="flex bg-red-200 rounded-md border-2 my-4 p-2 border-red-400  m-auto">

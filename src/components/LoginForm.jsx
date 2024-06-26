@@ -11,10 +11,16 @@ const LoginForm = ({ setToken, token }) => {
     handleLogin(credentials);
   };
 
+  const handleLogOut = (event) => {
+    event.preventDefault();
+    handleChange({ target: { name: "username", value: "" } });
+    handleChange({ target: { name: "password", value: "" } });
+    logout();
+  };
   return (
     <div className="flex">
       {token ? (
-        <LoggedInView logout={logout} />
+        <LoggedInView logout={handleLogOut} />
       ) : (
         <LoginView
           credentials={credentials}

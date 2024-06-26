@@ -21,7 +21,10 @@ const TimeOutDialog = ({ open, onClose, onRetry, errorMessage, setToken }) => {
   };
 
   return (
-    <dialog ref={dialogRef} className="p-2 border-2 border-red-400 rounded-md">
+    <dialog
+      ref={dialogRef}
+      className=" relative p-2 border-2 border-red-400 rounded-md animate-timedOutDialogPopUp"
+    >
       <h2 className="bg-red-500 text-center rounded-md text-lg">ERROR!</h2>
       <p className="py-2">{errorMessage}</p>
       <div className=" flex justify-center">
