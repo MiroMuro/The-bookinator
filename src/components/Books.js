@@ -3,13 +3,17 @@ import { useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import GenresDropdown from "./GenresDropdown";
 import image from "../static/images/book.jpg";
-const Books = () => {
+import TimeOutDialog from "./TimeOutDialog";
+const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
-  const result = useQuery(ALL_BOOKS);
+  //const result = useQuery(ALL_BOOKS);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(true);
 
-  const { loading, subscribeToMore } = useQuery(ALL_BOOKS, {
-    variables: { genre: currentGenre },
-  });
+  const handleClose = () => {
+    setErrorDialogOpen(false);
+  };
+
+  const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -36,17 +40,36 @@ const Books = () => {
     };
   }, [subscribeToMore]);
 
-  if (result.loading || loading) {
-    return <div>loading...</div>;
+  if (loading) {
+    return <div>Loading books...</div>;
+  } else if (
+    //Triggered if login token has expired or is invalid. e.g user is timed out.
+    error &&
+    error.networkError.result.name ===
+      ("TokenExpiredError" || "JsonWebTokenError")
+  ) {
+    return (
+      <TimeOutDialog
+        open={errorDialogOpen}
+        onClose={handleClose}
+        errorMessage={error.networkError.result.messageForUser}
+        setToken={setToken}
+      />
+    );
+  } else if (error) {
+    return (
+      <div>
+        A network error occured while fetching the books. Please try again
+        later.
+      </div>
+    );
   }
   const filteredBooks = () => {
     if (currentGenre === "") {
       console.log("No genre selected");
-      return result.data.allBooks;
+      return data.allBooks;
     } else {
-      return result.data.allBooks.filter((book) =>
-        book.genres.includes(currentGenre)
-      );
+      return data.allBooks.filter((book) => book.genres.includes(currentGenre));
     }
   };
 

@@ -14,6 +14,7 @@ const TimeOutDialog = ({ open, onClose, onRetry, errorMessage, setToken }) => {
   }, [open]);
 
   const handleClick = (e) => {
+    console.log("Clicked");
     setToken(null);
     localStorage.clear();
     client.resetStore();
@@ -34,6 +35,7 @@ const TimeOutDialog = ({ open, onClose, onRetry, errorMessage, setToken }) => {
         >
           Login
         </button>
+        <button>Continue as a quest</button>
       </div>
     </dialog>
   );

@@ -117,13 +117,16 @@ const App = () => {
             path="/"
             element={<Authors token={token} setToken={setToken} />}
           />
-          <Route path="/books" element={<Books />} />
+          <Route path="/books" element={<Books setToken={setToken} />} />
           <Route path="/add" element={<NewBook />} />
           <Route
             path="/login"
             element={<LoginForm token={token} setToken={setToken} />}
           />
-          <Route path="/suggestions" element={<Suggestions />}></Route>
+          <Route
+            path="/suggestions"
+            element={<Suggestions setToken={setToken} />}
+          ></Route>
           <Route path="/register" element={<RegisterForm />}></Route>
         </Routes>
       </div>
