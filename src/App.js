@@ -52,9 +52,9 @@ const App = () => {
 
   //Subscription to listen for new books and alert if adding is succesful.
   useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
+    onData: ({ data, error }) => {
       const addedBook = data.data.bookAdded;
-
+      console.log("Onko erroria", error);
       window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
       Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
@@ -91,7 +91,7 @@ const App = () => {
                     <div className="navBarLinks">
                       <NavLink
                         style={padding}
-                        to="/add"
+                        to="/addbook"
                         label="Add book"
                       ></NavLink>
                       <NavLink
@@ -118,7 +118,7 @@ const App = () => {
             element={<Authors token={token} setToken={setToken} />}
           />
           <Route path="/books" element={<Books setToken={setToken} />} />
-          <Route path="/add" element={<NewBook />} />
+          <Route path="/addbook" element={<NewBook setToken={setToken} />} />
           <Route
             path="/login"
             element={<LoginForm token={token} setToken={setToken} />}

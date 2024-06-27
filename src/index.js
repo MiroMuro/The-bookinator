@@ -49,6 +49,14 @@ const wsLink = new GraphQLWsLink(
 );
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
+  console.log(
+    "OLEN TÄÄLLÄ ERROR LINKISSÄ, TÄSSÄ GRAPHQL ERRORIT",
+    graphQLErrors
+  );
+  console.log(
+    "OLEN TÄÄLLÄ ERROR LINKISSÄ, TÄSSÄ NETWORK ERRORIT",
+    networkError
+  );
   //Instatiate the custom error object
   let customError;
   if (graphQLErrors) {

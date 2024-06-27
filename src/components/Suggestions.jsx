@@ -71,6 +71,7 @@ const Suggestions = ({ setToken }) => {
     }
   }, [userLoading, booksLoading, booksError, userError, favoriteGenre]);
 
+  //Handle the subscription to listen for new books and update the cache.
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       //This is the subscription query
@@ -109,13 +110,14 @@ const Suggestions = ({ setToken }) => {
         </div>
         {booksData && (
           <div className="flex flex-wrap bg-blue-50   m-auto">
-            {/* Cards go here*/}
-            <div className={`${booksData.length < 1 ? "hidden" : ""}`}>
+            <div className={`${booksData.allBooks.length < 1 ? "" : "hidden"}`}>
               <p>
+                {booksData.length < 1 && console.log(booksData.allBooks)}
                 No books in your favorite genre yet. <br />
                 Go add some in the "Add book" tab!
               </p>
             </div>
+            {/* Cards go here*/}
             {booksData.allBooks.map((book) => (
               <div className="card">
                 <img className="p-4" src={image} alt="book" />

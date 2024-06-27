@@ -1,22 +1,57 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
-
+import TimeOutDialog from "./TimeOutDialog";
 import { useMutation } from "@apollo/client";
 
 import { CREATE_BOOK, ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
-const NewBook = (props) => {
+const NewBook = ({ setToken }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
-  const [message, setMessage] = useState("Create new book");
+  const [message, setMessage] = useState("Add a new book!");
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [messageBoxContent, setMessageBoxContent] = useState("");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
+
+  const triggerAnimation = (status) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+      if (!status) {
+        setIsProcessing(false);
+      }
+    }, 1000);
+  };
+
+  const handleError = (error) => {
+    triggerAnimation(false);
+    //Error handling for network errors and token expiration.
+    if (error.networkError) {
+      const { code, result } = error.networkError;
+      if (result && result.name === "TokenExpiredError") {
+        setMessageBoxContent("You were timed out! Please log in again.");
+        setDialogOpen(true);
+      } else if (code === "DUPLICATE_BOOK_TITLE") {
+        setMessage(
+          "Adding a book failed! A book with the same title already exists."
+        );
+      } else if (code === "NETWORK_ERROR") {
+        setMessage(
+          "A network error has occured while fetching data. Please try again later."
+        );
+      }
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       //This is the subscription query
@@ -43,8 +78,14 @@ const NewBook = (props) => {
   //Mutation to add a new book
   const [addBook] = useMutation(CREATE_BOOK, {
     onError: (error) => {
+      console.log("OLEN ERRORISSA, JA TÄSSÄ SE ERRORI ON:", { error });
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       console.log(messages);
+      handleError(error);
+    },
+    onCompleted: () => {
+      triggerAnimation(true);
+      setMessage("Book added successfully!");
     },
 
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -70,8 +111,22 @@ const NewBook = (props) => {
   };
 
   return (
-    <div className="flex flex-col justify-end  basis-84">
-      <h2 className="text-2xl font-bold">{message}</h2>
+    <div className="flex flex-col w-1/4 flex-grow-0 justify-end">
+      <TimeOutDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        errorMessage={messageBoxContent}
+        setToken={setToken}
+      ></TimeOutDialog>
+      <div
+        className={` 
+    w-full border-gray-400 border-2 rounded-md text-center bg-red-200 my-2 py-4 ${
+      isAnimating ? "animate-scaleUpAndDown bg-red-400" : ""
+    }`}
+      >
+        {message}
+      </div>
+      <h2 className="text-xl">Add a new book!</h2>
       <form
         className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
         onSubmit={submit}
