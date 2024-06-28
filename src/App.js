@@ -118,7 +118,10 @@ const App = () => {
             element={<Authors token={token} setToken={setToken} />}
           />
           <Route path="/books" element={<Books setToken={setToken} />} />
-          <Route path="/addbook" element={<NewBook setToken={setToken} />} />
+          <Route
+            path="/addbook"
+            element={<NewBook setToken={setToken} token={token} />}
+          />
           <Route
             path="/login"
             element={<LoginForm token={token} setToken={setToken} />}

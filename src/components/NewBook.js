@@ -3,14 +3,21 @@ import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
 import TimeOutDialog from "./TimeOutDialog";
 import { useMutation } from "@apollo/client";
-
+import useForm from "../hooks/useForm";
 import { CREATE_BOOK, ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
-const NewBook = ({ setToken }) => {
-  const [title, setTitle] = useState("");
+const NewBook = ({ setToken, token }) => {
+  const [bookInfo, handleChange, reset, addGenre] = useForm({
+    title: "",
+    author: "",
+    published: 0,
+    genre: "",
+    genres: [],
+  });
+  /*const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [published, setPublished] = useState("");
-  const [genre, setGenre] = useState("");
-  const [genres, setGenres] = useState([]);
+  const [published, setPublished] = useState("");*/
+  // const [genre, setGenre] = useState("");
+  //const [genres, setGenres] = useState([]);
   const [message, setMessage] = useState("Add a new book!");
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
@@ -18,6 +25,7 @@ const NewBook = ({ setToken }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [messageBoxContent, setMessageBoxContent] = useState("");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isDuplicateGenre, setIsDuplicateGenre] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
@@ -95,101 +103,213 @@ const NewBook = ({ setToken }) => {
     event.preventDefault();
 
     addBook({
-      variables: { title, author, published: parseInt(published), genres },
+      variables: {
+        title: bookInfo.title,
+        author: bookInfo.author,
+        published: parseInt(bookInfo.published),
+        genres: bookInfo.genres,
+      },
     });
-
-    setTitle("");
-    setPublished("");
-    setAuthor("");
-    setGenres([]);
-    setGenre("");
+    reset();
   };
 
-  const addGenre = () => {
-    setGenres(genres.concat(genre));
-    setGenre("");
-  };
-
+  //Must be rendered like this to prevent re-rendering on every key press.
   return (
-    <div className="flex flex-col w-1/4 flex-grow-0 justify-end">
-      <TimeOutDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        errorMessage={messageBoxContent}
-        setToken={setToken}
-      ></TimeOutDialog>
-      <div
-        className={` 
-    w-full border-gray-400 border-2 rounded-md text-center bg-red-200 my-2 py-4 ${
-      isAnimating ? "animate-scaleUpAndDown bg-red-400" : ""
-    }`}
-      >
-        {message}
-      </div>
-      <h2 className="text-xl">Add a new book!</h2>
-      <form
-        className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
-        onSubmit={submit}
-      >
-        <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
-          Title
-          <input
-            minLength={2}
-            required
-            id="title"
-            className="relative border-gray-400 border-2 mx-2 "
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
+    <div className="flex">
+      {token ? (
+        <>
+          <TimeOutDialog
+            open={dialogOpen}
+            onClose={() => setDialogOpen(false)}
+            errorMessage={messageBoxContent}
+            setToken={setToken}
+          ></TimeOutDialog>
+          <LoginView
+            bookInfo={bookInfo}
+            handleChange={handleChange}
+            handleSubmit={submit}
+            message={message}
+            isAnimating={isAnimating}
+            addGenre={addGenre}
+            isDuplicateGenre={isDuplicateGenre}
+            setIsDuplicateGenre={setIsDuplicateGenre}
           />
-        </div>
-        <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
-          Author
-          <input
-            minLength={4}
-            required
-            className="relative border-gray-400 border-2 mx-2 "
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div className=" flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
-          Published
-          <input
-            required
-            className="relative border-gray-400 border-2 mx-2 "
-            type="number"
-            value={published}
-            onChange={({ target }) => setPublished(target.value)}
-          />
-        </div>
-        <div className="flex justify-between border-b-2 border-gray-200 p-2 bg-red-200">
-          <button
-            className="rounded-lg border-solid bg-white border-2 border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110"
-            onClick={addGenre}
-            type="button"
-          >
-            Add genre
-          </button>
-          <input
-            className="relative border-gray-400 border-2 mx-2 "
-            value={genre}
-            onChange={({ target }) => setGenre(target.value)}
-          />
-        </div>
-        <div className=" border-b-2 border-gray-200 p-2 bg-red-200">
-          <span>Genres: {genres.join(" ")}</span>
-        </div>
-        <div>
-          <button
-            className="flex flex-col ml-3 items-center rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 scale-100 transform hover:scale-110"
-            type="submit"
-          >
-            Create book
-          </button>
-        </div>
-      </form>
+        </>
+      ) : (
+        <div>Yuo were logged out</div>
+      )}
     </div>
   );
 };
+const InputField = ({ label, name, value, onChange, type, validInput }) => (
+  <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
+    <p> {label}</p>
+    <input
+      autoComplete="off"
+      label={label}
+      name={name}
+      type={type}
+      className="border-b-2 border-b-solid border-b-black"
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
+const GenreInputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  type,
+  isDuplicateGenre,
+}) => (
+  <div className="flex my-2 justify-between p-2 ">
+    <label
+      for="genresInput"
+      className={`absolute ${
+        isDuplicateGenre
+          ? "duration-500 transform -translate-y-6 opacity-100 text-red-700"
+          : "duration-500 transform -translate-y-6 opacity-0 fill-mode-forwards"
+      }`}
+    >
+      {" "}
+      {label}
+    </label>
+    <input
+      className={`${
+        isDuplicateGenre
+          ? "border-transparent  border-red-500 outline-none ring-2 ring-red-500  transition duration-300"
+          : ""
+      }`}
+      id="genresInput"
+      autoComplete="off"
+      label={label}
+      name={name}
+      type={type}
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
+const AddBookButton = ({ type, bookInfo }) => {
+  if (
+    bookInfo.title === "" ||
+    bookInfo.author === "" ||
+    bookInfo.published === 0 ||
+    bookInfo.genres.length === 0
+  ) {
+    return (
+      <button className="addBookButton" type={type} disabled>
+        Add book
+      </button>
+    );
+  } else {
+    return (
+      <button className="addBookButton" type={type}>
+        Add book
+      </button>
+    );
+  }
+};
+const AddGenreButton = ({
+  addGenre,
+  genre,
+  genres,
+  isDuplicateGenre,
+  setIsDuplicateGenre,
+}) => {
+  if (genre === "") {
+    setIsDuplicateGenre(false);
+    return (
+      <button className="addGenreButton" disabled>
+        <p>Add genre</p>
+      </button>
+    );
+  } else if (genres.includes(genre.toLowerCase()) || isDuplicateGenre) {
+    setIsDuplicateGenre(true);
+    return (
+      <button className="addGenreButton bg-red-400 " disabled>
+        <p>Add genre</p>
+      </button>
+    );
+  } else {
+    setIsDuplicateGenre(false);
+    return (
+      <button className="addGenreButton" onClick={addGenre}>
+        <p>Add genre</p>
+      </button>
+    );
+  }
+};
+const LoginView = ({
+  bookInfo,
+  handleChange,
+  handleSubmit,
+  message,
+  isAnimating,
+  addGenre,
+  setIsDuplicateGenre,
+  isDuplicateGenre,
+}) => (
+  <div className="flex flex-col w-full flex-grow-0 justify-end">
+    <div
+      className={` 
+  w-full border-gray-400 border-2 rounded-md text-center bg-red-200 my-2 py-4 ${
+    isAnimating ? "animate-scaleUpAndDown bg-red-400" : ""
+  }`}
+    >
+      {message}
+    </div>
+    <h2 className="text-xl">Add a new book!</h2>
+    <form
+      className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
+      onSubmit={handleSubmit}
+    >
+      <div className="bg-red-200">
+        <InputField
+          name="title"
+          label="Title:"
+          type="text"
+          value={bookInfo.title}
+          onChange={handleChange}
+        />
+        <InputField
+          name="author"
+          label="Author:"
+          type="text"
+          value={bookInfo.author}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Published:"
+          name="published"
+          type="number"
+          value={bookInfo.published}
+          onChange={handleChange}
+        />
+        <div className="flex justify-between border-b-2 border-gray-200 pl-1 bg-red-200">
+          <AddGenreButton
+            addGenre={addGenre}
+            genres={bookInfo.genres}
+            genre={bookInfo.genre}
+            setIsDuplicateGenre={setIsDuplicateGenre}
+          />
+          <GenreInputField
+            name="genre"
+            type="text"
+            label="Duplicate genre!"
+            value={bookInfo.genre}
+            onChange={handleChange}
+            isDuplicateGenre={isDuplicateGenre}
+          />
+        </div>
+      </div>
+      <div className=" border-b-2 border-gray-200 p-2 bg-red-200">
+        <span>Genres: {bookInfo.genres.join(" ")}</span>
+      </div>
+      <AddBookButton type={"submit"} bookInfo={bookInfo} />
+    </form>
+  </div>
+);
 
 export default NewBook;
