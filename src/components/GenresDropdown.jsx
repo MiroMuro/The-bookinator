@@ -22,8 +22,9 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   }
   return (
     <div>
-      Currently selected genre:
-      {currentGenre ? currentGenre : " No genre selected"}
+      {currentGenre
+        ? `Currently selected genre: ${currentGenre}`
+        : " No genre selected"}
       <form onSubmit={(e) => handleSubmit(e)}>
         <label for="genres">Choose genre </label>
         <select

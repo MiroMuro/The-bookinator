@@ -18,7 +18,7 @@ const NewBook = ({ setToken, token }) => {
   const [message, setMessage] = useState({
     text: "Add a new book!",
     style:
-      "w-full border-gray-400 border-2 rounded-md text-center bg-red-200 my-2 py-4",
+      "w-full max-w-xs py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
   });
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
@@ -38,7 +38,7 @@ const NewBook = ({ setToken, token }) => {
       setMessage({
         text: "Add a new book!",
         style:
-          "w-full border-gray-400 border-2 rounded-md text-center bg-red-200 my-2 py-4",
+          "w-full max-w-xs p-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
       });
     }, 5000);
   };
@@ -64,19 +64,22 @@ const NewBook = ({ setToken, token }) => {
       } else if (code === "DUPLICATE_BOOK_TITLE") {
         setMessage({
           text: "A book with the same title already exists!",
-          style: `w-full border-gray-400 border-2 rounded-md text-center bg-red-400 my-2 py-4`,
+          style:
+            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       } else if (code === "BAD_BOOK_GENRES") {
         setMessage({
           text: extensions.message,
-          style: `w-full border-gray-400 border-2 rounded-md text-center bg-red-400 my-2 py-4`,
+          style:
+            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       } else if (code === "NETWORK_ERROR") {
         setMessage({
           text: "A network error occurred. Please try again later.",
-          style: `w-full border-gray-400 border-2 rounded-md text-center bg-red-400 my-2 py-4`,
+          style:
+            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       }
@@ -125,15 +128,17 @@ const NewBook = ({ setToken, token }) => {
       /*const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       console.log(messages);*/
     },
-    onCompleted: () => {
+    onCompleted: (data) => {
+      console.log({ data });
       setTimeout(() => {
         setIsProcessing(false);
       }, 1000);
       setTimeout(() => {
         triggerAnimation(true);
         setMessage({
-          text: "Book added successfully!",
-          style: `w-full border-gray-400 border-2 rounded-md text-center bg-green-400 my-2 py-4`,
+          text: `${data.addBook.title} by ${data.addBook.author.name} was added succesfully!`,
+          style:
+            "w-full max-w-xs p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
       }, 1000);
 
@@ -159,7 +164,7 @@ const NewBook = ({ setToken, token }) => {
 
   //Must be rendered like this to prevent re-rendering on every key press.
   return (
-    <div className="flex">
+    <div className="flex w-1/3">
       {token ? (
         <>
           <TimeOutDialog
@@ -294,7 +299,9 @@ const AddGenreButton = ({
     );
   }
 };
-const RetardedDiv = ({ isAnimating, isProcessing, message }) => {
+
+//Show a message to the user when the book is being added. Or an loading circle.
+const InfoBox = ({ isAnimating, isProcessing, message }) => {
   return (
     <div
       className={`${message.style} ${
@@ -318,7 +325,7 @@ const RetardedDiv = ({ isAnimating, isProcessing, message }) => {
           </svg>
         </div>
       ) : (
-        <p>{message.text}</p>
+        <p className="w-full break-words">{message.text}</p>
       )}
     </div>
   );
@@ -335,15 +342,8 @@ const LoginView = ({
   isProcessing,
   setIsProcessing,
 }) => (
-  <div className="flex flex-col w-full flex-grow-0 justify-end">
-    {/*<div
-      className={`${message.style} ${
-        isAnimating ? "animate-scaleUpAndDown" : ""
-      }`}
-    >
-      {message.text}
-    </div>*/}
-    <RetardedDiv
+  <div className="flex flex-col flex-wrap   flex-grow-0 justify-end break-words">
+    <InfoBox
       isAnimating={isAnimating}
       isProcessing={isProcessing}
       message={message}
@@ -393,8 +393,11 @@ const LoginView = ({
           />
         </div>
       </div>
-      <div className=" border-b-2 border-gray-200 p-2 bg-red-200">
-        <span>Genres: {bookInfo.genres.join(" ")}</span>
+      <div className="flex border-b-2 border-gray-200 p-2 bg-red-200">
+        Genres:
+        <span className="w-full max-w-56  break-words">
+          {bookInfo.genres.join(" ")}
+        </span>
       </div>
       <AddBookButton
         type={"submit"}
