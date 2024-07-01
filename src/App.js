@@ -54,9 +54,7 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onData: ({ data, error }) => {
       const addedBook = data.data.bookAdded;
-      console.log("Onko erroria", error);
-      window.alert(`A new book was added. \nTitle: ${addedBook.title}\nAuthor: ${addedBook.author.name}
-      Published: ${addedBook.published}\nGenres : ${addedBook.genres}`);
+      console.log(error);
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
     },
   });
