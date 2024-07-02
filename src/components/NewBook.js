@@ -395,7 +395,7 @@ const LoginView = ({
       </div>
       <div className="flex border-b-2 border-gray-200 p-2 bg-red-200">
         Genres:
-        <span className="w-full max-w-56  break-words">
+        <span className="w-full max-w-56 break-words">
           {bookInfo.genres.join(" ")}
         </span>
       </div>
