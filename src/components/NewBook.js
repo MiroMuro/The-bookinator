@@ -17,8 +17,7 @@ const NewBook = ({ setToken, token }) => {
   // State for the message box and its style.
   const [message, setMessage] = useState({
     text: "Add a new book!",
-    style:
-      "w-full max-w-xs py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
+    style: "py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
   });
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
@@ -38,7 +37,7 @@ const NewBook = ({ setToken, token }) => {
       setMessage({
         text: "Add a new book!",
         style:
-          "w-full max-w-xs p-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
+          "p-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
       });
     }, 5000);
   };
@@ -65,21 +64,21 @@ const NewBook = ({ setToken, token }) => {
         setMessage({
           text: "A book with the same title already exists!",
           style:
-            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
+            "p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       } else if (code === "BAD_BOOK_GENRES") {
         setMessage({
           text: extensions.message,
           style:
-            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
+            "p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       } else if (code === "NETWORK_ERROR") {
         setMessage({
           text: "A network error occurred. Please try again later.",
           style:
-            "w-full max-w-xs p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
+            " p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
         resetMessage();
       }
@@ -111,9 +110,8 @@ const NewBook = ({ setToken, token }) => {
 
     return () => {
       unsubscribe();
-      /*unsubscribeNewGenres();*/
     };
-  }, [subscribeToMore]);
+  }, [subscribeToMore, token]);
 
   //Mutation to add a new book
   const [addBook] = useMutation(CREATE_BOOK, {
@@ -125,11 +123,9 @@ const NewBook = ({ setToken, token }) => {
         triggerAnimation(false);
         handleError(error);
       }, 1000);
-      /*const messages = error.graphQLErrors.map((e) => e.message).join("\n");
-      console.log(messages);*/
     },
     onCompleted: (data) => {
-      console.log({ data });
+      reset();
       setTimeout(() => {
         setIsProcessing(false);
       }, 1000);
@@ -138,7 +134,7 @@ const NewBook = ({ setToken, token }) => {
         setMessage({
           text: `${data.addBook.title} by ${data.addBook.author.name} was added succesfully!`,
           style:
-            "w-full max-w-xs p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center",
+            " p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
       }, 1000);
 
@@ -159,12 +155,11 @@ const NewBook = ({ setToken, token }) => {
         genres: bookInfo.genres,
       },
     });
-    reset();
   };
 
   //Must be rendered like this to prevent re-rendering on every key press.
   return (
-    <div className="flex w-1/3">
+    <div className="flex w-8/12">
       {token ? (
         <>
           <TimeOutDialog
@@ -276,28 +271,24 @@ const AddGenreButton = ({
   isDuplicateGenre,
   setIsDuplicateGenre,
 }) => {
-  if (genre === "") {
-    setIsDuplicateGenre(false);
-    return (
-      <button className="addGenreButton" disabled>
-        <p>Add genre</p>
-      </button>
-    );
-  } else if (genres.includes(genre.toLowerCase()) || isDuplicateGenre) {
-    setIsDuplicateGenre(true);
-    return (
-      <button className="addGenreButton  " disabled>
-        <p>Add genre</p>
-      </button>
-    );
-  } else {
-    setIsDuplicateGenre(false);
-    return (
-      <button className="addGenreButton" onClick={addGenre}>
-        <p>Add genre</p>
-      </button>
-    );
-  }
+  //Ekaks tsekataan onko genre tyhjä, onko genre jo listassa ja onko genrejä max määrä.
+  const isGenreEmpty = genre === "";
+  const isGenreDuplicate =
+    genres.includes(genre.toLowerCase()) || isDuplicateGenre;
+  const isGenreMax = genres.length >= 3;
+  //Sitten asetetaan duplikaattimuuttujan tila.
+  setIsDuplicateGenre(isGenreDuplicate);
+  //Lopuksi tarkistetaan onko nappi disabloitu.
+  const isDisabled = isGenreEmpty || isGenreDuplicate || isGenreMax;
+  return (
+    <button
+      className="addGenreButton"
+      onClick={isDisabled ? null : addGenre}
+      disabled={isDisabled}
+    >
+      Add genre
+    </button>
+  );
 };
 
 //Show a message to the user when the book is being added. Or an loading circle.
@@ -342,14 +333,14 @@ const LoginView = ({
   isProcessing,
   setIsProcessing,
 }) => (
-  <div className="flex flex-col flex-wrap   flex-grow-0 justify-end break-words">
+  <div className="flex flex-col w-5/12 mt-2 flex-wrap break-words">
     <InfoBox
       isAnimating={isAnimating}
       isProcessing={isProcessing}
       message={message}
     />
 
-    <h2 className="text-xl">Add a new book!</h2>
+    <h2 className="text-xl w-5/12">Add a new book!</h2>
     <form
       className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
       onSubmit={handleSubmit}
@@ -388,16 +379,26 @@ const LoginView = ({
             type="text"
             label="Duplicate genre!"
             value={bookInfo.genre}
+            genres={bookInfo.genres}
             onChange={handleChange}
             isDuplicateGenre={isDuplicateGenre}
           />
         </div>
       </div>
       <div className="flex border-b-2 border-gray-200 p-2 bg-red-200">
-        Genres:
-        <span className="w-full max-w-56 break-words">
-          {bookInfo.genres.join(" ")}
-        </span>
+        <div className="w-full  break-words">
+          <ul className="flex flex-wrap">
+            Genres:
+            {bookInfo.genres.map((genre, index) => (
+              <li
+                key={index}
+                className="rounded-md border-white border-2 w-min p-1 m-1  text-center"
+              >
+                {genre}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <AddBookButton
         type={"submit"}
