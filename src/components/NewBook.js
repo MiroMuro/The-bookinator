@@ -286,7 +286,7 @@ const AddGenreButton = ({
       onClick={isDisabled ? null : addGenre}
       disabled={isDisabled}
     >
-      Add genre
+      Add genre. Max 3.
     </button>
   );
 };
@@ -367,7 +367,7 @@ const LoginView = ({
           value={bookInfo.published}
           onChange={handleChange}
         />
-        <div className="flex justify-between border-b-2 border-gray-200 pl-1 bg-red-200">
+        <div className="flex justify-between border-b-2 overflow-hidden border-gray-400 pl-1 pb-2 bg-red-200">
           <AddGenreButton
             addGenre={addGenre}
             genres={bookInfo.genres}
@@ -385,10 +385,10 @@ const LoginView = ({
           />
         </div>
       </div>
-      <div className="flex border-b-2 border-gray-200 p-2 bg-red-200">
+      <div className="flex relative border-b-2 border-gray-400  bg-red-200">
+        <label className="absolute -top-4 left-2 bg-red-200">Genres</label>
         <div className="w-full  break-words">
-          <ul className="flex flex-wrap">
-            Genres:
+          <ul className="flex flex-wrap my-2">
             {bookInfo.genres.map((genre, index) => (
               <li
                 key={index}
