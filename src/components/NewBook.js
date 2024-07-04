@@ -53,9 +53,7 @@ const NewBook = ({ setToken, token }) => {
   };
 
   const handleError = (error) => {
-    console.log({ error });
-    //triggerAnimation(false);
-    //Error handling for network errors and token expiration.
+    //Error handling for bad user inputs, network errors and token expiration.
     if (error.networkError) {
       const { code, result, extensions } = error.networkError;
       if (result && result.name === "TokenExpiredError") {
@@ -205,7 +203,7 @@ const InputField = ({ label, name, value, onChange, type }) => (
       label={label}
       name={name}
       type={type}
-      className="border-b-2 border-b-solid border-b-black"
+      className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
       value={value}
       onChange={onChange}
     />
@@ -233,8 +231,8 @@ const GenreInputField = ({
     <input
       className={`${
         isDuplicateGenre
-          ? "border-transparent  border-red-500 outline-none ring-2 ring-red-500  transition duration-300"
-          : ""
+          ? "border-2 border-red-500 outline-none   transition duration-300"
+          : "border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
       }`}
       id="genresInput"
       autoComplete="off"

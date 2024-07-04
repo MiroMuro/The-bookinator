@@ -57,6 +57,7 @@ const BirthyearForm = ({ authors }) => {
             <div className="flex justify-between m-2">
               <p>Birthyear: </p>
               <input
+                className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
                 maxLength={4}
                 value={birthyear}
                 onChange={({ target }) => setBirthyear(target.value)}

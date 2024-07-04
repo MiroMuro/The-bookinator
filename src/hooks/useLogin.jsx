@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useApolloClient, useMutation } from "@apollo/client";
 import { LOGIN } from "../components/queries";
-
+import { useNavigate } from "react-router-dom";
 const useLogin = (setToken) => {
+  const navigate = useNavigate();
   const client = useApolloClient();
   const [message, setMessage] = useState({
     text: "Welcome back",
@@ -66,9 +67,10 @@ const useLogin = (setToken) => {
         const token = result.data.login.value;
         setToken(token);
         localStorage.setItem("library-user-token", token);
+        navigate(0);
       }, 1000);
     }
-  }, [result.data, setToken]);
+  }, [result.data, setToken, navigate]);
 
   const handleLogin = (credentials) => {
     //Call the login mutation with the credentials.

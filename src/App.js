@@ -6,6 +6,7 @@ import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Suggestions from "./components/Suggestions.jsx";
+import Header from "./components/Header.jsx";
 import { useSubscription, useApolloClient } from "@apollo/client";
 import { BOOK_ADDED, ALL_BOOKS, ALL_GENRES } from "./components/queries.js";
 import NavLink from "./components/NavLink.jsx";
@@ -61,75 +62,78 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex  font-body">
-        <div className="w-4/12 mt-80 py-3 h-1/4 overflow-auto sticky top-0">
-          <header>
-            <div className="text-red-400 text-xl  ">
-              <div className="navBarLinks">
-                <NavLink style={padding} to="/" label="Authors"></NavLink>
-                <NavLink style={padding} to="/books" label="Books"></NavLink>
-              </div>
-              <main>
-                {!token && (
-                  <div className="navBarLinks">
-                    <NavLink
-                      style={padding}
-                      to="/login"
-                      label="Login"
-                    ></NavLink>
-                    <NavLink
-                      style={padding}
-                      to="/register"
-                      label="Register"
-                    ></NavLink>
-                  </div>
-                )}
-                {token && (
-                  <div className="text-red-400 text-xl">
+      <div className="font-body">
+        <Header token={token} />
+        <div className="flex">
+          <div className="w-4/12 mt-80 py-3 h-1/4 overflow-auto sticky top-0">
+            <header>
+              <div className="text-red-400 text-xl  ">
+                <div className="navBarLinks">
+                  <NavLink style={padding} to="/" label="Authors"></NavLink>
+                  <NavLink style={padding} to="/books" label="Books"></NavLink>
+                </div>
+                <main>
+                  {!token && (
                     <div className="navBarLinks">
                       <NavLink
                         style={padding}
-                        to="/addbook"
-                        label="Add book"
-                      ></NavLink>
-                      <NavLink
-                        style={padding}
-                        to="/suggestions"
-                        label="Suggestions"
-                      ></NavLink>
-                      <NavLink
-                        style={padding}
                         to="/login"
-                        state={{ logoutStatus: true }}
-                        label="Logout"
+                        label="Login"
+                      ></NavLink>
+                      <NavLink
+                        style={padding}
+                        to="/register"
+                        label="Register"
                       ></NavLink>
                     </div>
-                  </div>
-                )}
-              </main>
-            </div>
-          </header>
+                  )}
+                  {token && (
+                    <div className="text-red-400 text-xl">
+                      <div className="navBarLinks">
+                        <NavLink
+                          style={padding}
+                          to="/addbook"
+                          label="Add book"
+                        ></NavLink>
+                        <NavLink
+                          style={padding}
+                          to="/suggestions"
+                          label="Suggestions"
+                        ></NavLink>
+                        <NavLink
+                          style={padding}
+                          to="/login"
+                          state={{ logoutStatus: true }}
+                          label="Logout"
+                        ></NavLink>
+                      </div>
+                    </div>
+                  )}
+                </main>
+              </div>
+            </header>
+          </div>
+          <Routes>
+            <Route
+              path="/"
+              element={<Authors token={token} setToken={setToken} />}
+            />
+            <Route path="/books" element={<Books setToken={setToken} />} />
+            <Route
+              path="/addbook"
+              element={<NewBook setToken={setToken} token={token} />}
+            />
+            <Route
+              path="/login"
+              element={<LoginForm token={token} setToken={setToken} />}
+            />
+            <Route
+              path="/suggestions"
+              element={<Suggestions setToken={setToken} />}
+            ></Route>
+            <Route path="/register" element={<RegisterForm />}></Route>
+          </Routes>
         </div>
-        <Routes>
-          <Route
-            path="/"
-            element={<Authors token={token} setToken={setToken} />}
-          />
-          <Route path="/books" element={<Books setToken={setToken} />} />
-          <Route
-            path="/addbook"
-            element={<NewBook setToken={setToken} token={token} />}
-          />
-          <Route
-            path="/login"
-            element={<LoginForm token={token} setToken={setToken} />}
-          />
-          <Route
-            path="/suggestions"
-            element={<Suggestions setToken={setToken} />}
-          ></Route>
-          <Route path="/register" element={<RegisterForm />}></Route>
-        </Routes>
       </div>
     </Router>
   );
