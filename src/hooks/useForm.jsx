@@ -15,8 +15,15 @@ const useForm = (initialState) => {
     setState((prev) => ({ ...prev, genres: state.genres.concat(state.genre) }));
     setState((prev) => ({ ...prev, genre: "" }));
   };
+
+  const handleGenreDeletion = (genre) => {
+    setState((prev) => ({
+      ...prev,
+      genres: state.genres.filter((g) => g !== genre),
+    }));
+  };
   const reset = () => setState(initialState);
-  return [state, handleChange, reset, addGenre];
+  return [state, handleChange, reset, addGenre, handleGenreDeletion];
 };
 
 export default useForm;
