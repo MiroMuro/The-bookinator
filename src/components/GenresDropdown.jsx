@@ -33,7 +33,7 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
           value={""}
           onChange={(e) => handleGenreChange(e)}
         >
-          <option selected>bruh</option>
+          <option selected>-- Choose genre --</option>
           {genresResult.data.allGenres.map((genre) => (
             <option value={genre}>{genre}</option>
           ))}

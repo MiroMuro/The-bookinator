@@ -64,9 +64,9 @@ const App = () => {
     <Router>
       <div className="font-body">
         <Header token={token} />
-        <div className="flex">
-          <div className="w-4/12 mt-80 py-3 h-1/4 overflow-auto sticky top-0">
-            <header>
+        <div className="flex flex-col sm:flex-row">
+          <div className="flex w-full min-w-24 mx-2 py-3 h-52 overflow-auto sticky top-11 sm:mt-80 sm:w-4/12 sm:min-w-28 sm:justify-end sm:top-20">
+            <header className="flex w-full overflow-hidden border-2 mr-4 justify-center border-gray-400 rounded-md  bg-red-200 sticky sm:justify-end sm:w-1/4 sm:min-w-28 sm:mr-0">
               <div className="text-red-400 text-xl  ">
                 <div className="navBarLinks">
                   <NavLink style={padding} to="/" label="Authors"></NavLink>

@@ -8,11 +8,7 @@ const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
   //const result = useQuery(ALL_BOOKS);
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
-
-  const handleClose = () => {
-    setErrorDialogOpen(false);
-  };
-
+  const handleClose = () => setErrorDialogOpen(false);
   const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
 
   useEffect(() => {
@@ -21,15 +17,11 @@ const Books = ({ setToken }) => {
       document: BOOK_ADDED,
       // The return values replaces the cache with the updated author.
       updateQuery: (prev, { subscriptionData }) => {
-        console.log("Subscription data", subscriptionData.data);
-        console.log("Previous data", prev);
         if (!subscriptionData.data) return prev;
         const prevGenres = subscriptionData.data.allBooks
           .map((book) => book.genres)
           .flat();
-        console.log("Previous genres", prevGenres);
         const addedBookGenre = subscriptionData.data.bookAdded.genres;
-        console.log("Added book genre", addedBookGenre);
         return {
           allGenres: prevGenres.concat(addedBookGenre),
         };
@@ -40,9 +32,24 @@ const Books = ({ setToken }) => {
     };
   }, [subscribeToMore]);
 
-  if (loading) {
-    return <div>Loading books...</div>;
-  } else if (
+  if (loading) return <div>Loading books...</div>;
+  if (
+    error &&
+    (error.networkError?.result?.name === "TokenExpiredError" ||
+      error.networkError?.result?.name === "JsonWebTokenError")
+  ) {
+    return (
+      <TimeOutDialog
+        open={errorDialogOpen}
+        onClose={handleClose}
+        errorMessage={error.networkError.result.messageForUser}
+        setToken={setToken}
+      />
+    );
+  }
+  if (error)
+    return <div>A netowrk error has occured. Please try again later.</div>;
+  /*} else if (
     //Triggered if login token has expired or is invalid. e.g user is timed out.
     error &&
     error.networkError.result.name ===
@@ -63,7 +70,7 @@ const Books = ({ setToken }) => {
         later.
       </div>
     );
-  }
+  }*/
   const filteredBooks = () => {
     if (currentGenre === "") {
       console.log("No genre selected");
@@ -74,34 +81,38 @@ const Books = ({ setToken }) => {
   };
 
   return (
-    <div className="flex flex-col w-7/12">
-      <div className="flex bg-red-200 rounded-md border-2 my-4 p-2 border-red-400  m-auto">
-        <GenresDropdown
-          setCurrentGenre={setCurrentGenre}
-          currentGenre={currentGenre}
-        />
+    <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex w-full align-top  bg-white top-60 mt-4 sticky  sm:top-14">
+        <div className="w-full bg-red-200 rounded-md border-2 mt-2  p-2 border-gray-400 ">
+          <GenresDropdown
+            setCurrentGenre={setCurrentGenre}
+            currentGenre={currentGenre}
+          />
+        </div>
       </div>
-
-      <div className="flex flex-wrap bg-blue-50">
+      <div className="grid mt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {/* Cards go here*/}
         {filteredBooks().map((book) => (
-          <div className="card">
-            <img className="p-4" src={image} alt="book" />
-            <div className="bookInfo">
-              <div className="flex flex-col ">
-                <span>
-                  <strong>Title:</strong> {book.title}{" "}
-                </span>
-                <span>
-                  <strong>Author:</strong> {book.author.name}{" "}
-                </span>
-                <span>
-                  <strong>Author born:</strong> {book.author.born}{" "}
-                </span>
-                <span>
-                  <strong>Published:</strong> {book.published}
-                </span>
-              </div>
+          <div
+            key={book.id}
+            className="bg-white rounded-lg shadow-md overflow-hidden"
+          >
+            <header className=" bg-red-200 p-2  min-h-16">
+              <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
+                {book.title}
+              </h2>
+            </header>
+            <img className="w-full h-46 object-cover" src={image} alt="book" />
+            <div className="p-4">
+              <p className="text-sm text-gray-600 mb-1">
+                Author: {book.author.name}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                Born: {book.author.born}
+              </p>
+              <p className="text-sm text-gray-600">
+                Published: {book.published}
+              </p>
             </div>
           </div>
         ))}

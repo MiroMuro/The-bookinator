@@ -109,7 +109,7 @@ const Suggestions = ({ setToken }) => {
           <h2>{messageBoxContent}</h2>
         </div>
         {booksData && (
-          <div className="flex flex-wrap bg-blue-50   m-auto">
+          <div className="flex flex-wrap bg-red-50 border-2 border-black rounded-md  m-auto">
             <div className={`${booksData.allBooks.length < 1 ? "" : "hidden"}`}>
               <p>
                 {booksData.length < 1 && console.log(booksData.allBooks)}

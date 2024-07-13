@@ -11,7 +11,7 @@
   @apply flex mx-4 justify-between;
 }
 .navBarLinks {
-  @apply flex flex-col  items-end sm:items-end;
+  @apply flex flex-col items-center sm:items-end;
 }
 .linksOnHover {
   @apply mr-1 transition px-2 rounded-md hover:bg-red-400 hover:text-white hover:scale-110;

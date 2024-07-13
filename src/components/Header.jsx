@@ -23,7 +23,7 @@ const Header = ({ token }) => {
   }, [token]);
 
   return (
-    <header className="flex justify-between items-center border-2 border-gray-400 bg-red-200 p-2">
+    <header className="flex justify-between sticky top-0 items-center border-2 border-gray-400 bg-red-200 p-3 z-10">
       <img src={require("./open-book.png")} alt="Bookinator logo"></img>
       <p>Welcome to the Bookinator!</p>
       <p>{greeting.current}</p>
