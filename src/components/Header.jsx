@@ -16,7 +16,7 @@ const Header = ({ token }) => {
 
   useEffect(() => {
     if (!token) {
-      greeting.current = "Not logged in yet!";
+      greeting.current = "Not logged in";
     } else {
       greeting.current = `Welcome back!`;
     }

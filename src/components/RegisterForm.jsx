@@ -183,7 +183,7 @@ const RegisterForm = () => {
     );
   };
   return (
-    <div className="flex">
+    <div className="flex justify-center sm:justify-start">
       <div className="flex flex-col justify-end basis-28">
         {/*<div
           className={` ${message.style} ${

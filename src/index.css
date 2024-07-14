@@ -21,7 +21,7 @@
   @apply bg-red-400 text-white ring-2 ring-red-500/50 ring-offset-0;
 }
 .authorsTable {
-  @apply grow-0 shadow-2xl border-2 border-gray-400 w-5/12;
+  @apply grow-0 shadow-2xl border-2 border-gray-400 min-w-72 w-full sm:w-5/12;
 }
 .authorsTableRow {
   @apply bg-red-100 hover:bg-red-200 cursor-pointer duration-300;

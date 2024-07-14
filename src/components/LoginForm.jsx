@@ -18,7 +18,7 @@ const LoginForm = ({ setToken, token }) => {
     logout();
   };
   return (
-    <div className="flex">
+    <div className="flex justify-center sm:justify-start">
       {token ? (
         <LoggedInView logout={handleLogOut} />
       ) : (

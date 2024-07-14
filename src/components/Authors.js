@@ -40,9 +40,9 @@ const Authors = ({ token, setToken }) => {
       );
     };
     return (
-      <div className=" flex flex-col justify-start items-start-h-screen w-8/12">
+      <div className="flex flex-col justify-start align-middle items-start-h-screen w-full sm:w-8/12">
         {token && (
-          <div>
+          <div className="w-5/12 ">
             <BirthyearForm authors={authors} />
           </div>
         )}
