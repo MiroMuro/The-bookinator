@@ -35,7 +35,7 @@ const BirthyearForm = ({ authors }) => {
   return (
     <>
       {authors && (
-        <div className="flex flex-col bg-red-200 border-gray-400 border-2 rounded-md w-5/12 mt-2">
+        <div className="flex flex-col bg-red-200 border-gray-400 border-2 rounded-md w-full mt-2 sm:w-5/12">
           <h1 className="my-2 ml-2 font-semibold">
             Update birthyear of an author
           </h1>

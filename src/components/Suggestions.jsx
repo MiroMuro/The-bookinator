@@ -104,12 +104,12 @@ const Suggestions = ({ setToken }) => {
         errorMessage={messageBoxContent}
         setToken={setToken}
       ></TimeOutDialog>
-      <div className="flex flex-col w-7/12">
+      <div className="flex flex-col ww-full sm:w-7/12">
         <div className="flex bg-red-200 rounded-md border-2 my-4 p-2 border-red-400  m-auto">
           <h2>{messageBoxContent}</h2>
         </div>
         {booksData && (
-          <div className="flex flex-wrap bg-red-50 border-2 border-black rounded-md  m-auto">
+          <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-6">
             <div className={`${booksData.allBooks.length < 1 ? "" : "hidden"}`}>
               <p>
                 {booksData.length < 1 && console.log(booksData.allBooks)}
@@ -118,27 +118,36 @@ const Suggestions = ({ setToken }) => {
               </p>
             </div>
             {/* Cards go here*/}
-            {booksData.allBooks.map((book) => (
-              <div className="card">
-                <img className="p-4" src={image} alt="book" />
-                <div className="bookInfo">
-                  <div className="flex flex-col ">
-                    <span>
-                      <strong>Title:</strong> {book.title}{" "}
-                    </span>
-                    <span>
-                      <strong>Author:</strong> {book.author.name}{" "}
-                    </span>
-                    <span>
-                      <strong>Author born:</strong> {book.author.born}{" "}
-                    </span>
-                    <span>
-                      <strong>Published:</strong> {book.published}
-                    </span>
+            <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {booksData.allBooks.map((book) => (
+                <div
+                  key={book.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                >
+                  <header className="bg-red-200 p-2 min-h-16">
+                    <h2 className="font-semibold break-normal text-sm">
+                      {book.title}
+                    </h2>
+                  </header>
+                  <img
+                    className="w-full h-46 object-cover"
+                    src={image}
+                    alt="book"
+                  />
+                  <div className="p-4">
+                    <p className="text-sm text-gray-600 mb-1">
+                      Author: {book.author.name}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                      Born: {book.author.born}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                      Publihsed: {book.published}
+                    </p>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
       </div>

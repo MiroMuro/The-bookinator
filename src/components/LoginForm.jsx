@@ -36,7 +36,7 @@ const LoginForm = ({ setToken, token }) => {
 };
 
 const LoggedInView = ({ logout }) => (
-  <div className="flex flex-col justify-end items-start">
+  <div className="flex flex-col justify-end items-start mb-3">
     <div className="border-black border-2 p-4 rounded-md">
       <h2 className="p-2 text-center bg-red-200 rounded mb-2">
         Already logged in
