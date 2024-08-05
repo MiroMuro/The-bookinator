@@ -21,11 +21,7 @@ const RegisterForm = () => {
 
   const handleError = (error) => {
     const { code, extensions, message } = error.networkError;
-    /*console.log("CODE: ", code);
-    console.log("EXTENSIONS: ", extensions);
-    console.log("MESSAGE: ", message);
-    console.log("PUrettu error, ", { error });
-    */
+
     if (code === "DUPLICATE_USERNAME") {
       setMessage({
         text: extensions.message,
@@ -52,19 +48,6 @@ const RegisterForm = () => {
   //Handle the registration mutation.
   const [registration, result] = useMutation(REGISTER, {
     onError: (error) => {
-      /*const { code, extensions, message } = error.networkError;
-      console.log("CODE: ", code);
-      console.log("EXTENSIONS: ", extensions);
-      console.log("MESSAGE: ", message);
-      console.log("PUrettu error, ", { error });
-
-      console.log(
-        error.graphQLErrors[0].message +
-          "code: " +
-          error.graphQLErrors[0].extensions.code +
-          "error: " +
-          error.graphQLErrors[0].extensions.invalidArgs
-      );*/
       setTimeout(() => {
         triggerAnimation();
         handleError(error);
@@ -185,13 +168,7 @@ const RegisterForm = () => {
   return (
     <div className="flex justify-center sm:justify-start">
       <div className="flex flex-col justify-end basis-28">
-        {/*<div
-          className={` ${message.style} ${
-            isAnimating ? "animate-scaleUpAndDown" : ""
-          }`}
-        >
-          <h2 className={`${message.style}`}>{message.text}</h2>{" "}
-        </div>*/}
+        {}
         <InfoBox
           isAnimating={isAnimating}
           isProcessing={isProcessing}
