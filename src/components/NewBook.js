@@ -3,7 +3,12 @@ import { useQuery } from "@apollo/client";
 import TimeOutDialog from "./TimeOutDialog";
 import { useMutation } from "@apollo/client";
 import useForm from "../hooks/useForm";
-import { CREATE_BOOK, ALL_AUTHORS, AUTHOR_UPDATED } from "./queries";
+import {
+  CREATE_BOOK,
+  ALL_AUTHORS,
+  AUTHOR_UPDATED,
+  UPLOAD_BOOK_IMAGE,
+} from "./queries";
 const NewBook = ({ setToken, token }) => {
   const [bookInfo, handleChange, reset, addGenre, handleGenreDeletion] =
     useForm({
@@ -33,6 +38,16 @@ const NewBook = ({ setToken, token }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
+  const [file, setFile] = useState(null);
+  const [uploadBookImage] = useMutation(UPLOAD_BOOK_IMAGE, {
+    onError: (error) => {
+      console.log("Error in uploading image");
+      console.log(error);
+    },
+    onCompleted: (data) => {
+      console.log(data);
+    },
+  });
   const resetMessage = () => {
     setTimeout(() => {
       setMessage({
@@ -83,10 +98,13 @@ const NewBook = ({ setToken, token }) => {
       }
     }
   };
-  /*const handleDeleteGenre = (index) => {
-    bookInfo.genres.splice(index, 1);
-    console.log(bookInfo.genres);
-  };*/
+  const handleFileChange = (e) => {
+    //console.log("Tiedosto", e.target.files[0]);
+    // setFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setFile(file);
+  };
+
   useEffect(() => {
     if (!token) {
       setDialogOpen(true);
@@ -139,8 +157,8 @@ const NewBook = ({ setToken, token }) => {
             " p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
       }, 1000);
-
       resetMessage();
+      return data.addBook;
     },
 
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -148,8 +166,8 @@ const NewBook = ({ setToken, token }) => {
 
   const submit = async (event) => {
     event.preventDefault();
-
-    addBook({
+    //Add the book and wait for the response for information about the book.
+    const addedBookData = await addBook({
       variables: {
         title: bookInfo.title,
         author: bookInfo.author,
@@ -157,6 +175,17 @@ const NewBook = ({ setToken, token }) => {
         genres: bookInfo.genres,
       },
     });
+    console.log(addedBookData.data.addBook);
+    //Try to upload the image after the book has been added.
+    try {
+      const bookId = addedBookData.data.addBook.id;
+      const { data } = await uploadBookImage({
+        variables: { file, bookId },
+      });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //Must be rendered like this to prevent re-rendering on every key press.
@@ -182,6 +211,8 @@ const NewBook = ({ setToken, token }) => {
             setIsProcessing={setIsProcessing}
             isProcessing={isProcessing}
             handleGenreDeletion={handleGenreDeletion}
+            setFile={setFile}
+            handleFileChange={handleFileChange}
           />
         </>
       ) : (
@@ -344,6 +375,13 @@ const GenresBox = ({ genres, handleGenreDeletion }) => {
     </div>
   );
 };
+const FilePicker = ({ setFile, handleFileChange }) => {
+  return (
+    <div>
+      <input type="file" accept="image/*" onChange={handleFileChange} />
+    </div>
+  );
+};
 const LoginView = ({
   bookInfo,
   handleChange,
@@ -356,6 +394,8 @@ const LoginView = ({
   isProcessing,
   setIsProcessing,
   handleGenreDeletion,
+  handleFileChange,
+  setFile,
 }) => (
   <div className="flex flex-col w-5/12 mt-2 flex-wrap break-words">
     <InfoBox
@@ -413,7 +453,7 @@ const LoginView = ({
         genres={bookInfo.genres}
         handleGenreDeletion={handleGenreDeletion}
       />
-
+      <FilePicker handleFileChange={handleFileChange} setFile={setFile} />
       <AddBookButton
         type={"submit"}
         bookInfo={bookInfo}

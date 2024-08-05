@@ -84,6 +84,7 @@ const CREATE_BOOK = gql`
       published: $published
       genres: $genres
     ) {
+      id
       title
       author {
         name
@@ -107,6 +108,14 @@ const UPDATE_AUTHOR = gql`
       name
       born
       bookCount
+    }
+  }
+`;
+const UPLOAD_BOOK_IMAGE = gql`
+  mutation ($file: Upload!, $bookId: ID!) {
+    uploadBookImage(file: $file, bookId: $bookId) {
+      id
+      imageId
     }
   }
 `;
@@ -140,4 +149,5 @@ export {
   BOOK_ADDED,
   REGISTER,
   AUTHOR_UPDATED,
+  UPLOAD_BOOK_IMAGE,
 };

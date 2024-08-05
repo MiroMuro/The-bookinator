@@ -107,8 +107,8 @@ const BirthyearForm = ({ authors }) => {
             <p
               className={`${
                 playAnimation
-                  ? "absolute right-1 top-7 font-extralight  text-red-600 duration-500 transition ease-linear transform opacity-100"
-                  : "absolute right-1 top-7 font-extralight text-red-600 duration-500 transition ease-linear transform opacity-0"
+                  ? "absolute right-1 top-7 font-extralight  text-red-600 duration-500 transition ease-linear transform opacity-100 text-sm"
+                  : "absolute right-1 top-7 font-extralight text-red-600 duration-500 transition ease-linear transform opacity-0 text-smnpm"
               }`}
             >
               {errorMessage}

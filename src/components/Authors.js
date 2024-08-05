@@ -17,6 +17,7 @@ const Authors = ({ token, setToken }) => {
   } else if (
     //Triggered if login token has expired or is invalid. e.g user is timed out.
     error &&
+    error.networkError.result &&
     error.networkError.result.name ===
       ("TokenExpiredError" || "JsonWebTokenError")
   ) {

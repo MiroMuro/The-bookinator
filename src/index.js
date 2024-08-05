@@ -17,6 +17,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import "./index.css";
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 
 //Set the authorization token to the request headers
 const authLink = setContext((_, { headers }) => {
@@ -74,7 +75,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     observer.error(customError);
   });
 });
-const splitLink = split(
+/*const splitLink = split(
   // * A function that's called for each operation to execute
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -87,10 +88,29 @@ const splitLink = split(
   wsLink,
   // * The Link to use for an operation if the function returns a "falsy" value. (eg. query or mutation)
   authLink.concat(httpLink)
-);
+);*/
+const uploadLink = createUploadLink({
+  uri: httpUri,
+});
+const httpAndUploadLink = ApolloLink.from([
+  authLink,
+  ApolloLink.split(
+    // Split based on the operation type (subscription vs. query/mutation)
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === "OperationDefinition" &&
+        definition.operation === "subscription"
+      );
+    },
+    wsLink, // Use the WebSocket link for subscriptions
+    uploadLink // Use the upload link for file uploads
+      .concat(httpLink) // Use the combined link for queries and mutations
+  ),
+]);
 
 const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, splitLink]),
+  link: ApolloLink.from([errorLink, httpAndUploadLink]),
   cache: new InMemoryCache(),
 });
 
