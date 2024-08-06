@@ -71,6 +71,11 @@ const GET_USER = gql`
     }
   }
 `;
+const GET_BOOK_IMAGE = gql`
+  query ($bookId: ID!) {
+    getBookImage(bookId: $bookId)
+  }
+`;
 const CREATE_BOOK = gql`
   mutation (
     $title: String!
@@ -150,4 +155,5 @@ export {
   REGISTER,
   AUTHOR_UPDATED,
   UPLOAD_BOOK_IMAGE,
+  GET_BOOK_IMAGE,
 };

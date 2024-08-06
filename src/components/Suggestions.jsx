@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { GET_USER, ALL_BOOKS, BOOK_ADDED } from "./queries";
+import { GET_USER, ALL_BOOKS, BOOK_ADDED, GET_BOOK_IMAGE } from "./queries";
 import image from "../static/images/book.jpg";
+import BookImage from "./BookImage";
 import { useEffect, useState } from "react";
 import TimeOutDialog from "./TimeOutDialog";
 const Suggestions = ({ setToken }) => {
@@ -31,7 +32,17 @@ const Suggestions = ({ setToken }) => {
     error: userError,
     data: userData,
   } = useQuery(GET_USER);
+
   const [favoriteGenre, setFavoriteGenre] = useState("");
+
+  //Fetch the book image data.
+  /*const {
+    loadingImage: imageLoading,
+    errorImage: imageError,
+    dataImage: imageData,
+  } = useQuery(GET_BOOK_IMAGE, {
+    variables: { bookId },
+  });*/
 
   //Fetch the user data and set the favorite genre.
   //Fetch books according to the favorite genre.
@@ -142,8 +153,11 @@ const Suggestions = ({ setToken }) => {
                       Born: {book.author.born}
                     </p>
                     <p className="text-sm text-gray-600 mb-1">
-                      Publihsed: {book.published}
+                      Published: {book.published}
                     </p>
+                  </div>
+                  <div>
+                    <BookImage bookId={book.id} />
                   </div>
                 </div>
               ))}

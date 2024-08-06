@@ -7,7 +7,6 @@ import {
   ApolloProvider,
   InMemoryCache,
   createHttpLink,
-  split,
   ApolloLink,
   Observable,
 } from "@apollo/client";
@@ -91,6 +90,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 );*/
 const uploadLink = createUploadLink({
   uri: httpUri,
+  headers: {
+    "x-apollo-operation-name": "uploadBookImage",
+    "apollo-require-preflight": "true",
+  },
 });
 const httpAndUploadLink = ApolloLink.from([
   authLink,
