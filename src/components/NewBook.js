@@ -18,27 +18,43 @@ const NewBook = ({ setToken, token }) => {
       genre: "",
       genres: [],
     });
+
+  // State for the error message and error animation
+  // when the user tries to add a book with an invalid birthyear.
+  const [playPubYearErrorAnimation, setPlayPubYearErrorAnimation] =
+    useState(false);
+  const [pubYearErrorMessage, setPubYearErrorMessage] = useState("");
+
   // State for the animation of the message box.
   const [isAnimating, setIsAnimating] = useState(false);
+
   // State for the message box and its style.
   const [message, setMessage] = useState({
     text: "Add a new book!",
     style: "py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
   });
+  //This updated the apollo cache after a book is added.
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
   });
+
   // Open or close state for the dialog box.
   const [dialogOpen, setDialogOpen] = useState(false);
+
   // State for the dialog box content.
   const [messageBoxContent, setMessageBoxContent] = useState("");
+
   // State for the duplicate genre error message.
   const [isDuplicateGenre, setIsDuplicateGenre] = useState(false);
+
   // State for the processing animation.
   const [isProcessing, setIsProcessing] = useState(false);
+
+  //State for the iamge file of the book.
+  const [file, setFile] = useState(null);
+
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
-  const [file, setFile] = useState(null);
   const [uploadBookImage] = useMutation(UPLOAD_BOOK_IMAGE, {
     onError: (error) => {
       console.log("Error in uploading image");
@@ -48,6 +64,7 @@ const NewBook = ({ setToken, token }) => {
       console.log(data);
     },
   });
+  //Reset the message after 5 seconds of adding a book.
   const resetMessage = () => {
     setTimeout(() => {
       setMessage({
@@ -57,6 +74,7 @@ const NewBook = ({ setToken, token }) => {
       });
     }, 5000);
   };
+
   const triggerAnimation = (status) => {
     setIsAnimating(true);
     setTimeout(() => {
@@ -99,12 +117,25 @@ const NewBook = ({ setToken, token }) => {
     }
   };
   const handleFileChange = (e) => {
-    //console.log("Tiedosto", e.target.files[0]);
-    // setFile(e.target.files[0]);
     const file = e.target.files[0];
     setFile(file);
   };
-
+  const handleBeforeInput = (event) => {
+    const currentYear = new Date().getFullYear();
+    const { data } = event;
+    //If the input is not a number, prevent the default action and play the animation.
+    if (!/^\d+$/.test(data)) {
+      setPlayPubYearErrorAnimation(true);
+      setPubYearErrorMessage("Only numbers are allowed.");
+      event.preventDefault();
+    } else if (currentYear < parseInt(data)) {
+      setPlayPubYearErrorAnimation(true);
+      setPubYearErrorMessage("The year cannot be in the future.");
+    } else {
+      setPlayPubYearErrorAnimation(false);
+    }
+  };
+  //Useeffect to listen for author updates and update the cache.
   useEffect(() => {
     if (!token) {
       setDialogOpen(true);
@@ -132,7 +163,25 @@ const NewBook = ({ setToken, token }) => {
       unsubscribe();
     };
   }, [subscribeToMore, token]);
-
+  useEffect(() => {
+    console.log("Book info", bookInfo.published);
+    const currentYear = new Date().getFullYear();
+    let errorMsg = "";
+    let shouldPlayAnimation = false;
+    if (!bookInfo.published) {
+    } else if (bookInfo.published.length > 4) {
+      errorMsg = "Publish year must be 4 digits or less";
+      shouldPlayAnimation = true;
+    } else if (bookInfo.published > currentYear) {
+      errorMsg = "Publsh year cannot be in the future";
+      shouldPlayAnimation = true;
+    } else if (bookInfo.published < 0) {
+      errorMsg = "Publish year cannot be negative";
+      shouldPlayAnimation = true;
+    }
+    setPlayPubYearErrorAnimation(shouldPlayAnimation);
+    setPubYearErrorMessage(errorMsg);
+  }, [bookInfo.published]);
   //Mutation to add a new book
   const [addBook] = useMutation(CREATE_BOOK, {
     onError: (error) => {
@@ -213,6 +262,9 @@ const NewBook = ({ setToken, token }) => {
             handleGenreDeletion={handleGenreDeletion}
             setFile={setFile}
             handleFileChange={handleFileChange}
+            handleBeforeInput={handleBeforeInput}
+            playPubYearErrorAnimation={playPubYearErrorAnimation}
+            pubYearErrorMessage={pubYearErrorMessage}
           />
         </>
       ) : (
@@ -237,6 +289,45 @@ const InputField = ({ label, name, value, onChange, type }) => (
       className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
       value={value}
       onChange={onChange}
+    />
+  </div>
+);
+const PubYearInputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  type,
+  pattern,
+  inputMode,
+  maxlength,
+  onBeforeInput,
+  playPubYearErrorAnimation,
+  pubYearErrorMessage,
+}) => (
+  <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400 relative">
+    <p> {label}</p>
+    <p
+      className={`${
+        playPubYearErrorAnimation
+          ? "absolute right-2 border-2 border-red-500 bg-red-300 rounded-md transition duration-500 transform translate-y-8 opacity-100"
+          : "absolute right-3 border-2 rounded-md transition duration-500 transform translate-y-0 opacity-0"
+      }`}
+    >
+      {pubYearErrorMessage}
+    </p>
+    <input
+      autoComplete="off"
+      label={label}
+      maxLength={maxlength}
+      pattern={pattern}
+      name={name}
+      inputMode={inputMode}
+      type={type}
+      className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+      value={value}
+      onChange={onChange}
+      onBeforeInput={onBeforeInput}
     />
   </div>
 );
@@ -395,7 +486,10 @@ const LoginView = ({
   setIsProcessing,
   handleGenreDeletion,
   handleFileChange,
+  handleBeforeInput,
   setFile,
+  playPubYearErrorAnimation,
+  pubYearErrorMessage,
 }) => (
   <div className="flex flex-col w-5/12 mt-2 flex-wrap break-words">
     <InfoBox
@@ -424,12 +518,18 @@ const LoginView = ({
           value={bookInfo.author}
           onChange={handleChange}
         />
-        <InputField
+        <PubYearInputField
           label="Published:"
           name="published"
-          type="number"
+          type="text"
+          inputMode="numeric"
+          pattern="\d*"
+          maxlength={4}
           value={bookInfo.published}
           onChange={handleChange}
+          onBeforeInput={handleBeforeInput}
+          playPubYearErrorAnimation={playPubYearErrorAnimation}
+          pubYearErrorMessage={pubYearErrorMessage}
         />
         <div className="flex justify-between border-b-2 overflow-hidden border-gray-400 pl-1 pb-2 bg-red-200">
           <AddGenreButton

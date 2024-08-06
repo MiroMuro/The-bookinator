@@ -4,8 +4,14 @@ const useForm = (initialState) => {
   const [state, setState] = useState(initialState);
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    if (name !== "genres") setState((prev) => ({ ...prev, [name]: value }));
+    let { name, value } = event.target;
+    //Prevent the user from entering anything other than numbers in the published field.
+    if (name === "published") {
+      value = value.replace(/[^0-9]/g, "");
+    }
+    if (name !== "genres") {
+      setState((prev) => ({ ...prev, [name]: value }));
+    }
   };
   //Handle adding a genre to the list of genres, and reset the genre input field.
   //In case of a genre input, add the genre to the list of genres.
