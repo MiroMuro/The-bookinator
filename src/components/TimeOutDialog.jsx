@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
-import { on } from "events";
 const TimeOutDialog = ({ open, onClose, onRetry, errorMessage, setToken }) => {
   const navigate = useNavigate();
   const client = useApolloClient();

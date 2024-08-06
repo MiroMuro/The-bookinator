@@ -116,6 +116,16 @@ const NewBook = ({ setToken, token }) => {
       }
     }
   };
+
+  const handleBookSubmitConfirmation = (event) => {
+    event.preventDefault();
+    if (!file) {
+      return <dialog></dialog>;
+    } else {
+      setIsProcessing(true);
+    }
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -163,6 +173,8 @@ const NewBook = ({ setToken, token }) => {
       unsubscribe();
     };
   }, [subscribeToMore, token]);
+
+  //useEffect to listen for the published year and check if it is valid.
   useEffect(() => {
     console.log("Book info", bookInfo.published);
     const currentYear = new Date().getFullYear();
@@ -182,6 +194,7 @@ const NewBook = ({ setToken, token }) => {
     setPlayPubYearErrorAnimation(shouldPlayAnimation);
     setPubYearErrorMessage(errorMsg);
   }, [bookInfo.published]);
+
   //Mutation to add a new book
   const [addBook] = useMutation(CREATE_BOOK, {
     onError: (error) => {
@@ -265,6 +278,7 @@ const NewBook = ({ setToken, token }) => {
             handleBeforeInput={handleBeforeInput}
             playPubYearErrorAnimation={playPubYearErrorAnimation}
             pubYearErrorMessage={pubYearErrorMessage}
+            file={file}
           />
         </>
       ) : (
@@ -366,13 +380,34 @@ const GenreInputField = ({
     />
   </div>
 );
-const AddBookButton = ({ type, bookInfo, setIsProcessing }) => {
+const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
   let isDisabled =
     bookInfo.title === "" ||
     bookInfo.author === "" ||
     bookInfo.published === 0 ||
     bookInfo.genres.length === 0;
 
+  /*if (!file || file === null || file === undefined) {
+    return (
+      <div>
+        <button
+          className="addBookButton"
+          type={type}
+          disabled={isDisabled}
+          onClick={() => setIsProcessing(true)}
+        >
+          Add book
+        </button>
+        <div className="border-2 border-red-400 rounded-md">
+          <header>
+            Are you sure you want to add this book withouth a picture?
+          </header>
+          <button className="bg-green-300">Confirm</button>
+          <button className="bg-red-300">Cancel</button>
+        </div>
+      </div>
+    );
+  } else {*/
   return (
     <button
       className="addBookButton"
@@ -383,6 +418,7 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing }) => {
       Add book
     </button>
   );
+  /*}*/
 };
 const AddGenreButton = ({
   addGenre,
@@ -473,6 +509,18 @@ const FilePicker = ({ setFile, handleFileChange }) => {
     </div>
   );
 };
+const BookAddConfirmation = () => {
+  return (
+    <div className="border-2 border-red-400 rounded-md">
+      <header>
+        Are you sure you want to add this book withouth a picture?
+      </header>
+      <button className="bg-green-300">Confirm</button>
+      <button className="bg-red-300">Cancel</button>
+    </div>
+  );
+};
+
 const LoginView = ({
   bookInfo,
   handleChange,
@@ -488,6 +536,7 @@ const LoginView = ({
   handleFileChange,
   handleBeforeInput,
   setFile,
+  file,
   playPubYearErrorAnimation,
   pubYearErrorMessage,
 }) => (
@@ -558,6 +607,7 @@ const LoginView = ({
         type={"submit"}
         bookInfo={bookInfo}
         setIsProcessing={setIsProcessing}
+        file={file}
       />
     </form>
   </div>

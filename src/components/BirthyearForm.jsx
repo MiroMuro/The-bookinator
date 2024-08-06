@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "./queries";
 const BirthyearForm = ({ authors }) => {
-  const [birthyear, setBirthyear] = useState(0);
-  const [selectedAuthorName, setSelectedAuthorName] = useState(authors[0].name);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [playAnimation, setPlayAnimation] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  //Function to update the author's birthyear
+  const [formState, setFormState] = useState({
+    birthyear: "",
+    selectedAuthorName: authors[0]?.name || "",
+    isButtonDisabled: true,
+    playAnimation: false,
+    errorMessage: "",
+  });
+
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
     onError: (error, data) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
@@ -27,11 +29,27 @@ const BirthyearForm = ({ authors }) => {
       console.log("Author updated", data);
     },
   });
+
   useEffect(() => {
+    const { errorMsg, shouldPlayAnimation, shouldDisableButton } =
+      validateBirthyear(formState.birthyear);
+
+    setFormState({
+      ...formState,
+      playAnimation: shouldPlayAnimation,
+      isButtonDisabled: shouldDisableButton,
+      errorMessage: errorMsg,
+    });
+  }, [formState.birthyear]);
+
+  const validateBirthyear = (formState) => {
+    const { birthyear } = formState;
+
     const currentYear = new Date().getFullYear();
     let errorMsg = "";
     let shouldPlayAnimation = false;
     let shouldDisableButton = false;
+
     if (!birthyear) {
       shouldDisableButton = true;
     } else if (birthyear.length > 4) {
@@ -47,40 +65,59 @@ const BirthyearForm = ({ authors }) => {
       shouldPlayAnimation = true;
       shouldDisableButton = true;
     }
-    setPlayAnimation(shouldPlayAnimation);
-    setIsButtonDisabled(shouldDisableButton);
-    setErrorMessage(errorMsg);
-  }, [birthyear]);
+
+    setFormState((prev) => ({
+      ...prev,
+      playAnimation: shouldPlayAnimation,
+      isButtonDisabled: shouldDisableButton,
+      errorMessage: errorMsg,
+    }));
+
+    return { shouldPlayAnimation, shouldDisableButton, errorMsg };
+  };
 
   const submit = async (event) => {
     event.preventDefault();
-    updateAuthor({
-      variables: { name: selectedAuthorName, born: parseInt(birthyear) },
+    await updateAuthor({
+      variables: {
+        name: formState.selectedAuthorName,
+        born: parseInt(formState.birthyear),
+      },
     });
-    setSelectedAuthorName(authors[0].name);
-    setBirthyear("");
+    setFormState((prev) => ({
+      ...prev,
+      selectedAuthorName: authors[0]?.name || "",
+      birthyear: "",
+    }));
   };
   const handleBeforeInput = (event) => {
-    console.log("Play animation", playAnimation);
     const { data } = event;
     //If the input is not a number, prevent the default action and play the animation.
     if (!/^\d+$/.test(data)) {
-      setPlayAnimation(true);
-      setErrorMessage("Only numbers are allowed.");
       event.preventDefault();
+      setFormState((prev) => ({
+        ...prev,
+        playAnimation: true,
+        errorMessage: "Only numbers are allowed.",
+      }));
     } else {
-      setPlayAnimation(false);
+      setFormState((prev) => ({
+        ...prev,
+        playAnimation: false,
+      }));
     }
   };
 
   const handleBirthyearChange = (event) => {
     const numericValue = event.target.value.replace(/[^0-9]/g, "");
-    setBirthyear(numericValue);
+    setFormState((prev) => ({
+      ...prev,
+      birthyear: numericValue,
+    }));
   };
 
-  if (!authors || authors.length === 0) {
-    return null;
-  }
+  if (!authors || authors.length === 0) return null;
+
   return (
     <>
       <div className="flex flex-col bg-red-200 border-gray-400 border-2 rounded-md w-full mt-2 min-w-72 ">
@@ -92,8 +129,10 @@ const BirthyearForm = ({ authors }) => {
             <p>Select an author</p>
             <select
               className="border-black border-2 rounded-lg p-1 hover:bg-gray-300"
-              onChange={({ target }) => setSelectedAuthorName(target.value)}
-              value={selectedAuthorName}
+              onChange={({ target }) =>
+                setFormState({ selectedAuthorName: target.value })
+              }
+              value={formState.selectedAuthorName}
             >
               {authors.map((author) => (
                 <option key={author.id} value={author.name}>
@@ -106,12 +145,12 @@ const BirthyearForm = ({ authors }) => {
             <p>Birthyear: </p>
             <p
               className={`${
-                playAnimation
+                formState.playAnimation
                   ? "absolute right-1 top-7 font-extralight  text-red-600 duration-500 transition ease-linear transform opacity-100 text-sm"
                   : "absolute right-1 top-7 font-extralight text-red-600 duration-500 transition ease-linear transform opacity-0 text-smnpm"
               }`}
             >
-              {errorMessage}
+              {formState.errorMessage}
             </p>
             <input
               className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
@@ -119,13 +158,13 @@ const BirthyearForm = ({ authors }) => {
               type="text"
               pattern="\d*"
               inputMode="numeric"
-              value={birthyear}
+              value={formState.birthyear}
               onBeforeInput={(e) => handleBeforeInput(e)}
               onChange={(e) => handleBirthyearChange(e)}
             />
           </div>
           <button
-            disabled={isButtonDisabled}
+            disabled={formState.isButtonDisabled}
             className="updateAuthorButton"
             type="submit"
           >
