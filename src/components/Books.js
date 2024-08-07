@@ -6,7 +6,6 @@ import image from "../static/images/book.jpg";
 import TimeOutDialog from "./TimeOutDialog";
 const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
-  //const result = useQuery(ALL_BOOKS);
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
   const handleClose = () => setErrorDialogOpen(false);
   const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
@@ -32,6 +31,14 @@ const Books = ({ setToken }) => {
     };
   }, [subscribeToMore]);
 
+  const filterBooks = (books, currentGenre) => {
+    if (currentGenre === "") {
+      return books;
+    } else {
+      return books.filter((book) => book.genres.includes(currentGenre));
+    }
+  };
+
   if (loading) return <div>Loading books...</div>;
   if (
     error &&
@@ -49,36 +56,48 @@ const Books = ({ setToken }) => {
   }
   if (error)
     return <div>A netowrk error has occured. Please try again later.</div>;
-  /*} else if (
-    //Triggered if login token has expired or is invalid. e.g user is timed out.
-    error &&
-    error.networkError.result.name ===
-      ("TokenExpiredError" || "JsonWebTokenError")
-  ) {
-    return (
-      <TimeOutDialog
-        open={errorDialogOpen}
-        onClose={handleClose}
-        errorMessage={error.networkError.result.messageForUser}
-        setToken={setToken}
-      />
-    );
-  } else if (error) {
-    return (
-      <div>
-        A network error occured while fetching the books. Please try again
-        later.
-      </div>
-    );
-  }*/
-  const filteredBooks = () => {
-    if (currentGenre === "") {
-      console.log("No genre selected");
-      return data.allBooks;
+  const BookGrid = ({ books }) => {
+    console.log("BOOKS", books);
+    if (books.length === 0) {
+      return <div>No books added yet.</div>;
     } else {
-      return data.allBooks.filter((book) => book.genres.includes(currentGenre));
+      return (
+        <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Cards go here*/}
+          {books.map((book) => (
+            <div
+              key={book.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <header className=" bg-red-200 p-2  min-h-16">
+                <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
+                  {book.title}
+                </h2>
+              </header>
+              <img
+                className="w-full h-46 object-cover"
+                src={image}
+                alt="book"
+              />
+              <div className="p-4">
+                <p className="text-sm text-gray-600 mb-1">
+                  Author: {book.author.name}
+                </p>
+                <p className="text-sm text-gray-600 mb-1">
+                  Born: {book.author.born}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Published: {book.published}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     }
   };
+  const books = data.allBooks;
+  const filteredBooks = filterBooks(books, currentGenre);
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,31 +110,7 @@ const Books = ({ setToken }) => {
         </div>
       </div>
       <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {/* Cards go here*/}
-        {filteredBooks().map((book) => (
-          <div
-            key={book.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
-          >
-            <header className=" bg-red-200 p-2  min-h-16">
-              <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
-                {book.title}
-              </h2>
-            </header>
-            <img className="w-full h-46 object-cover" src={image} alt="book" />
-            <div className="p-4">
-              <p className="text-sm text-gray-600 mb-1">
-                Author: {book.author.name}
-              </p>
-              <p className="text-sm text-gray-600 mb-1">
-                Born: {book.author.born}
-              </p>
-              <p className="text-sm text-gray-600">
-                Published: {book.published}
-              </p>
-            </div>
-          </div>
-        ))}
+        <BookGrid books={filteredBooks} />
       </div>
     </div>
   );

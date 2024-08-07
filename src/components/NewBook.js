@@ -387,27 +387,6 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
     bookInfo.published === 0 ||
     bookInfo.genres.length === 0;
 
-  /*if (!file || file === null || file === undefined) {
-    return (
-      <div>
-        <button
-          className="addBookButton"
-          type={type}
-          disabled={isDisabled}
-          onClick={() => setIsProcessing(true)}
-        >
-          Add book
-        </button>
-        <div className="border-2 border-red-400 rounded-md">
-          <header>
-            Are you sure you want to add this book withouth a picture?
-          </header>
-          <button className="bg-green-300">Confirm</button>
-          <button className="bg-red-300">Cancel</button>
-        </div>
-      </div>
-    );
-  } else {*/
   return (
     <button
       className="addBookButton"
@@ -504,7 +483,8 @@ const GenresBox = ({ genres, handleGenreDeletion }) => {
 };
 const FilePicker = ({ setFile, handleFileChange }) => {
   return (
-    <div>
+    <div className="bg-red-200">
+      <p className="p-2">Image</p>
       <input type="file" accept="image/*" onChange={handleFileChange} />
     </div>
   );

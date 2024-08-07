@@ -5,22 +5,15 @@ import AuthorFilter from "./AuthorFilter";
 import { useState } from "react";
 import TimeOutDialog from "./TimeOutDialog";
 const Authors = ({ token, setToken }) => {
-  const { loading, error, data, subscribeToMore } = useQuery(ALL_AUTHORS);
+  //Different states of the query.
+  const { loading, error, data } = useQuery(ALL_AUTHORS);
   const [authorToSearch, setAuthorToSearch] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
 
   const handleClose = () => {
     setErrorDialogOpen(false);
   };
-  if (loading) {
-    return <div>Loading authors...</div>;
-  } else if (
-    //Triggered if login token has expired or is invalid. e.g user is timed out.
-    error &&
-    error.networkError.result &&
-    error.networkError.result.name ===
-      ("TokenExpiredError" || "JsonWebTokenError")
-  ) {
+  const handleTokenError = (error) => {
     return (
       <TimeOutDialog
         open={errorDialogOpen}
@@ -29,31 +22,23 @@ const Authors = ({ token, setToken }) => {
         setToken={setToken}
       />
     );
-  } else if (error) {
+  };
+  const handleGeneralError = () => {
     return <div>Error fetching the authors...</div>;
-  } else {
-    //Initially all authors are displayed
-    const authors = data.allAuthors;
-    //Filter authors based on the search input
-    const filteredAuthors = () => {
+  };
+
+  const filterAuthors = (authors, authorToSearch) => {
+    if (authors.length)
       return authors.filter((author) =>
         author.name.toLowerCase().includes(authorToSearch)
       );
-    };
-    return (
-      <div className="flex flex-col justify-start align-middle items-start-h-screen w-full sm:w-8/12">
-        {token && (
-          <div className="w-full sm:w-5/12 ">
-            <BirthyearForm authors={authors} />
-          </div>
-        )}
-        <div>
-          <AuthorFilter
-            authorToSearch={authorToSearch}
-            setAuthorToSearch={setAuthorToSearch}
-          />
-        </div>
+  };
 
+  const AuthorsTable = ({ authors }) => {
+    if (!authors) {
+      return <div>No authors added yet.</div>;
+    } else {
+      return (
         <table className="authorsTable ">
           <thead className="">
             <tr className="w-8/12">
@@ -63,7 +48,7 @@ const Authors = ({ token, setToken }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {filteredAuthors().map((author) => (
+            {authors.map((author) => (
               <tr key={author.id} className="authorsTableRow">
                 <td className="py-3 px-6">{author.name}</td>
                 <td className="py-3 px-6">{author.born}</td>
@@ -72,9 +57,42 @@ const Authors = ({ token, setToken }) => {
             ))}
           </tbody>
         </table>
-      </div>
-    );
+      );
+    }
+  };
+  if (loading) {
+    return <div>Loading authors...</div>;
   }
+  if (error) {
+    console.log(error);
+    if (
+      error.networkError &&
+      error.networkError &&
+      (error.networkError.result.name === "TokenExpiredError" ||
+        error.networkError.result.name === "JsonWebTokenError")
+    ) {
+      return handleTokenError(error);
+    }
+    return handleGeneralError();
+  }
+  const authors = data.allAuthors;
+  const filteredAuthors = filterAuthors(authors, authorToSearch);
+  return (
+    <div className="flex flex-col justify-start align-middle items-start-h-screen w-full sm:w-8/12">
+      {token && (
+        <div className="w-full sm:w-5/12 ">
+          <BirthyearForm authors={authors} />
+        </div>
+      )}
+      <div>
+        <AuthorFilter
+          authorToSearch={authorToSearch}
+          setAuthorToSearch={setAuthorToSearch}
+        />
+      </div>
+      <AuthorsTable authors={filteredAuthors} />
+    </div>
+  );
 };
 
 export default Authors;
