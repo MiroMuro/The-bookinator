@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import TimeOutDialog from "./TimeOutDialog";
+import AuthorsDialog from "./AuthorsDialog";
 import { useMutation } from "@apollo/client";
 import useForm from "../hooks/useForm";
 import {
@@ -53,6 +54,8 @@ const NewBook = ({ setToken, token }) => {
   //State for the iamge file of the book.
   const [file, setFile] = useState(null);
 
+  //State for the Authors dialog.
+  const [authorsDialogOpen, setAuthorsDialogOpen] = useState(false);
   //This is used to the listen for author updates and update the cache
   //for the authors correct bookCount after a book is added.
   const [uploadBookImage] = useMutation(UPLOAD_BOOK_IMAGE, {
@@ -262,6 +265,7 @@ const NewBook = ({ setToken, token }) => {
             setToken={setToken}
           ></TimeOutDialog>
           <LoginView
+            authorsDialogOpen={authorsDialogOpen}
             bookInfo={bookInfo}
             handleChange={handleChange}
             handleSubmit={submit}
@@ -279,6 +283,7 @@ const NewBook = ({ setToken, token }) => {
             playPubYearErrorAnimation={playPubYearErrorAnimation}
             pubYearErrorMessage={pubYearErrorMessage}
             file={file}
+            setAuthorsDialogOpen={setAuthorsDialogOpen}
           />
         </>
       ) : (
@@ -304,6 +309,38 @@ const InputField = ({ label, name, value, onChange, type }) => (
       value={value}
       onChange={onChange}
     />
+  </div>
+);
+const AuthorInputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  type,
+  authorsDialogOpen,
+  setAuthorsDialogOpen,
+}) => (
+  <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
+    <p> {label}</p>
+    <button
+      className="border-black border-2 bg-gray-300 rounded-md p-2"
+      type="button"
+      onClick={() => {
+        setAuthorsDialogOpen(true);
+      }}
+    >
+      Select an existing author
+    </button>
+    <input
+      autoComplete="off"
+      label={label}
+      name={name}
+      type={type}
+      className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+      value={value}
+      onChange={onChange}
+    />
+    <AuthorsDialog open={authorsDialogOpen} />
   </div>
 );
 const PubYearInputField = ({
@@ -519,6 +556,8 @@ const LoginView = ({
   file,
   playPubYearErrorAnimation,
   pubYearErrorMessage,
+  authorsDialogOpen,
+  setAuthorsDialogOpen,
 }) => (
   <div className="flex flex-col w-5/12 mt-2 flex-wrap break-words">
     <InfoBox
@@ -540,12 +579,14 @@ const LoginView = ({
           value={bookInfo.title}
           onChange={handleChange}
         />
-        <InputField
+        <AuthorInputField
           name="author"
           label="Author:"
           type="text"
           value={bookInfo.author}
           onChange={handleChange}
+          authorsDialogOpen={authorsDialogOpen}
+          setAuthorsDialogOpen={setAuthorsDialogOpen}
         />
         <PubYearInputField
           label="Published:"

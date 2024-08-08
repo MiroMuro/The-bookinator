@@ -1,4 +1,4 @@
-import { ALL_BOOKS, BOOK_ADDED } from "./queries";
+import { ALL_BOOKS, BOOK_ADDED, ALL_AUTHORS } from "./queries";
 import { useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import GenresDropdown from "./GenresDropdown";
@@ -9,6 +9,7 @@ const Books = ({ setToken }) => {
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
   const handleClose = () => setErrorDialogOpen(false);
   const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
+  const { loadingAuthors, errorAuthors, dataAuthors } = useQuery(ALL_AUTHORS);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -57,7 +58,6 @@ const Books = ({ setToken }) => {
   if (error)
     return <div>A netowrk error has occured. Please try again later.</div>;
   const BookGrid = ({ books }) => {
-    console.log("BOOKS", books);
     if (books.length === 0) {
       return <div>No books added yet.</div>;
     } else {
