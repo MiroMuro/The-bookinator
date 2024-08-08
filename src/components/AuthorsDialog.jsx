@@ -13,6 +13,7 @@ const AuthorsDialog = ({
   const { loading, error, data } = useQuery(ALL_AUTHORS);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAuthor, setSelectedAuthor] = useState(null);
+  const [authorSearchInput, setAuthorSearchinput] = useState("");
   const dialogRef = useRef(null);
   const handleClose = () => setDialogOpen(false);
   const handleOk = () => {
@@ -33,46 +34,49 @@ const AuthorsDialog = ({
       <>
         <h1 className="font-bold">Authors</h1>
         <header>Selected author: {selectedAuthor}</header>
+        <label htmlFor="author">Author:</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          value={authorSearchInput}
+          onChange={(e) => setAuthorSearchinput(e.target.value)}
+        />
         <form>
           <section className="grid grid-cols-2 gap-4">
             <header>Picture</header>
             <header>Details</header>
             {data.allAuthors.map((author) => (
               <>
-                <img className="w-1/4" src={image} alt="swag"></img>
+                <img className="w-2/4" src={image} alt="swag"></img>
                 <div>
                   <ul>
                     <li>Name: {author.name}</li>
                     <li>Born: {author.born}</li>
                     <li>Total Books: {author.bookCount}</li>
+                    <li>
+                      <button
+                        className=" border-black bg-white border-2 rounded-md p-2"
+                        onClick={() => setSelectedAuthor(author.name)}
+                      >
+                        Select Author
+                      </button>
+                    </li>
                   </ul>
                 </div>
               </>
             ))}
           </section>
-          {/*<table>
-            <tr>
-              <th>Author</th>
-              <th>Born</th>
-              <th>Books</th>
-            </tr>
-            {data.allAuthors.map((author) => (
-              <tr key={author.id}>
-                <td>{author.name}</td>
-                <td>2000</td>
-                <td>5</td>
-              </tr>
-            ))}
-          </table>*/}
+
           <button
             onClick={handleOk}
-            className="p-2 border-black border-2 rounded-md bg-white"
+            className="p-2 m-2 border-black border-2 rounded-md bg-white"
           >
             OK
           </button>
           <button
             onClick={handleClose}
-            className="p-2 border-black border-2 rounded-md bg-red-500"
+            className="p-2 m-2 border-black border-2 rounded-md bg-red-500"
           >
             Cancel
           </button>
