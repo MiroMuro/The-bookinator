@@ -33,7 +33,12 @@ const AuthorsDialog = ({
     return (
       <>
         <h1 className="font-bold">Authors</h1>
-        <header>Selected author: {selectedAuthor}</header>
+        <header className="flex py-2">
+          Selected author:{" "}
+          <p className="border-b-2 px-2 font-semibold border-black">
+            {selectedAuthor}
+          </p>
+        </header>
         <label htmlFor="author">Author:</label>
         <input
           type="text"
