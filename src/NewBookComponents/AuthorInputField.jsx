@@ -28,7 +28,10 @@ const AuthorInputField = ({
       value={value}
       onChange={onChange}
     />
-    <AuthorsDialog open={authorsDialogOpen} />
+    <AuthorsDialog
+      open={authorsDialogOpen}
+      setAuthorsDialogOpen={setAuthorsDialogOpen}
+    />
   </div>
 );
 export default AuthorInputField;

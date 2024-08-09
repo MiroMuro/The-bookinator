@@ -39,7 +39,7 @@ const Authors = ({ token, setToken }) => {
       return <div>No authors added yet.</div>;
     } else {
       return (
-        <table className="authorsTable ">
+        <table className="authorsTable">
           <thead className="">
             <tr className="w-8/12">
               <th className="py-3 bg-red-400">Author</th>
