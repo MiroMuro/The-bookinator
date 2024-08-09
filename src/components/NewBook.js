@@ -1,17 +1,7 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
 import TimeOutDialog from "./TimeOutDialog";
-import AuthorsDialog from "./AuthorsDialog";
-import { useMutation } from "@apollo/client";
-import useForm from "../hooks/useForm";
 import useBookForm from "../hooks/useBookForm";
-import {
-  CREATE_BOOK,
-  ALL_AUTHORS,
-  AUTHOR_UPDATED,
-  UPLOAD_BOOK_IMAGE,
-} from "./queries";
 import LoginView from "../NewBookComponents/LoginView";
+
 const NewBook = ({ setToken, token }) => {
   const {
     bookInfo,
@@ -39,12 +29,7 @@ const NewBook = ({ setToken, token }) => {
     handleFileChange,
     submit,
   } = useBookForm(token, setToken);
-  // State for the error message and error animation
-  // when the user tries to add a book with an invalid birthyear.
 
-  //useEffect to listen for the published year and check if it is valid.
-
-  //Must be rendered like this to prevent re-rendering on every key press.
   return (
     <div className="flex w-8/12">
       {token ? (

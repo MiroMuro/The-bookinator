@@ -42,9 +42,7 @@ const BirthyearForm = ({ authors }) => {
     });
   }, [formState.birthyear]);
 
-  const validateBirthyear = (formState) => {
-    const { birthyear } = formState;
-
+  const validateBirthyear = (birthyear) => {
     const currentYear = new Date().getFullYear();
     let errorMsg = "";
     let shouldPlayAnimation = false;
