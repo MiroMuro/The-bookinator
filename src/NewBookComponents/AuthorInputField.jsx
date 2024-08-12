@@ -13,7 +13,7 @@ const AuthorInputField = ({
     <p> {label}</p> <br />
     <p>Selected author: {value}</p>
     <button
-      className="border-black border-2 bg-gray-300 rounded-md p-2"
+      className="border-black border-2 bg-white text-black rounded-md p-2"
       type="button"
       onClick={() => {
         setAuthorsDialogOpen(true);
@@ -31,7 +31,7 @@ const AuthorInputField = ({
       onChange={onChange}
     />
     <button
-      className="border-black border-2 bg-gray-300 rounded-md p-2"
+      className="border-black border-2 bg-white rounded-md p-2"
       type="button"
     >
       {" "}

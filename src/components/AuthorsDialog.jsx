@@ -16,7 +16,9 @@ const AuthorsDialog = ({
   const { loading, error, data } = useQuery(ALL_AUTHORS);
   const [selectedAuthor, setSelectedAuthor] = useState(null);
   const [authorSearchInput, setAuthorSearchinput] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("");
   const dialogRef = useRef(null);
+
   const handleClose = useCallback(() => {
     setAuthorsDialogOpen(false);
     setSelectedAuthor(null);
@@ -37,12 +39,36 @@ const AuthorsDialog = ({
     setAuthorSearchinput(e.target.value);
   }, []);
 
-  const filterAuthors = useCallback((authors, searchTerm) => {
-    console.log("Authors ", authors);
-    return authors.filter((author) =>
-      author.name.toLowerCase().includes(searchTerm)
-    );
+  const handleSortCriteriaChange = useCallback((e) => {
+    const criteria = e.target.value;
+    console.log("The criteria is: ", criteria);
+    setSortCriteria(criteria);
   }, []);
+
+  const sortAuthors = useCallback((authors, sortCriteria) => {
+    const authorsCopy = [...authors];
+    if (sortCriteria === "name") {
+      return authorsCopy.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sortCriteria === "bookCount") {
+      return authorsCopy.sort((a, b) => b.bookCount - a.bookCount);
+    }
+    if (sortCriteria === "Year of birth") {
+      return authorsCopy.sort((a, b) => a.born - b.born);
+    }
+    return authors;
+  }, []);
+
+  const filterAuthors = useCallback(
+    (authors, searchTerm) => {
+      console.log("Authors ", authors);
+      const sortedAuthors = sortAuthors(authors, sortCriteria);
+      return sortedAuthors.filter((author) =>
+        author.name.toLowerCase().includes(searchTerm)
+      );
+    },
+    [sortAuthors, sortCriteria]
+  );
 
   useEffect(() => {
     if (open) {
@@ -65,16 +91,29 @@ const AuthorsDialog = ({
       </>
     );
   };
-
-  const AuthorsDialogSearchBar = React.memo(({ value, handleChange }) => {
+  const AuthorsSortCriteriaDropdown = ({ criteria }) => {
     return (
-      <section className="py-2 text-xl">
-        <label htmlFor="author">Search: </label>
-        <input id="author" name="author" onChange={(e) => handleChange(e)} />
-      </section>
+      <div className=" p-1 bg-gray-200 border-2 border-gray-400  w-1/3 ">
+        <label htmlFor="sortMenu" className="text-xl ">
+          Sort by:{" "}
+        </label>
+        <select
+          id="sortMenu"
+          name="sortMenu"
+          onChange={handleSortCriteriaChange}
+          value={criteria}
+          className="border-2 border-gray-400 rounded-md p-1"
+        >
+          <option defaultValue={true} disabled>
+            Select sort criteria
+          </option>
+          <option value="name">Name</option>
+          <option value="bookCount">Book Count</option>
+          <option value="Year of birth"> Year of birth</option>
+        </select>
+      </div>
     );
-  });
-
+  };
   const AuthorsDialogGrid = React.memo(
     ({ data, filterAuthors, error, loading, authorSearchInput }) => {
       if (loading) return <div>Loading authors...</div>;
@@ -93,6 +132,11 @@ const AuthorsDialog = ({
           <section>
             <form className="h-96 overflow-y-scroll ">
               <section className="grid grid-cols-2 gap-4">
+                {filteredAuthors.length === 0 && (
+                  <div className="col-span-2 text-xl flex bg-red-300 border-2 border-gray-400 rounded-md p-4 justify-center">
+                    No authors found with search term "{authorSearchInput}"!
+                  </div>
+                )}
                 {filteredAuthors.map((author) => (
                   <>
                     <img className="w-2/4" src={image} alt="swag"></img>
@@ -110,7 +154,7 @@ const AuthorsDialog = ({
                         </li>
                         <li className="py-1">
                           <button
-                            className=" border-black bg-white border-2 rounded-md p-2"
+                            className="registerButton"
                             onClick={() => setSelectedAuthor(author.name)}
                           >
                             Select Author
@@ -127,14 +171,14 @@ const AuthorsDialog = ({
 
           <button
             onClick={handleOk}
-            className="p-2 m-2 border-black border-2 rounded-md bg-white"
+            className="p-2 m-2 border-black border-2 rounded-md bg-green-500 transition ease-linear duration-300 scale-100 transform hover:scale-110"
             type="button"
           >
             OK
           </button>
           <button
             onClick={handleClose}
-            className="p-2 m-2 border-black border-2 rounded-md bg-red-500"
+            className="p-2 m-2 border-black border-2 rounded-md bg-red-500 transition ease-linear duration-300 scale-100 transform hover:scale-110"
             type="button"
           >
             Cancel
@@ -151,7 +195,7 @@ const AuthorsDialog = ({
       >
         <AuthorsDialogHeader selectedAuthor={selectedAuthor} />
         <AuthorFilter setAuthorToSearch={setAuthorSearchinput} />
-
+        <AuthorsSortCriteriaDropdown criteria={sortCriteria} />
         <AuthorsDialogGrid
           data={data}
           filterAuthors={filterAuthors}
