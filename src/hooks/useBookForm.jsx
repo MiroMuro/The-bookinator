@@ -8,14 +8,20 @@ import {
   UPLOAD_BOOK_IMAGE,
 } from "../components/queries";
 const useBookForm = (token, setToken) => {
-  const [bookInfo, handleChange, reset, addGenre, handleGenreDeletion] =
-    useForm({
-      title: "",
-      author: "",
-      published: 0,
-      genre: "",
-      genres: [],
-    });
+  const [
+    bookInfo,
+    handleChange,
+    reset,
+    addGenre,
+    handleGenreDeletion,
+    setAuthor,
+  ] = useForm({
+    title: "",
+    author: "",
+    published: 0,
+    genre: "",
+    genres: [],
+  });
   // State for the error message and error animation
   // when the user tries to add a book with an invalid birthyear.
   const [playPubYearErrorAnimation, setPlayPubYearErrorAnimation] =
@@ -250,6 +256,7 @@ const useBookForm = (token, setToken) => {
     reset,
     addGenre,
     handleGenreDeletion,
+    setAuthor,
   };
 };
 

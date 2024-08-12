@@ -9,7 +9,6 @@ const Books = ({ setToken }) => {
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
   const handleClose = () => setErrorDialogOpen(false);
   const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
-  const { loadingAuthors, errorAuthors, dataAuthors } = useQuery(ALL_AUTHORS);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({

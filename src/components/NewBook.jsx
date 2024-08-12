@@ -3,6 +3,7 @@ import useBookForm from "../hooks/useBookForm";
 import LoginView from "../NewBookComponents/LoginView";
 
 const NewBook = ({ setToken, token }) => {
+  console.log("The token, ", token);
   const {
     bookInfo,
     playPubYearErrorAnimation,
@@ -28,6 +29,7 @@ const NewBook = ({ setToken, token }) => {
     handleBeforeInput,
     handleFileChange,
     submit,
+    setAuthor,
   } = useBookForm(token, setToken);
 
   return (
@@ -62,6 +64,7 @@ const NewBook = ({ setToken, token }) => {
             setPubYearErrorMessage={setPubYearErrorMessage}
             file={file}
             setAuthorsDialogOpen={setAuthorsDialogOpen}
+            setAuthor={setAuthor}
           />
         </>
       ) : (

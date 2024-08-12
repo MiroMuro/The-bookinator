@@ -13,6 +13,11 @@ const useForm = (initialState) => {
       setState((prev) => ({ ...prev, [name]: value }));
     }
   };
+
+  const setAuthor = (author) => {
+    console.log("In setAuthor. Author: ", author);
+    setState((prev) => ({ ...prev, author: author }));
+  };
   //Handle adding a genre to the list of genres, and reset the genre input field.
   //In case of a genre input, add the genre to the list of genres.
   const addGenre = (event) => {
@@ -29,7 +34,7 @@ const useForm = (initialState) => {
     }));
   };
   const reset = () => setState(initialState);
-  return [state, handleChange, reset, addGenre, handleGenreDeletion];
+  return [state, handleChange, reset, addGenre, handleGenreDeletion, setAuthor];
 };
 
 export default useForm;

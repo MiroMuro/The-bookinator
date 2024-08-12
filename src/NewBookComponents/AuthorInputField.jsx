@@ -7,9 +7,11 @@ const AuthorInputField = ({
   type,
   authorsDialogOpen,
   setAuthorsDialogOpen,
+  setAuthor,
 }) => (
   <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
-    <p> {label}</p>
+    <p> {label}</p> <br />
+    <p>Selected author: {value}</p>
     <button
       className="border-black border-2 bg-gray-300 rounded-md p-2"
       type="button"
@@ -28,7 +30,15 @@ const AuthorInputField = ({
       value={value}
       onChange={onChange}
     />
+    <button
+      className="border-black border-2 bg-gray-300 rounded-md p-2"
+      type="button"
+    >
+      {" "}
+      Add a new Author
+    </button>
     <AuthorsDialog
+      setAuthor={setAuthor}
       open={authorsDialogOpen}
       setAuthorsDialogOpen={setAuthorsDialogOpen}
     />

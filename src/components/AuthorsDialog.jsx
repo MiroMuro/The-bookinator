@@ -11,27 +11,32 @@ const AuthorsDialog = ({
   token,
   open,
   setAuthorsDialogOpen,
+  setAuthor,
 }) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS);
   const [selectedAuthor, setSelectedAuthor] = useState(null);
   const [authorSearchInput, setAuthorSearchinput] = useState("");
   const dialogRef = useRef(null);
-  const handleClose = useCallback(
-    () => setAuthorsDialogOpen(false),
-    [setAuthorsDialogOpen]
-  );
+  const handleClose = useCallback(() => {
+    setAuthorsDialogOpen(false);
+    setSelectedAuthor(null);
+    setAuthorSearchinput("");
+  }, [setAuthorsDialogOpen]);
 
   const handleOk = useCallback(() => {
     console.log("Haloo");
+    setAuthor(selectedAuthor);
     setSelectedAuthor(selectedAuthor);
+    //setAuthorSearchinput(selectedAuthor);
     setAuthorsDialogOpen(false);
-  }, [selectedAuthor, setAuthorsDialogOpen]);
+  }, [selectedAuthor, setAuthorsDialogOpen, setAuthor]);
 
   const handleChange = useCallback((e) => {
     console.log("MIRO HERE", e.target.value);
     e.preventDefault();
     setAuthorSearchinput(e.target.value);
   }, []);
+
   const filterAuthors = useCallback((authors, searchTerm) => {
     console.log("Authors ", authors);
     return authors.filter((author) =>

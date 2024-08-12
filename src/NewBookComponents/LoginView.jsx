@@ -31,6 +31,7 @@ const LoginView = ({
   pubYearErrorMessage,
   authorsDialogOpen,
   setAuthorsDialogOpen,
+  setAuthor,
 }) => {
   useEffect(() => {
     console.log("Book info", bookInfo.published);
@@ -86,6 +87,7 @@ const LoginView = ({
             onChange={handleChange}
             authorsDialogOpen={authorsDialogOpen}
             setAuthorsDialogOpen={setAuthorsDialogOpen}
+            setAuthor={setAuthor}
           />
           <PubYearInputField
             label="Published:"
