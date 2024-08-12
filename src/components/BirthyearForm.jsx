@@ -47,7 +47,7 @@ const BirthyearForm = ({ authors }) => {
     let errorMsg = "";
     let shouldPlayAnimation = false;
     let shouldDisableButton = false;
-
+    console.log("birthyear in here", birthyear);
     if (!birthyear) {
       shouldDisableButton = true;
     } else if (birthyear.length > 4) {
