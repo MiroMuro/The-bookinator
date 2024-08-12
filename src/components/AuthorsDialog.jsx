@@ -18,7 +18,6 @@ const AuthorsDialog = ({
   const [authorSearchInput, setAuthorSearchinput] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
   const dialogRef = useRef(null);
-
   const handleClose = useCallback(() => {
     setAuthorsDialogOpen(false);
     setSelectedAuthor(null);
@@ -71,6 +70,7 @@ const AuthorsDialog = ({
   );
 
   useEffect(() => {
+    console.log("Authors dialog open: ", open);
     if (open) {
       dialogRef.current.showModal();
     } else {
@@ -188,24 +188,22 @@ const AuthorsDialog = ({
     }
   );
   return (
-    <div className="">
-      <dialog
-        className="sm:w-6/12 w-full p-2 border-2 border-gray-400 rounded-md bg-red-200"
-        ref={dialogRef}
-      >
-        <AuthorsDialogHeader selectedAuthor={selectedAuthor} />
-        <AuthorFilter setAuthorToSearch={setAuthorSearchinput} />
-        <AuthorsSortCriteriaDropdown criteria={sortCriteria} />
-        <AuthorsDialogGrid
-          data={data}
-          filterAuthors={filterAuthors}
-          loading={loading}
-          error={error}
-          authorSearchInput={authorSearchInput}
-          handleChange={handleChange}
-        />
-      </dialog>
-    </div>
+    <dialog
+      className={`sm:w-6/12 w-full p-2 border-2 border-gray-400 rounded-md bg-red-200 backdrop-blur-sm `}
+      ref={dialogRef}
+    >
+      <AuthorsDialogHeader selectedAuthor={selectedAuthor} />
+      <AuthorFilter setAuthorToSearch={setAuthorSearchinput} />
+      <AuthorsSortCriteriaDropdown criteria={sortCriteria} />
+      <AuthorsDialogGrid
+        data={data}
+        filterAuthors={filterAuthors}
+        loading={loading}
+        error={error}
+        authorSearchInput={authorSearchInput}
+        handleChange={handleChange}
+      />
+    </dialog>
   );
 };
 
