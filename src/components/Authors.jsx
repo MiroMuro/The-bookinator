@@ -18,6 +18,47 @@ const Authors = ({ token, setToken }) => {
   const handleClose = () => {
     setErrorDialogOpen(false);
   };
+
+  const SortingArrow = ({ isArrowUp }) => {
+    console.log("isArrowUp ", isArrowUp);
+    if (!isArrowUp) {
+      return (
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 6V18M12 18L7 13M12 18L17 13"
+            stroke="#000000"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      );
+    }
+    return (
+      <svg
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 6V18M12 6L7 11M12 6L17 11"
+          stroke="#000000"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    );
+  };
+
   const handleTokenError = (error) => {
     return (
       <TimeOutDialog
@@ -79,7 +120,7 @@ const Authors = ({ token, setToken }) => {
     }
   };
 
-  const AuthorsTable = ({ authors }) => {
+  /*const AuthorsTable = ({ authors }) => {
     if (!authors) {
       return <div>No authors added yet.</div>;
     } else {
@@ -87,7 +128,10 @@ const Authors = ({ token, setToken }) => {
         <table className="authorsTable">
           <thead className="">
             <tr className="w-8/12">
-              <th className="py-3 bg-red-400">Author</th>
+              <th className="py-3 bg-red-400">
+                Author{" "}
+                
+              </th>
               <th className="py-3 bg-red-400">Born</th>
               <th className="py-3 bg-red-400">Books</th>
             </tr>
@@ -104,7 +148,7 @@ const Authors = ({ token, setToken }) => {
         </table>
       );
     }
-  };
+  };*/
 
   const AuthorsGrid = ({ authors }) => {
     if (!authors) {
@@ -114,22 +158,25 @@ const Authors = ({ token, setToken }) => {
         <div>
           <div className="font-semibold grid grid-cols-3 shadow-2xl border-2 border-gray-400 min-w-72 w-full sm:w-5/12">
             <header
-              className=" py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
               onClick={() => handleSort("name")}
             >
               Author
+              <SortingArrow isArrowUp={reverseSort.name} />
             </header>
             <header
-              className=" py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
               onClick={() => handleSort("born")}
             >
               Born
+              <SortingArrow isArrowUp={reverseSort.born} />
             </header>
             <header
-              className=" py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
               onClick={() => handleSort("bookCount")}
             >
               Books
+              <SortingArrow isArrowUp={reverseSort.bookCount} />
             </header>
           </div>
           <div>
