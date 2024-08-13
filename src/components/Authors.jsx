@@ -120,36 +120,6 @@ const Authors = ({ token, setToken }) => {
     }
   };
 
-  /*const AuthorsTable = ({ authors }) => {
-    if (!authors) {
-      return <div>No authors added yet.</div>;
-    } else {
-      return (
-        <table className="authorsTable">
-          <thead className="">
-            <tr className="w-8/12">
-              <th className="py-3 bg-red-400">
-                Author{" "}
-                
-              </th>
-              <th className="py-3 bg-red-400">Born</th>
-              <th className="py-3 bg-red-400">Books</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {authors.map((author) => (
-              <tr key={author.id} className="authorsTableRow">
-                <td className="py-3 px-6">{author.name}</td>
-                <td className="py-3 px-6">{author.born}</td>
-                <td className="py-3 px-6">{author.bookCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      );
-    }
-  };*/
-
   const AuthorsGrid = ({ authors }) => {
     if (!authors) {
       return <div>No authors added yet.</div>;
@@ -207,7 +177,7 @@ const Authors = ({ token, setToken }) => {
     console.log(error);
     if (
       error.networkError &&
-      error.networkError &&
+      error.networkError.result &&
       (error.networkError.result.name === "TokenExpiredError" ||
         error.networkError.result.name === "JsonWebTokenError")
     ) {

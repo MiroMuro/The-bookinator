@@ -212,6 +212,7 @@ const useBookForm = (token, setToken) => {
 
   const submit = async (event) => {
     event.preventDefault();
+    event.stopPropagation();
     //Add the book and wait for the response for information about the book.
     const addedBookData = await addBook({
       variables: {
