@@ -1,4 +1,5 @@
 import AuthorsDialog from "../components/AuthorsDialog";
+import NewAuthorDialog from "../components/NewAuthorDialog";
 const AuthorInputField = ({
   label,
   name,
@@ -8,6 +9,8 @@ const AuthorInputField = ({
   authorsDialogOpen,
   setAuthorsDialogOpen,
   setAuthor,
+  addAuthorDialogOpen,
+  setAddAuthorDialogOpen,
 }) => (
   <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
     <div className="flex flex-col">
@@ -34,22 +37,19 @@ const AuthorInputField = ({
       <button
         className="max-w-33 min-w-33 mt-1 border-black border-2 bg-white rounded-md p-2 ease-linear duration-300 scale-100 transform hover:bg-black hover:text-white"
         type="button"
+        onClick={() => {
+          setAddAuthorDialogOpen(true);
+        }}
       >
         {" "}
         Add a new Author
       </button>
     </div>
 
-    {/*<input
-      autoComplete="off"
-      label={label}
-      name={name}
-      type={type}
-      className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
-      value={value}
-      onChange={onChange}
-    />*/}
-
+    <NewAuthorDialog
+      open={addAuthorDialogOpen}
+      setDialogOpen={setAddAuthorDialogOpen}
+    />
     <AuthorsDialog
       setAuthor={setAuthor}
       open={authorsDialogOpen}

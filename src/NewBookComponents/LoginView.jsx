@@ -32,6 +32,8 @@ const LoginView = ({
   authorsDialogOpen,
   setAuthorsDialogOpen,
   setAuthor,
+  addAuthorDialogOpen,
+  setAddAuthorDialogOpen,
 }) => {
   useEffect(() => {
     console.log("Book info", bookInfo.published);
@@ -88,6 +90,8 @@ const LoginView = ({
             authorsDialogOpen={authorsDialogOpen}
             setAuthorsDialogOpen={setAuthorsDialogOpen}
             setAuthor={setAuthor}
+            addAuthorDialogOpen={addAuthorDialogOpen}
+            setAddAuthorDialogOpen={setAddAuthorDialogOpen}
           />
           <PubYearInputField
             label="Published:"

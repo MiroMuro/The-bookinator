@@ -30,6 +30,8 @@ const NewBook = ({ setToken, token }) => {
     handleFileChange,
     submit,
     setAuthor,
+    addAuthorDialogOpen,
+    setAddAuthorDialogOpen,
   } = useBookForm(token, setToken);
 
   return (
@@ -65,6 +67,8 @@ const NewBook = ({ setToken, token }) => {
             file={file}
             setAuthorsDialogOpen={setAuthorsDialogOpen}
             setAuthor={setAuthor}
+            addAuthorDialogOpen={addAuthorDialogOpen}
+            setAddAuthorDialogOpen={setAddAuthorDialogOpen}
           />
         </>
       ) : (

@@ -60,6 +60,9 @@ const useBookForm = (token, setToken) => {
   //State for the Authors dialog.
   const [authorsDialogOpen, setAuthorsDialogOpen] = useState(false);
 
+  //State for the "Add a new author" dialog.
+  const [addAuthorDialogOpen, setAddAuthorDialogOpen] = useState(false);
+
   const [uploadBookImage] = useMutation(UPLOAD_BOOK_IMAGE, {
     onError: (error) => {
       console.log("Error in uploading image");
@@ -257,6 +260,8 @@ const useBookForm = (token, setToken) => {
     addGenre,
     handleGenreDeletion,
     setAuthor,
+    addAuthorDialogOpen,
+    setAddAuthorDialogOpen,
   };
 };
 

@@ -59,3 +59,45 @@
 dialog::backdrop {
   @apply backdrop-blur-sm;
 }
+
+.testDialog {
+  @apply absolute top-0 left-1/2 -translate-x-1/2 m-auto p-0 w-1/2 h-1/2 bg-red-500 opacity-0;
+  transform: translateY(-100%);
+}
+dialog[open] {
+  animation: dropIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+dialog[close] {
+  animation: dropOut 0.7s ease-in forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    background-color: green;
+  }
+}
+
+@keyframes dropOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translate(-0%, -100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-0%, 0);
+  }
+}
