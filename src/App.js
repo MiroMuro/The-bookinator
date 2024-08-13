@@ -8,8 +8,14 @@ import RegisterForm from "./components/RegisterForm";
 import Suggestions from "./components/Suggestions.jsx";
 import Header from "./components/Header.jsx";
 import { useSubscription, useApolloClient } from "@apollo/client";
-import { BOOK_ADDED, ALL_BOOKS, ALL_GENRES } from "./components/queries.js";
+import {
+  BOOK_ADDED,
+  ALL_BOOKS,
+  ALL_GENRES,
+  AUTHOR_ADDED,
+} from "./components/queries.js";
 import NavLink from "./components/NavLink.jsx";
+
 const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from saving to the cache
   const uniqByName = (a) => {
@@ -27,6 +33,21 @@ const updateCache = (cache, query, addedBook) => {
     return { allBooks: uniqByName(allBooks.concat(addedBook)) };
   });
   console.log("Genre of the added book", addedBook.genres);
+};
+
+const updateAuthorCache = (cache, query, addedAuthor) => {
+  // This is used to eliminate duplicate authors from saving to the cache
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.name;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+
+  cache.updateQuery(query, ({ allAuthors }) => {
+    return { allAuthors: uniqByName(allAuthors.concat(addedAuthor)) };
+  });
 };
 
 export const updateCacheWithGenres = (cache, query, addedBook) => {
@@ -60,6 +81,13 @@ const App = () => {
     },
   });
 
+  useSubscription(AUTHOR_ADDED, {
+    onData: ({ data, error }) => {
+      const addedAuthor = data.data.authorAdded;
+      console.log("Author sub error   ", error);
+      updateAuthorCache(client.cache, { query: ALL_BOOKS }, addedAuthor);
+    },
+  });
   return (
     <Router>
       <div className="font-body">

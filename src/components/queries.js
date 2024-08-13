@@ -20,6 +20,7 @@ const AUTHOR_DETAILS = gql`
     born
     bookCount
     id
+    description
   }
 `;
 const BOOK_ADDED = gql`
@@ -38,6 +39,16 @@ const AUTHOR_UPDATED = gql`
   }
   ${AUTHOR_DETAILS}
 `;
+
+const AUTHOR_ADDED = gql`
+  subscription {
+    authorAdded {
+      ...AuthorDetails
+    }
+  }
+  ${AUTHOR_DETAILS}
+`;
+
 const ALL_AUTHORS = gql`
   query {
     allAuthors {
@@ -101,6 +112,18 @@ const CREATE_BOOK = gql`
     }
   }
 `;
+
+const CREATE_AUTHOR = gql`
+  mutation ($name: String!, $born: Int, $description: String) {
+    addAuthor(name: $name, born: $born, description: $description) {
+      name
+      born
+      bookCount
+      id
+      description
+    }
+  }
+`;
 const ALL_GENRES = gql`
   query {
     allGenres
@@ -156,4 +179,6 @@ export {
   AUTHOR_UPDATED,
   UPLOAD_BOOK_IMAGE,
   GET_BOOK_IMAGE,
+  AUTHOR_ADDED,
+  CREATE_AUTHOR,
 };

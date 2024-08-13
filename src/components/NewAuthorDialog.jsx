@@ -41,14 +41,14 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       </section>
       <section className="flex justify-between p-2 mb-4">
         <button
-          className="border-2 border-gray-400 bg-red-500 p-2 rounded-md "
+          className="border-2 border-black bg-red-500 p-2 rounded-md transition ease-linear duration-300 hover:scale-110"
           type="button"
           onClick={() => setDialogOpen(false)}
         >
           Cancel
         </button>
         <button
-          className="border-2 border-gray-400 bg-green-500 p-2 rounded-md "
+          className="border-2 border-black bg-green-500 p-2 rounded-md transition ease-linear duration-300  hover:scale-110"
           type="button"
           onClick={() => setDialogOpen(false)}
         >
