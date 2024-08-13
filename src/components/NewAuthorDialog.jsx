@@ -11,11 +11,50 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     }
   }, [open]);
   return (
-    <dialog className=".testDialog" ref={dialogRef}>
-      <div>Hello World</div>
-      <button type="button" onClick={() => setDialogOpen(false)}>
-        Close
-      </button>
+    <dialog className="newAuthorDialog" ref={dialogRef}>
+      <header className="text-xl p-2 border-b-2 border-gray-400">
+        Add a new Author
+      </header>
+      <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <aside className="font-semibold">Name:</aside>
+        <main className=" shadow-xl border-b-2 border-gray-400">
+          <input />
+        </main>
+      </section>
+      <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <aside className="font-semibold">Born:</aside>
+        <main className=" shadow-xl border-b-2 border-gray-400">
+          <input />
+        </main>
+      </section>
+      <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400 ">
+        <aside className="font-semibold">Description:</aside>
+        <main className=" shadow-xl border-b-2 border-gray-400">
+          <textarea className="h-40" />
+        </main>
+      </section>
+      <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400 ">
+        <aside className="font-semibold">Image:</aside>
+        <main className="">
+          <input type="file" accept="image/*" />
+        </main>
+      </section>
+      <section className="flex justify-between p-2 mb-4">
+        <button
+          className="border-2 border-gray-400 bg-red-500 p-2 rounded-md "
+          type="button"
+          onClick={() => setDialogOpen(false)}
+        >
+          Cancel
+        </button>
+        <button
+          className="border-2 border-gray-400 bg-green-500 p-2 rounded-md "
+          type="button"
+          onClick={() => setDialogOpen(false)}
+        >
+          Add author
+        </button>
+      </section>
     </dialog>
   );
 };
