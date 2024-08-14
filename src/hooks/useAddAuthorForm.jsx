@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_AUTHOR } from "../components/queries";
+import { validate } from "graphql";
 const useAddAuthorForm = () => {
   const [author, setAuthor] = useState({
     name: "",
@@ -20,92 +21,56 @@ const useAddAuthorForm = () => {
 
   const handleChange = (event) => {
     let { name, value } = event.target;
-    let errorMsg = "";
+
+    setAuthor((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateName = (name) => {
+    let errors = [];
+
+    if (name.length < 4) {
+      errors.push("Name must be at least 4 characters long.");
+    }
+
+    if (/\d/.test(name)) {
+      errors.push("Name should not contain numbers.");
+    }
+
+    setErrorMessage((prev) => ({
+      ...prev,
+      name: errors,
+      isNameErrorMessage: errors.length > 0,
+    }));
+  };
+
+  const validateBorn = (born) => {
+    let errors = [];
     const currentYear = new Date().getFullYear();
 
-    if (name === "born" && value > currentYear) {
-      if (
-        errorMessage.born &&
-        errorMessage.born.includes("Birth year cannot be in the future")
-      ) {
-        event.preventDefault();
-        return;
-      } else {
-        errorMsg = "Birth year cannot be in the future";
-        setErrorMessage((prev) => ({
-          ...prev,
-          born: [...prev.born, errorMsg],
-          isBornErrorMessage: true,
-        }));
-        event.preventDefault();
-      }
+    if (born === "") {
+      // Clear errors if the field is empty
+      errors = [];
+    } else if (isNaN(born)) {
+      errors.push("Born year should only contain numbers.");
     } else {
-      setAuthor((prev) => ({ ...prev, [name]: value }));
+      const bornYear = parseInt(born);
+      if (bornYear > currentYear) {
+        errors.push("Born year cannot be in the future.");
+      }
     }
+    setErrorMessage((prev) => ({
+      ...prev,
+      born: errors,
+      isBornErrorMessage: errors.length > 0,
+    }));
   };
 
-  const handleNameBeforeInput = (event) => {
-    const { data, target } = event;
-    let errorMsg = "";
-    if (target.id === "nameInput" && /^\d+$/.test(data)) {
-      if (
-        errorMessage.name &&
-        errorMessage.name.includes("Name cannot contain numbers.")
-      ) {
-        event.preventDefault();
-      } else {
-        errorMsg = "Name cannot contain numbers.";
-        setErrorMessage((prev) => ({
-          ...prev,
-          name: [prev.name, errorMsg],
-          isNameErrorMessage: true,
-        }));
-        event.preventDefault();
-      }
-    } else {
-      setErrorMessage((prev) => ({
-        ...prev,
-        name: "",
-        isNameErrorMessage: false,
-      }));
-    }
-  };
-
-  const handleBornBeforeInput = (event) => {
-    console.log("In handleBornBeforeInput. Event: ", event);
-    const { data, target } = event;
-    let errorMsg = "";
-    //If the input is not a number, prevent the default action and play the animation.
-    // Jos ei ole taulukossa ja on error
-    // Jos on taulukossa ja on error
-    // Jos ei ole taulukossa ja ei ole error
-
-    //On error
-    if (target.id === "bornInput" && !/^\d+$/.test(data)) {
-      //on taulukossa ja on error
-      if (
-        errorMessage.born &&
-        errorMessage.born.includes("Only numbers are allowed.")
-      ) {
-        event.preventDefault();
-      } else {
-        console.log("In handleBornBeforeInput. Error message: ", errorMessage);
-        // ei ole taulukossa ja on error
-        errorMsg = "Only numbers are allowed.";
-        console.log("In handleBornBeforeInput. Error message: ", errorMessage);
-        setErrorMessage((prev) => ({
-          ...prev,
-          born: [...prev.born, errorMsg],
-          isBornErrorMessage: true,
-        }));
-        event.preventDefault();
-      }
-    } else {
-      setErrorMessage((prev) => ({
-        ...prev,
-        born: "",
-        isBornErrorMessage: false,
-      }));
+  const handleBlur = (event) => {
+    const { name, value } = event.target;
+    if (name === "name") {
+      validateName(value);
+    } else if (name === "born") {
+      validateBorn(value);
     }
   };
 
@@ -138,8 +103,9 @@ const useAddAuthorForm = () => {
     handleChange,
     errorMessage,
     setErrorMessage,
-    handleBornBeforeInput,
-    handleNameBeforeInput,
+    validateBorn,
+    validateName,
+    handleBlur,
   ];
 };
 export default useAddAuthorForm;

@@ -9,10 +9,11 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     handleChange,
     errorMessage,
     setErrorMessage,
-    handleBornBeforeInput,
-    handleNameBeforeInput,
+    validateBorn,
+    validateName,
+    handleBlur,
   ] = useAddAuthorForm();
-
+  const [isAddButtonDisabled, setIsAddButtonDisabled] = useState();
   useEffect(() => {
     if (open) {
       dialogRef.current.showModal();
@@ -20,17 +21,27 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       dialogRef.current.close();
     }
   }, [open]);
-
-  const handleErrorStatusChange = (errorName, errorMessageText) => {
-    setErrorMessage((prev) => ({
-      ...prev,
-      [errorName]: !prev[errorName],
-      name: errorMessageText,
-    }));
+  const isFormValid = () => {
+    if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
+      return true;
+    } else if (
+      !errorMessage.isNameErrorMessage &&
+      !errorMessage.isBornErrorMessage
+    ) {
+      return false;
+    }
   };
-
   const ErrorMessageComponent = ({ message, showErrorMessage, key }) => {
     console.log("MEssage, ", message);
+    console.log("isAddButtibnDisabled, ", isAddButtonDisabled);
+    console.log(
+      "errorMessage.isBornErrorMessage, ",
+      errorMessage.isBornErrorMessage
+    );
+    console.log(
+      "errorMessage.isNameErrorMessage, ",
+      errorMessage.isNameErrorMessage
+    );
     if (!showErrorMessage) return null;
     else {
       return (
@@ -41,9 +52,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           }`}
         >
           {message.map((msg) => (
-            <div className=" text-xs pt-2 bg-red-500 border-gray-400 rounded-md">
-              {msg}
-            </div>
+            <div className="text-xs p-2 text-red-500">{msg}</div>
           ))}
         </div>
       );
@@ -58,14 +67,14 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </header>
         <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
           <aside className="font-semibold">Name:</aside>
-          <main className="relative">
+          <main className="">
             <input
               id="nameInput"
               className="border-b-2 border-gray-400"
               name="name"
               value={author.name}
               onChange={(e) => handleChange(e)}
-              onBeforeInput={(e) => handleNameBeforeInput(e)}
+              onBlur={(e) => handleBlur(e)}
             />
             <ErrorMessageComponent
               message={errorMessage.name}
@@ -76,14 +85,14 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </section>
         <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
           <aside className="font-semibold">Born:</aside>
-          <main className="relative">
+          <main className="">
             <input
               id="bornInput"
               className="border-b-2 border-gray-400"
               name="born"
               value={author.born}
               onChange={(e) => handleChange(e)}
-              onBeforeInput={(e) => handleBornBeforeInput(e)}
+              onBlur={(e) => handleBlur(e)}
             />
             <ErrorMessageComponent
               message={errorMessage.born}
@@ -102,11 +111,6 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
               placeholder="Enter a description. Max 600 characters."
               onChange={(e) => handleChange(e)}
             />
-            {/*<ErrorMessageComponent
-              message={"Description is too long"}
-              showErrorMessage={errorMessage.isDescriptionErrorMessage}
-              key={3}
-            />*/}
           </main>
         </section>
         <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
@@ -126,10 +130,11 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             Cancel
           </button>
           <button
-            className="border-2 border-black bg-green-500 p-2 rounded-md transition ease-linear duration-300 hover:scale-110"
+            className="border-2 border-black bg-green-500 p-2 rounded-md transition ease-linear duration-300 hover:scale-110 disabled:opacity-50"
             type="button"
             id="addAuthorButton"
             onClick={handleManualSubmit}
+            disabled={isFormValid()}
           >
             Add author
           </button>
