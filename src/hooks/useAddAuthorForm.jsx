@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_AUTHOR } from "../components/queries";
-import { validate } from "graphql";
 const useAddAuthorForm = () => {
   const [author, setAuthor] = useState({
     name: "",
@@ -65,6 +64,17 @@ const useAddAuthorForm = () => {
     }));
   };
 
+  const isFormValid = () => {
+    if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
+      return true;
+    } else if (
+      !errorMessage.isNameErrorMessage &&
+      !errorMessage.isBornErrorMessage
+    ) {
+      return false;
+    }
+  };
+
   const handleBlur = (event) => {
     const { name, value } = event.target;
     if (name === "name") {
@@ -86,6 +96,12 @@ const useAddAuthorForm = () => {
   //Submit doesn't work for the author form is actually nested in the book form.
   //So, we need to manually submit the author form.
   const handleManualSubmit = async () => {
+    validateBorn(author.born);
+    validateName(author.name);
+    if (isFormValid()) {
+      console.log("Form is not valid");
+      return;
+    }
     console.log("Adding author", author);
     const addedAuthorData = await addAuthor({
       variables: {
@@ -97,15 +113,6 @@ const useAddAuthorForm = () => {
     console.log(addedAuthorData);
   };
 
-  return [
-    author,
-    handleManualSubmit,
-    handleChange,
-    errorMessage,
-    setErrorMessage,
-    validateBorn,
-    validateName,
-    handleBlur,
-  ];
+  return [author, handleManualSubmit, handleChange, errorMessage, handleBlur];
 };
 export default useAddAuthorForm;

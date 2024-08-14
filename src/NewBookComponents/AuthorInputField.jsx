@@ -15,7 +15,7 @@ const AuthorInputField = ({
   <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
     <div className="flex flex-col">
       <p className="flex-1">{label}</p>
-      <p className="flex-3 font-semibold">{value}</p>
+      <p className="flex-3 font-semibold h-14 w-20">{value}</p>
       <button
         className="flex-1 border-2 border-black rounded-md bg-white my-2 max-w-14"
         type="button"

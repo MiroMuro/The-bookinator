@@ -3,7 +3,6 @@ import useBookForm from "../hooks/useBookForm";
 import LoginView from "../NewBookComponents/LoginView";
 
 const NewBook = ({ setToken, token }) => {
-  console.log("The token, ", token);
   const {
     bookInfo,
     playPubYearErrorAnimation,
