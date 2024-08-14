@@ -37,6 +37,7 @@ const useBookForm = (token, setToken) => {
     text: "Add a new book!",
     style: "py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
   });
+  
   //This updated the apollo cache after a book is added.
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
