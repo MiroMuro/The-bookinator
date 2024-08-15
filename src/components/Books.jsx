@@ -39,7 +39,12 @@ const Books = ({ setToken }) => {
     }
   };
 
-  if (loading) return <div>Loading books...</div>;
+  if (loading)
+    return (
+      <div className="border-2 border-gray-400 rounded-md p-2 bg-yellow-200 m-2 h-1/6">
+        Loading books...
+      </div>
+    );
   if (
     error &&
     (error.networkError?.result?.name === "TokenExpiredError" ||
@@ -55,7 +60,11 @@ const Books = ({ setToken }) => {
     );
   }
   if (error)
-    return <div>A netowrk error has occured. Please try again later.</div>;
+    return (
+      <div className="border-2 border-gray-400 rounded-md p-2 bg-red-500 m-2 h-1/6">
+        A netowrk error has occured. Please try again later.
+      </div>
+    );
   const BookGrid = ({ books }) => {
     if (books.length === 0) {
       return <div>No books added yet.</div>;
@@ -80,13 +89,13 @@ const Books = ({ setToken }) => {
               />
               <div className="p-4">
                 <p className="text-sm text-gray-600 mb-1">
-                  Author: {book.author.name}
+                  <strong>Author:</strong> {book.author.name}
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
-                  Born: {book.author.born}
+                  <strong>Born:</strong> {book.author.born}
                 </p>
                 <p className="text-sm text-gray-600">
-                  Published: {book.published}
+                  <strong>Published:</strong> {book.published}
                 </p>
               </div>
             </div>
@@ -108,7 +117,7 @@ const Books = ({ setToken }) => {
           />
         </div>
       </div>
-      <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="">
         <BookGrid books={filteredBooks} />
       </div>
     </div>

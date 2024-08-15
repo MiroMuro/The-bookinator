@@ -10,6 +10,7 @@ const Authors = ({ token, setToken }) => {
   const [authorToSearch, setAuthorToSearch] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
   const [sortCriteria, setSortCriteria] = useState("");
+  //State to reverse the sorting order.
   const [reverseSort, setReverseSort] = useState({
     name: false,
     born: false,
@@ -20,7 +21,6 @@ const Authors = ({ token, setToken }) => {
   };
 
   const SortingArrow = ({ isArrowUp }) => {
-    console.log("isArrowUp ", isArrowUp);
     if (!isArrowUp) {
       return (
         <svg
@@ -70,9 +70,14 @@ const Authors = ({ token, setToken }) => {
     );
   };
   const handleGeneralError = () => {
-    return <div>Error fetching the authors...</div>;
+    return (
+      <div className="border-2 border-gray-400 rounded-md p-2 bg-red-500 m-2 h-1/6">
+        Error fetching the authors...
+      </div>
+    );
   };
 
+  //When the user clicks the sorting arrow.
   const handleSort = (sortCriteria) => {
     setSortCriteria(sortCriteria);
     if (sortCriteria === "name") {
@@ -86,6 +91,7 @@ const Authors = ({ token, setToken }) => {
     }
   };
 
+  //Logic to sort the authors based on the sort criteria.
   const sortAuthors = (authors, sortCriteria) => {
     const authorsCopy = [...authors];
     if (sortCriteria === "name") {
@@ -103,17 +109,18 @@ const Authors = ({ token, setToken }) => {
       );
     }
     if (sortCriteria === "born") {
-      console.log("Sort by born");
-      console.log("reverseSort ", reverseSort);
       return authorsCopy.sort((a, b) =>
         reverseSort.born ? b.born - a.born : a.born - b.born
       );
     }
     return authors;
   };
+
   const filterAuthors = (authors, authorToSearch) => {
     if (authors.length) {
+      //First sort the authors based on the sort criteria.
       const sortedAuthors = sortAuthors(authors, sortCriteria);
+      //Then filter the authors based on the search criteria on the sorted list.
       return sortedAuthors.filter((author) =>
         author.name.toLowerCase().includes(authorToSearch)
       );
@@ -171,10 +178,13 @@ const Authors = ({ token, setToken }) => {
   };
 
   if (loading) {
-    return <div>Loading authors...</div>;
+    return (
+      <div className="border-2 border-gray-400 rounded-md p-2 bg-yellow-200 m-2 h-1/6">
+        Loading authors...
+      </div>
+    );
   }
   if (error) {
-    console.log(error);
     if (
       error.networkError &&
       error.networkError.result &&

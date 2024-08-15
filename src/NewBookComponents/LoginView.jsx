@@ -8,6 +8,7 @@ import AddGenreButton from "./AddGenreButton";
 import InfoBox from "./InfoBox";
 import GenresBox from "./GenresBox";
 import FilePicker from "./FilePicker";
+import DescriptionField from "./DescriptionField";
 
 const LoginView = ({
   bookInfo,
@@ -34,6 +35,8 @@ const LoginView = ({
   setAuthor,
   addAuthorDialogOpen,
   setAddAuthorDialogOpen,
+  isTooLongGenre,
+  setIsTooLongGenre,
 }) => {
   useEffect(() => {
     console.log("Book info", bookInfo.published);
@@ -68,7 +71,6 @@ const LoginView = ({
         message={message}
       />
 
-      <h2 className="text-xl w-5/12">Add a new book!</h2>
       <form
         className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
         onSubmit={handleSubmit}
@@ -106,21 +108,29 @@ const LoginView = ({
             playPubYearErrorAnimation={playPubYearErrorAnimation}
             pubYearErrorMessage={pubYearErrorMessage}
           />
+          <DescriptionField
+            name="description"
+            label="Description:"
+            type="text"
+            value={bookInfo.description}
+            onChange={handleChange}
+          />
           <div className="flex justify-between border-b-2 overflow-hidden border-gray-400 pl-1 pb-2 bg-red-200">
             <AddGenreButton
               addGenre={addGenre}
               genres={bookInfo.genres}
               genre={bookInfo.genre}
               setIsDuplicateGenre={setIsDuplicateGenre}
+              setIsTooLongGenre={setIsTooLongGenre}
             />
             <GenreInputField
               name="genre"
               type="text"
-              label="Duplicate genre!"
               value={bookInfo.genre}
               genres={bookInfo.genres}
               onChange={handleChange}
               isDuplicateGenre={isDuplicateGenre}
+              isTooLongGenre={isTooLongGenre}
             />
           </div>
         </div>

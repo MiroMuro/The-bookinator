@@ -10,6 +10,7 @@ const BOOK_DETAILS = gql`
       id
       bookCount
     }
+    description
     genres
     id
   }
@@ -69,6 +70,7 @@ const ALL_BOOKS = gql`
         born
         id
       }
+      description
       genres
       id
     }
@@ -92,12 +94,14 @@ const CREATE_BOOK = gql`
     $title: String!
     $author: String!
     $published: Int!
+    $description: String
     $genres: [String!]!
   ) {
     addBook(
       title: $title
       author: $author
       published: $published
+      description: $description
       genres: $genres
     ) {
       id
@@ -108,6 +112,7 @@ const CREATE_BOOK = gql`
         bookCount
       }
       published
+      description
       genres
     }
   }

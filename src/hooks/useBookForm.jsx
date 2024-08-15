@@ -19,6 +19,7 @@ const useBookForm = (token, setToken) => {
     title: "",
     author: "",
     published: 0,
+    description: "",
     genre: "",
     genres: [],
   });
@@ -37,7 +38,7 @@ const useBookForm = (token, setToken) => {
     text: "Add a new book!",
     style: "py-2 bg-red-200 rounded mb-2 border-2 border-gray-400 text-center",
   });
-  
+
   //This updated the apollo cache after a book is added.
   const { subscribeToMore } = useQuery(ALL_AUTHORS, {
     fetchPolicy: "cache-and-network",
@@ -51,6 +52,9 @@ const useBookForm = (token, setToken) => {
 
   // State for the duplicate genre error message.
   const [isDuplicateGenre, setIsDuplicateGenre] = useState(false);
+
+  // State for too long genre name.
+  const [isTooLongGenre, setIsTooLongGenre] = useState(false);
 
   // State for the processing animation.
   const [isProcessing, setIsProcessing] = useState(false);
@@ -264,6 +268,8 @@ const useBookForm = (token, setToken) => {
     setAuthor,
     addAuthorDialogOpen,
     setAddAuthorDialogOpen,
+    isTooLongGenre,
+    setIsTooLongGenre,
   };
 };
 

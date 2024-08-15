@@ -15,7 +15,6 @@ const useForm = (initialState) => {
   };
 
   const setAuthor = (author) => {
-    console.log("In setAuthor. Author: ", author);
     setState((prev) => ({ ...prev, author: author }));
   };
   //Handle adding a genre to the list of genres, and reset the genre input field.

@@ -1,7 +1,7 @@
 const InfoBox = ({ isAnimating, isProcessing, message }) => {
   return (
     <div
-      className={`${message.style} ${
+      className={`text-xl ${message.style} ${
         isAnimating ? "animate-scaleUpAndDown" : ""
       }`}
     >
