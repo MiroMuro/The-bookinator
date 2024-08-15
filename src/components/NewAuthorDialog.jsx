@@ -1,10 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useAddAuthorForm from "../hooks/useAddAuthorForm";
-
+import StatusBar from "../NewAuthorComponents/StatusBar";
 const NewAuthorDialog = ({ open, setDialogOpen }) => {
   const dialogRef = useRef(null);
-  const [author, handleManualSubmit, handleChange, errorMessage, handleBlur] =
-    useAddAuthorForm();
+  const {
+    author,
+    handleManualSubmit,
+    handleChange,
+    errorMessage,
+    handleBlur,
+    addAuthorStatus,
+  } = useAddAuthorForm();
   useEffect(() => {
     if (open) {
       dialogRef.current.showModal();
@@ -12,6 +18,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       dialogRef.current.close();
     }
   }, [open]);
+
   const isFormValid = () => {
     if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
       return true;
@@ -22,6 +29,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       return false;
     }
   };
+
   const ErrorMessageComponent = ({ message, showErrorMessage }) => {
     if (!showErrorMessage) return null;
     else {
@@ -40,8 +48,9 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
   return (
     <dialog className="newAuthorDialog" ref={dialogRef}>
       <form id="addAuthorForm">
-        <header className="text-xl p-2 border-b-2 border-gray-400">
-          Add a new Author
+        <header className="flex justify-between text-2xl p-4 h-24 border-b-2 border-gray-400">
+          <h2>Add a new author</h2>{" "}
+          <StatusBar initialStatus={addAuthorStatus} />
         </header>
         <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
           <aside className="font-semibold">Name:</aside>

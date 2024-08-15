@@ -1,12 +1,17 @@
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { CREATE_AUTHOR } from "../components/queries";
+import { useState, useEffect } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  CREATE_AUTHOR,
+  ALL_AUTHORS,
+  AUTHOR_ADDED,
+} from "../components/queries";
 const useAddAuthorForm = () => {
   const [author, setAuthor] = useState({
     name: "",
     born: "",
     description: "",
   });
+  const [addAuthorStatus, setAddAuthorStatus] = useState(""); // This is the status of the add author mutation.
   const [errorMessage, setErrorMessage] = useState({
     name: [],
     isNameErrorMessage: false,
@@ -20,9 +25,34 @@ const useAddAuthorForm = () => {
 
   const handleChange = (event) => {
     let { name, value } = event.target;
-
     setAuthor((prev) => ({ ...prev, [name]: value }));
   };
+
+  const { subscribeToMore } = useQuery(ALL_AUTHORS, {
+    fetchPolicy: "cache-and-network",
+  });
+
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      //This is the subscription query
+      document: AUTHOR_ADDED,
+      // The return values replaces the cache with the updated author.
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const newAuthor = subscriptionData.data.authorAdded;
+
+        return {
+          allAuthors: prev.allAuthors.map((author) =>
+            author.name === newAuthor.name ? newAuthor : author
+          ),
+        };
+      },
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [subscribeToMore]);
 
   const validateName = (name) => {
     let errors = [];
@@ -87,15 +117,23 @@ const useAddAuthorForm = () => {
   const [addAuthor] = useMutation(CREATE_AUTHOR, {
     onError: (error) => {
       console.log("***********ERROR IN ADDING AUTHOR**************", error);
+      setAddAuthorStatus("error");
     },
     onCompleted: (data) => {
       console.log("***********AUTHOR ADDED**************", data);
+      setAddAuthorStatus("success");
+      setAuthor({
+        name: "",
+        born: "",
+        description: "",
+      });
       return data.addAuthor;
     },
   });
   //Submit doesn't work for the author form is actually nested in the book form.
   //So, we need to manually submit the author form.
   const handleManualSubmit = async () => {
+    setAddAuthorStatus("loading");
     validateBorn(author.born);
     validateName(author.name);
     if (isFormValid()) {
@@ -113,6 +151,13 @@ const useAddAuthorForm = () => {
     console.log(addedAuthorData);
   };
 
-  return [author, handleManualSubmit, handleChange, errorMessage, handleBlur];
+  return {
+    author,
+    handleManualSubmit,
+    handleChange,
+    errorMessage,
+    handleBlur,
+    addAuthorStatus,
+  };
 };
 export default useAddAuthorForm;
