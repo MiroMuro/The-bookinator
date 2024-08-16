@@ -31,7 +31,7 @@ const GenreInputField = ({
         Genre name is too long!
       </label>
       <input
-        className={`${
+        className={`w-60 ${
           isDuplicateGenre
             ? "border-2 border-red-500 outline-none   transition duration-300"
             : "border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"

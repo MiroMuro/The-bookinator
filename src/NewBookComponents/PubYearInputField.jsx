@@ -12,7 +12,7 @@ const PubYearInputField = ({
   pubYearErrorMessage,
 }) => (
   <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400 relative">
-    <p> {label}</p>
+    <p className="text-xl"> {label}</p>
     <p
       className={`${
         playPubYearErrorAnimation
@@ -30,7 +30,7 @@ const PubYearInputField = ({
       name={name}
       inputMode={inputMode}
       type={type}
-      className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+      className="border-b-2 w-60 border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
       value={value}
       onChange={onChange}
       onBeforeInput={onBeforeInput}

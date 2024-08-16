@@ -7,14 +7,16 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
   console.log("IS disabled? ", isDisabled);
   console.log("Bookinfo ", bookInfo);
   return (
-    <button
-      className="addBookButton"
-      type={type}
-      disabled={isDisabled}
-      onClick={() => setIsProcessing(true)}
-    >
-      Add book
-    </button>
+    <div className="flex justify-center">
+      <button
+        className="addBookButton"
+        type={type}
+        disabled={isDisabled}
+        onClick={() => setIsProcessing(true)}
+      >
+        Add book
+      </button>
+    </div>
   );
   /*}*/
 };

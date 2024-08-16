@@ -64,7 +64,7 @@ const LoginView = ({
   ]);
 
   return (
-    <div className="flex flex-col w-5/12 mt-2 flex-wrap break-words">
+    <div className="flex flex-col max-w-6xl mx-auto px-8 flex-wrap break-words">
       <InfoBox
         isAnimating={isAnimating}
         isProcessing={isProcessing}
@@ -116,22 +116,25 @@ const LoginView = ({
             onChange={handleChange}
           />
           <div className="flex justify-between border-b-2 overflow-hidden border-gray-400 pl-1 pb-2 bg-red-200">
-            <AddGenreButton
-              addGenre={addGenre}
-              genres={bookInfo.genres}
-              genre={bookInfo.genre}
-              setIsDuplicateGenre={setIsDuplicateGenre}
-              setIsTooLongGenre={setIsTooLongGenre}
-            />
-            <GenreInputField
-              name="genre"
-              type="text"
-              value={bookInfo.genre}
-              genres={bookInfo.genres}
-              onChange={handleChange}
-              isDuplicateGenre={isDuplicateGenre}
-              isTooLongGenre={isTooLongGenre}
-            />
+            <p className="text-xl px-1 mt-2">Genre:</p>
+            <div className="flex flex-col items-center">
+              <GenreInputField
+                name="genre"
+                type="text"
+                value={bookInfo.genre}
+                genres={bookInfo.genres}
+                onChange={handleChange}
+                isDuplicateGenre={isDuplicateGenre}
+                isTooLongGenre={isTooLongGenre}
+              />
+              <AddGenreButton
+                addGenre={addGenre}
+                genres={bookInfo.genres}
+                genre={bookInfo.genre}
+                setIsDuplicateGenre={setIsDuplicateGenre}
+                setIsTooLongGenre={setIsTooLongGenre}
+              />
+            </div>
           </div>
         </div>
         <GenresBox

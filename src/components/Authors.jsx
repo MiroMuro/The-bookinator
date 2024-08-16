@@ -138,7 +138,9 @@ const Authors = ({ token, setToken }) => {
   };
 
   const AuthorsGrid = ({ filteredAuthors, allAuthors }) => {
-    const currentAuthors = filteredAuthors.slice(
+    //Slice the filtered authors based on the current page.
+    //The paginate function is used to change the current page.
+    const currentAuthorsOnPage = filteredAuthors.slice(
       indexOfFirstAuthor,
       indexOfLastAuthor
     );
@@ -173,7 +175,7 @@ const Authors = ({ token, setToken }) => {
           <div>
             <Pagination
               authorsPerPage={authorsPerPage}
-              totalAuthors={filteredAuthors.length}
+              totalFilteredAuthors={filteredAuthors.length}
               paginate={paginate}
               currentPage={currentPage}
             />
@@ -183,7 +185,7 @@ const Authors = ({ token, setToken }) => {
                   No authors found !
                 </div>
               )}
-              {currentAuthors.map((author) => (
+              {currentAuthorsOnPage.map((author) => (
                 <section className=" hover:bg-red-200 cursor-pointer grid p-2 grid-cols-3 gap-3 shadow-2xl border-b-2 border-gray-400 min-w-72 w-full">
                   <div className=" text-center">{author.name}</div>
                   <div className=" text-center">{author.born}</div>
@@ -199,15 +201,19 @@ const Authors = ({ token, setToken }) => {
 
   const Pagination = ({
     authorsPerPage,
-    totalAuthors,
+    totalFilteredAuthors,
     paginate,
     currentPage,
   }) => {
     const pageNumbers = [];
-    console.log("number of pages", Math.ceil(totalAuthors / authorsPerPage));
-    console.log("totalAuthors", totalAuthors);
-    console.log("authorsPerPage", authorsPerPage);
-    for (let i = 1; i <= Math.ceil(totalAuthors / authorsPerPage); i++) {
+
+    //The pagination logic depends on the list of authors that match the filter criteria.
+    //This way it displays the correct number of pages.
+    for (
+      let i = 1;
+      i <= Math.ceil(totalFilteredAuthors / authorsPerPage);
+      i++
+    ) {
       pageNumbers.push(i);
     }
 

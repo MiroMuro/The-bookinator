@@ -1,9 +1,11 @@
 const GenresBox = ({ genres, handleGenreDeletion }) => {
   return (
     <div className="flex relative border-b-2 border-gray-400  bg-red-200 ">
-      <label className="absolute -top-4 left-2 bg-red-200">Genres</label>
+      <label className="absolute text-xl -top-4 left-2 bg-red-200">
+        Genres
+      </label>
       <div className="w-full  break-words">
-        <ul className="flex flex-wrap my-2">
+        <ul className="flex flex-wrap my-2 py-2">
           {genres.map((genre, index) => (
             <li
               key={index}
