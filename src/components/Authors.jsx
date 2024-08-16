@@ -16,9 +16,18 @@ const Authors = ({ token, setToken }) => {
     born: false,
     bookCount: false,
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [authorsPerPage, setAuthorsPerPage] = useState(10);
+  //2 * 10 = 20
+  const indexOfLastAuthor = currentPage * authorsPerPage;
+  const indexOfFirstAuthor = indexOfLastAuthor - authorsPerPage;
+
   const handleClose = () => {
     setErrorDialogOpen(false);
   };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const SortingArrow = ({ isArrowUp }) => {
     if (!isArrowUp) {
@@ -120,6 +129,7 @@ const Authors = ({ token, setToken }) => {
     if (authors.length) {
       //First sort the authors based on the sort criteria.
       const sortedAuthors = sortAuthors(authors, sortCriteria);
+
       //Then filter the authors based on the search criteria on the sorted list.
       return sortedAuthors.filter((author) =>
         author.name.toLowerCase().includes(authorToSearch)
@@ -127,7 +137,11 @@ const Authors = ({ token, setToken }) => {
     }
   };
 
-  const AuthorsGrid = ({ authors }) => {
+  const AuthorsGrid = ({ filteredAuthors, allAuthors }) => {
+    const currentAuthors = filteredAuthors.slice(
+      indexOfFirstAuthor,
+      indexOfLastAuthor
+    );
     if (!authors) {
       return <div>No authors added yet.</div>;
     } else {
@@ -157,13 +171,19 @@ const Authors = ({ token, setToken }) => {
             </header>
           </div>
           <div>
+            <Pagination
+              authorsPerPage={authorsPerPage}
+              totalAuthors={filteredAuthors.length}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
             <div className="border-2 border-gray-400 bg-red-100 w-full sm:w-5/12">
               {authors.length === 0 && (
                 <div className="text-center font-semibold hover:bg-red-200 cursor-pointer  shadow-2xl border-b-2 border-gray-400 min-w-72 w-full">
                   No authors found !
                 </div>
               )}
-              {authors.map((author) => (
+              {currentAuthors.map((author) => (
                 <section className=" hover:bg-red-200 cursor-pointer grid p-2 grid-cols-3 gap-3 shadow-2xl border-b-2 border-gray-400 min-w-72 w-full">
                   <div className=" text-center">{author.name}</div>
                   <div className=" text-center">{author.born}</div>
@@ -175,6 +195,38 @@ const Authors = ({ token, setToken }) => {
         </div>
       );
     }
+  };
+
+  const Pagination = ({
+    authorsPerPage,
+    totalAuthors,
+    paginate,
+    currentPage,
+  }) => {
+    const pageNumbers = [];
+    console.log("number of pages", Math.ceil(totalAuthors / authorsPerPage));
+    console.log("totalAuthors", totalAuthors);
+    console.log("authorsPerPage", authorsPerPage);
+    for (let i = 1; i <= Math.ceil(totalAuthors / authorsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav>
+        <ul className="flex">
+          {pageNumbers.map((number) => (
+            <button
+              className={`px-3 py-1 border rounded ${
+                currentPage === number ? "bg-red-400 text-white" : "bg-white"
+              }`}
+              onClick={() => paginate(number)}
+            >
+              {number}
+            </button>
+          ))}
+        </ul>
+      </nav>
+    );
   };
 
   if (loading) {
@@ -195,8 +247,10 @@ const Authors = ({ token, setToken }) => {
     }
     return handleGeneralError();
   }
+
   const authors = data.allAuthors;
   const filteredAuthors = filterAuthors(authors, authorToSearch);
+
   return (
     <div className="flex flex-col justify-start align-middle items-start-h-screen w-full sm:w-8/12">
       {token && (
@@ -210,7 +264,7 @@ const Authors = ({ token, setToken }) => {
           setAuthorToSearch={setAuthorToSearch}
         />
       </div>
-      <AuthorsGrid authors={filteredAuthors} />
+      <AuthorsGrid filteredAuthors={filteredAuthors} allAuthors={authors} />
     </div>
   );
 };
