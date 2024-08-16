@@ -4,11 +4,19 @@ import { useState, useEffect } from "react";
 import GenresDropdown from "./GenresDropdown";
 import image from "../static/images/book.jpg";
 import TimeOutDialog from "./TimeOutDialog";
+//import BooksSorting from "./BooksSorting";
 const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
   const handleClose = () => setErrorDialogOpen(false);
   const { loading, error, data, subscribeToMore } = useQuery(ALL_BOOKS);
+  //State to reverse the sorting order.
+  const [reverseSort, setReverseSort] = useState({
+    title: false,
+    author: false,
+    published: false,
+  });
+  const [sortCriteria, setSortCriteria] = useState("");
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -32,10 +40,56 @@ const Books = ({ setToken }) => {
   }, [subscribeToMore]);
 
   const filterBooks = (books, currentGenre) => {
+    let sortedBooks = sortBooks(books, sortCriteria);
     if (currentGenre === "") {
-      return books;
+      return sortedBooks;
     } else {
-      return books.filter((book) => book.genres.includes(currentGenre));
+      return sortedBooks.filter((book) => book.genres.includes(currentGenre));
+    }
+  };
+
+  const handleSort = (e) => {
+    let sortCriteria = e.target.value;
+    console.log("Sort criteria is: ", sortCriteria);
+    setSortCriteria(sortCriteria);
+    console.log("Reverse sort is: ", reverseSort);
+    if (sortCriteria === "title") {
+      setReverseSort((prev) => ({ ...prev, title: !prev.title }));
+    }
+    if (sortCriteria === "author") {
+      setReverseSort((prev) => ({ ...prev, author: !prev.author }));
+    }
+    if (sortCriteria === "published") {
+      setReverseSort((prev) => ({ ...prev, published: !prev.published }));
+    } else {
+      return;
+    }
+  };
+
+  const sortBooks = (books, sortCriteria) => {
+    const booksCopy = [...books];
+    if (sortCriteria === "title") {
+      return booksCopy.sort((a, b) =>
+        reverseSort.title
+          ? b.title.localeCompare(a.title)
+          : a.title.localeCompare(b.title)
+      );
+    }
+    if (sortCriteria === "author") {
+      return booksCopy.sort((a, b) =>
+        reverseSort.author
+          ? b.author.name.localeCompare(a.author.name)
+          : a.author.name.localeCompare(b.author.name)
+      );
+    }
+    if (sortCriteria === "published") {
+      return booksCopy.sort((a, b) =>
+        reverseSort.published
+          ? b.published - a.published
+          : a.published - b.published
+      );
+    } else {
+      return books;
     }
   };
 
@@ -65,6 +119,35 @@ const Books = ({ setToken }) => {
         A netowrk error has occured. Please try again later.
       </div>
     );
+
+  const BookSorting = ({ sortCriteria, handleSort }) => (
+    <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2  p-2 border-gray-400">
+      <label htmlFor="sortMenu" className="text-xl ">
+        Sort by:{" "}
+      </label>
+      <select
+        onChange={(e) => handleSort(e)}
+        id="sortMenu"
+        value={sortCriteria}
+      >
+        <option defaultValue={true} disabled>
+          Select sort criteria
+        </option>
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="published">Published</option>
+      </select>
+      <button
+        className="text-xl mx-2"
+        value={sortCriteria}
+        onClick={(e) => handleSort(e)}
+      >
+        {" "}
+        ⬆⬇
+      </button>
+    </div>
+  );
+
   const BookGrid = ({ books }) => {
     if (books.length === 0) {
       return <div>No books added yet.</div>;
@@ -110,11 +193,12 @@ const Books = ({ setToken }) => {
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex w-full align-top  bg-white top-60 mt-4 sticky  sm:top-14">
-        <div className="w-full bg-red-200 rounded-md border-2 mt-2  p-2 border-gray-400 ">
+        <div className="flex w-full ">
           <GenresDropdown
             setCurrentGenre={setCurrentGenre}
             currentGenre={currentGenre}
           />
+          <BookSorting sortCriteria={sortCriteria} handleSort={handleSort} />
         </div>
       </div>
       <div className="">
