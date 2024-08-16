@@ -56,7 +56,7 @@ const LoginView = ({
   isAnimating,
   isProcessing,
 }) => (
-  <div className="flex flex-col justify-end basis-28">
+  <div className="flex flex-col justify-end basis-28 py-3">
     <div
       className={`${message.style} ${
         isAnimating ? "animate-scaleUpAndDown" : ""

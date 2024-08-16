@@ -166,7 +166,7 @@ const RegisterForm = () => {
     );
   };
   return (
-    <div className="flex justify-center sm:justify-start">
+    <div className="flex justify-center sm:justify-start py-3">
       <div className="flex flex-col justify-end basis-28">
         {}
         <InfoBox

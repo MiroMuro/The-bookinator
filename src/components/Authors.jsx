@@ -258,7 +258,7 @@ const Authors = ({ token, setToken }) => {
   const filteredAuthors = filterAuthors(authors, authorToSearch);
 
   return (
-    <div className="flex flex-col justify-start align-middle items-start-h-screen w-full sm:w-8/12">
+    <div className="flex flex-col justify-start align-middle items-start-h-screen w-4/12 mx-auto sm:w-6/12">
       {token && (
         <div className="w-full sm:w-5/12 ">
           <BirthyearForm authors={authors} />
