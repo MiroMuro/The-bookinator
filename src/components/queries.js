@@ -68,6 +68,15 @@ const GET_SINGLE_BOOK = gql`
   }
   ${BOOK_DETAILS}
 `;
+
+const GET_SINGLE_AUTHOR = gql`
+  query ($authorId: String!) {
+    getAuthorById(authorId: $authorId) {
+      ...AuthorDetails
+    }
+  }
+  ${AUTHOR_DETAILS}
+`;
 const ALL_BOOKS = gql`
   query ($genre: String, $author: String) {
     allBooks(genre: $genre, author: $author) {
@@ -195,4 +204,5 @@ export {
   AUTHOR_ADDED,
   CREATE_AUTHOR,
   GET_SINGLE_BOOK,
+  GET_SINGLE_AUTHOR,
 };

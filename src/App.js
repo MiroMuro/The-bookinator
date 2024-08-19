@@ -16,6 +16,7 @@ import {
   AUTHOR_ADDED,
 } from "./components/queries.js";
 import NavLink from "./components/NavLink.jsx";
+import SingleAuthorPage from "./components/SingleAuthorPage.jsx";
 
 const updateCache = (cache, query, addedBook) => {
   //This is used to eliminate duplicate books from saving to the cache
@@ -162,6 +163,10 @@ const App = () => {
             ></Route>
             <Route path="/register" element={<RegisterForm />}></Route>
             <Route path="/book/:bookId" element={<SingleBookPage />}></Route>
+            <Route
+              path="/authors/:authorId"
+              element={<SingleAuthorPage />}
+            ></Route>
           </Routes>
         </div>
       </div>

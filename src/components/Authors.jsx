@@ -4,6 +4,7 @@ import BirthyearForm from "./BirthyearForm";
 import AuthorFilter from "./AuthorFilter";
 import { useState } from "react";
 import TimeOutDialog from "./TimeOutDialog";
+import { Link } from "react-router-dom";
 const Authors = ({ token, setToken }) => {
   //Different states of the query.
   const { loading, error, data } = useQuery(ALL_AUTHORS);
@@ -186,11 +187,13 @@ const Authors = ({ token, setToken }) => {
                 </div>
               )}
               {currentAuthorsOnPage.map((author) => (
-                <section className=" hover:bg-red-200 cursor-pointer grid p-2 grid-cols-3 gap-3 shadow-2xl border-b-2 border-gray-400 min-w-72 w-full">
-                  <div className=" text-center">{author.name}</div>
-                  <div className=" text-center">{author.born}</div>
-                  <div className=" text-center">{author.bookCount}</div>
-                </section>
+                <Link to={"/authors/" + author.id}>
+                  <section className="  cursor-pointer grid p-2 grid-cols-3 gap-3 shadow-2xl border-b-2 border-gray-400 min-w-72 w-full transition ease-linear duration-300 hover:bg-red-200 ">
+                    <div className=" text-center">{author.name}</div>
+                    <div className=" text-center">{author.born}</div>
+                    <div className=" text-center">{author.bookCount}</div>
+                  </section>
+                </Link>
               ))}
             </div>
           </div>
