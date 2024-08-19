@@ -1,6 +1,8 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_BOOK_IMAGE } from "./queries";
+//Default image for books.
+import image from "../static/images/book.jpg";
 
 /**
  * Renders the image of a book based on the provided bookId.
@@ -10,20 +12,24 @@ import { GET_BOOK_IMAGE } from "./queries";
  * @returns {JSX.Element} The BookImage component.
  */
 const BookImage = ({ bookId }) => {
+  let imageUrl;
+
   const { loading, error, data } = useQuery(GET_BOOK_IMAGE, {
     variables: { bookId },
   });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching image: {error.message}</p>;
-
-  const imageUrl = data.getBookImage;
+  if (error) {
+    imageUrl = image;
+  } else {
+    imageUrl = data.getBookImage;
+  }
 
   return (
-    <div>
+    <div className="flex justify-center items-center m-2">
       {imageUrl ? (
         // Display the book image if available. The image tag can translate Base64 strings to images.
-        <img src={imageUrl} alt="Book cover" />
+        <img className="max-h-36 max-w-60" src={imageUrl} alt="" />
       ) : (
         <p>No image available</p>
       )}

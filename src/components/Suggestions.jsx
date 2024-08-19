@@ -140,11 +140,9 @@ const Suggestions = ({ setToken }) => {
                       {book.title}
                     </h2>
                   </header>
-                  <img
-                    className="w-full h-46 object-cover"
-                    src={image}
-                    alt="book"
-                  />
+                  <div>
+                    <BookImage bookId={book.id} />
+                  </div>
                   <div className="p-4">
                     <p className="text-sm text-gray-600 mb-1">
                       Author: {book.author.name}
@@ -155,9 +153,6 @@ const Suggestions = ({ setToken }) => {
                     <p className="text-sm text-gray-600 mb-1">
                       Published: {book.published}
                     </p>
-                  </div>
-                  <div>
-                    <BookImage bookId={book.id} />
                   </div>
                 </div>
               ))}

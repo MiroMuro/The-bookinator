@@ -2,8 +2,9 @@ import { ALL_BOOKS, BOOK_ADDED, ALL_AUTHORS } from "./queries";
 import { useQuery } from "@apollo/client";
 import { useState, useEffect, useRef } from "react";
 import GenresDropdown from "./GenresDropdown";
-import image from "../static/images/book.jpg";
+import BookImage from "./BookImage";
 import TimeOutDialog from "./TimeOutDialog";
+import { Link } from "react-router-dom";
 //import BooksSorting from "./BooksSorting";
 const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
@@ -192,18 +193,16 @@ const Books = ({ setToken }) => {
           {books.map((book) => (
             <div
               key={book.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ease-in-out duration-200 scale-100 transform hover:scale-105 hover:cursor-pointer"
             >
               <header className=" bg-red-200 p-2  min-h-16">
                 <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
                   {book.title}
                 </h2>
               </header>
-              <img
-                className="w-full h-46 object-cover"
-                src={image}
-                alt="book"
-              />
+              <div>
+                <BookImage bookId={book.id} />
+              </div>
               <div className="p-4">
                 <p className="text-sm text-gray-600 mb-1">
                   <strong>Author:</strong> {book.author.name}
@@ -214,6 +213,7 @@ const Books = ({ setToken }) => {
                 <p className="text-sm text-gray-600">
                   <strong>Published:</strong> {book.published}
                 </p>
+                <Link to={"/book/" + book.id}>Da link</Link>
               </div>
             </div>
           ))}

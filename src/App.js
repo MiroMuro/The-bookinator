@@ -7,6 +7,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Suggestions from "./components/Suggestions.jsx";
 import Header from "./components/Header.jsx";
+import SingleBookPage from "./components/SingleBookPage.jsx";
 import { useSubscription, useApolloClient } from "@apollo/client";
 import {
   BOOK_ADDED,
@@ -160,6 +161,7 @@ const App = () => {
               element={<Suggestions setToken={setToken} />}
             ></Route>
             <Route path="/register" element={<RegisterForm />}></Route>
+            <Route path="/book/:bookId" element={<SingleBookPage />}></Route>
           </Routes>
         </div>
       </div>
