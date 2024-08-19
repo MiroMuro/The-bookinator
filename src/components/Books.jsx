@@ -1,6 +1,6 @@
 import { ALL_BOOKS, BOOK_ADDED, ALL_AUTHORS } from "./queries";
 import { useQuery } from "@apollo/client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import GenresDropdown from "./GenresDropdown";
 import image from "../static/images/book.jpg";
 import TimeOutDialog from "./TimeOutDialog";
@@ -17,6 +17,7 @@ const Books = ({ setToken }) => {
     published: false,
   });
   const [sortCriteria, setSortCriteria] = useState("");
+  const [searchWord, setSearchWord] = useState("");
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -39,8 +40,18 @@ const Books = ({ setToken }) => {
     };
   }, [subscribeToMore]);
 
-  const filterBooks = (books, currentGenre) => {
-    let sortedBooks = sortBooks(books, sortCriteria);
+  const searchBooks = (books, searchWord) => {
+    if (searchWord === "") {
+      return books;
+    }
+    return books.filter((book) =>
+      book.title.toLowerCase().includes(searchWord.toLowerCase())
+    );
+  };
+
+  const filterBooks = (books, currentGenre, searchWord) => {
+    let soughtBooks = searchBooks(books, searchWord);
+    let sortedBooks = sortBooks(soughtBooks, sortCriteria);
     if (currentGenre === "") {
       return sortedBooks;
     } else {
@@ -147,7 +158,30 @@ const Books = ({ setToken }) => {
       </button>
     </div>
   );
+  const BookSearchBar = ({ searchWord, setSearchWord }) => {
+    const inputRef = useRef(null);
+    //If a an input element is created in a nested component, react will lose focus after
+    //every keystroke. This effect will keep the focus on the input element.
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, [searchWord]);
 
+    return (
+      <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2 p-2 border-gray-400">
+        <label htmlFor="searchBar" className="text-xl">
+          Search title:{" "}
+        </label>
+        <input
+          ref={inputRef}
+          id="searchBar"
+          value={searchWord}
+          onChange={(e) => setSearchWord(e.target.value)}
+        ></input>
+      </div>
+    );
+  };
   const BookGrid = ({ books }) => {
     if (books.length === 0) {
       return <div>No books added yet.</div>;
@@ -188,7 +222,7 @@ const Books = ({ setToken }) => {
     }
   };
   const books = data.allBooks;
-  const filteredBooks = filterBooks(books, currentGenre);
+  const filteredBooks = filterBooks(books, currentGenre, searchWord);
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,6 +233,10 @@ const Books = ({ setToken }) => {
             currentGenre={currentGenre}
           />
           <BookSorting sortCriteria={sortCriteria} handleSort={handleSort} />
+          <BookSearchBar
+            searchWord={searchWord}
+            setSearchWord={setSearchWord}
+          />
         </div>
       </div>
       <div className="">
