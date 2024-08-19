@@ -169,7 +169,7 @@ const Books = ({ setToken }) => {
     }, [searchWord]);
 
     return (
-      <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2 p-2 border-gray-400">
+      <div className="w-1/3 bg-red-200 rounded-md border-2 mt-2 p-2 border-gray-400">
         <label htmlFor="searchBar" className="text-xl">
           Search title:{" "}
         </label>

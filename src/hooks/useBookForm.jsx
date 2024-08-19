@@ -62,6 +62,9 @@ const useBookForm = (token, setToken) => {
   //State for the iamge file of the book.
   const [file, setFile] = useState(null);
 
+  //State for the file validation message;
+  const [fileValidationMessage, setFileValidationMessage] = useState("");
+
   //State for the Authors dialog.
   const [authorsDialogOpen, setAuthorsDialogOpen] = useState(false);
 
@@ -212,9 +215,40 @@ const useBookForm = (token, setToken) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    console.log("Tiedosto", file);
+    const validationMessage = validateFile(file);
+    if (validationMessage !== "File validated successfully!") {
+      console.log(validationMessage);
+      setFileValidationMessage(validationMessage);
+      return;
+    }
+    setFileValidationMessage(validationMessage);
     setFile(file);
   };
 
+  const validateFile = (file) => {
+    let errorMessage = "";
+    //Check if the file is an image and if it is not too large. (10 megabytes in binary)
+    const allowedExtensions = [".jpg", ".jpeg", ".png"],
+      sizeLimit = 1000000;
+
+    const { name, fileSize } = file;
+    const fileExtensions = name.slice(name.lastIndexOf("."));
+
+    if (fileSize > sizeLimit) {
+      errorMessage = "The file is too large.";
+      return errorMessage;
+    }
+    if (
+      fileExtensions !== allowedExtensions[0] &&
+      fileExtensions !== allowedExtensions[1] &&
+      fileExtensions !== allowedExtensions[2]
+    ) {
+      errorMessage = "The file is not an image.";
+      return errorMessage;
+    }
+    errorMessage = "File validated successfully!";
+  };
   const submit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -270,6 +304,8 @@ const useBookForm = (token, setToken) => {
     setAddAuthorDialogOpen,
     isTooLongGenre,
     setIsTooLongGenre,
+    fileValidationMessage,
+    setFileValidationMessage,
   };
 };
 

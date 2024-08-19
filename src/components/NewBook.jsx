@@ -33,6 +33,8 @@ const NewBook = ({ setToken, token }) => {
     setAddAuthorDialogOpen,
     isTooLongGenre,
     setIsTooLongGenre,
+    fileValidationMessage,
+    setFileValidationMessage,
   } = useBookForm(token, setToken);
 
   return (
@@ -72,6 +74,8 @@ const NewBook = ({ setToken, token }) => {
             setAddAuthorDialogOpen={setAddAuthorDialogOpen}
             isTooLongGenre={isTooLongGenre}
             setIsTooLongGenre={setIsTooLongGenre}
+            fileValidationMessage={fileValidationMessage}
+            setFileValidationMessage={setFileValidationMessage}
           />
         </>
       ) : (

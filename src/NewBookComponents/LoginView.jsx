@@ -37,6 +37,8 @@ const LoginView = ({
   setAddAuthorDialogOpen,
   isTooLongGenre,
   setIsTooLongGenre,
+  fileValidationMessage,
+  setFileValidationMessage,
 }) => {
   useEffect(() => {
     console.log("Book info", bookInfo.published);
@@ -141,7 +143,11 @@ const LoginView = ({
           genres={bookInfo.genres}
           handleGenreDeletion={handleGenreDeletion}
         />
-        <FilePicker handleFileChange={handleFileChange} setFile={setFile} />
+        <FilePicker
+          handleFileChange={handleFileChange}
+          setFile={setFile}
+          fileValidationMessage={fileValidationMessage}
+        />
         <AddBookButton
           type={"submit"}
           bookInfo={bookInfo}
