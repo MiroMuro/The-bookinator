@@ -4,8 +4,7 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
     bookInfo.author === "" ||
     bookInfo.published === 0 ||
     bookInfo.genres.length === 0;
-  console.log("IS disabled? ", isDisabled);
-  console.log("Bookinfo ", bookInfo);
+
   return (
     <div className="flex justify-center">
       <button

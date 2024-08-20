@@ -42,6 +42,8 @@ const LoginView = ({
 }) => {
   useEffect(() => {
     console.log("Book info", bookInfo.published);
+    console.log("Book info", bookInfo);
+
     const currentYear = new Date().getFullYear();
     let errorMsg = "";
     let shouldPlayAnimation = false;

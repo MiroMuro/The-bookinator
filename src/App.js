@@ -13,6 +13,7 @@ import {
   BOOK_ADDED,
   ALL_BOOKS,
   ALL_GENRES,
+  ALL_AUTHORS,
   AUTHOR_ADDED,
 } from "./components/queries.js";
 import NavLink from "./components/NavLink.jsx";
@@ -87,7 +88,8 @@ const App = () => {
     onData: ({ data, error }) => {
       const addedAuthor = data.data.authorAdded;
       console.log("Author sub error   ", error);
-      updateAuthorCache(client.cache, { query: ALL_BOOKS }, addedAuthor);
+      console.log("Author sub data   ", data);
+      updateAuthorCache(client.cache, { query: ALL_AUTHORS }, addedAuthor);
     },
   });
   return (

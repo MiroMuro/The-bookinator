@@ -187,6 +187,7 @@ const Books = ({ setToken }) => {
     if (books.length === 0) {
       return <div>No books added yet.</div>;
     } else {
+      console.log("Books are: ", books);
       return (
         <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {/* Cards go here*/}
@@ -226,7 +227,7 @@ const Books = ({ setToken }) => {
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex w-full align-top  bg-white top-60 mt-4 sticky  sm:top-14">
+      <div className="flex w-full align-top  bg-white top-60 mt-4 ">
         <div className="flex w-full ">
           <GenresDropdown
             setCurrentGenre={setCurrentGenre}

@@ -60,7 +60,6 @@ const AuthorsDialog = ({
 
   const filterAuthors = useCallback(
     (authors, searchTerm) => {
-      console.log("Authors ", authors);
       const sortedAuthors = sortAuthors(authors, sortCriteria);
       return sortedAuthors.filter((author) =>
         author.name.toLowerCase().includes(searchTerm)

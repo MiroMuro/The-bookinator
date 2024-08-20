@@ -215,7 +215,6 @@ const useBookForm = (token, setToken) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log("Tiedosto", file);
     const validationMessage = validateFile(file);
     if (validationMessage !== "File validated successfully!") {
       console.log(validationMessage);
@@ -247,7 +246,7 @@ const useBookForm = (token, setToken) => {
       errorMessage = "The file is not an image.";
       return errorMessage;
     }
-    errorMessage = "File validated successfully!";
+    return (errorMessage = "File validated successfully!");
   };
   const submit = async (event) => {
     event.preventDefault();
@@ -258,10 +257,10 @@ const useBookForm = (token, setToken) => {
         title: bookInfo.title,
         author: bookInfo.author,
         published: parseInt(bookInfo.published),
+        description: bookInfo.description,
         genres: bookInfo.genres,
       },
     });
-    console.log(addedBookData.data.addBook);
     //Try to upload the image after the book has been added.
     try {
       const bookId = addedBookData.data.addBook.id;
