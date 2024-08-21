@@ -106,6 +106,11 @@ const GET_BOOK_IMAGE = gql`
     getBookImage(bookId: $bookId)
   }
 `;
+const GET_AUTHOR_IMAGE = gql`
+  query ($authorId: ID!) {
+    getAuthorImage(authorId: $authorId)
+  }
+`;
 const CREATE_BOOK = gql`
   mutation (
     $title: String!
@@ -169,6 +174,13 @@ const UPLOAD_BOOK_IMAGE = gql`
     }
   }
 `;
+const UPLOAD_AUTHOR_IMAGE = gql`
+  mutation ($file: Upload!, $authorId: ID!){
+    uploadAuthorImage(file: $file, authorId: $authorId){
+      id
+      imageId
+  }
+`;
 const LOGIN = gql`
   mutation ($username: String!, $password: String!) {
     login(username: $username, password: $password) {
@@ -200,7 +212,9 @@ export {
   REGISTER,
   AUTHOR_UPDATED,
   UPLOAD_BOOK_IMAGE,
+  UPLOAD_AUTHOR_IMAGE,
   GET_BOOK_IMAGE,
+  GET_AUTHOR_IMAGE,
   AUTHOR_ADDED,
   CREATE_AUTHOR,
   GET_SINGLE_BOOK,

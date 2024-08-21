@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_SINGLE_AUTHOR, ALL_BOOKS } from "./queries";
 import image from "../static/images/book.jpg";
+import BookImage from "./BookImage";
 const SingleAuthorPage = () => {
   const { authorId } = useParams();
 
@@ -26,10 +27,15 @@ const SingleAuthorPage = () => {
       <div className="flex flex-col ">
         {data.allBooks.map((book) => (
           <Link to={"/book/" + book.id}>
-            <div>
-              <p className="text-2xl m-4">{book.title}</p>
-              <p className="text-2xl m-4">{book.published}</p>
-              <p className="text-2xl m-4">{book.genres.join(", ")}</p>
+            <div className="grid grid-cols-2 border-2 border-gray-400 rounded-md m-4">
+              <div>
+                <BookImage bookId={book.id} />
+              </div>
+              <div className="bg-gray-200 border-2 border-l-gray-400">
+                <p className="text-xl m-4">Title: {book.title}</p>
+                <p className="text-xl m-4">Published: {book.published}</p>
+                <p className="text-xl m-4">Genres: {book.genres.join(", ")}</p>
+              </div>
             </div>
           </Link>
         ))}

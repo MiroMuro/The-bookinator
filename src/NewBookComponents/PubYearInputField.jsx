@@ -11,12 +11,12 @@ const PubYearInputField = ({
   playPubYearErrorAnimation,
   pubYearErrorMessage,
 }) => (
-  <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400 relative">
+  <div className="flex my-2 pb-8 justify-between border-b-2 p-2 border-b-gray-400 relative ">
     <p className="text-xl"> {label}</p>
     <p
       className={`${
         playPubYearErrorAnimation
-          ? "absolute right-2 border-2 border-red-500 bg-red-300 rounded-md transition duration-500 transform translate-y-8 opacity-100"
+          ? "absolute right-2  text-red-500 transition duration-500 transform translate-y-7 opacity-100"
           : "absolute right-3 border-2 rounded-md transition duration-500 transform translate-y-0 opacity-0"
       }`}
     >

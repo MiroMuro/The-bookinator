@@ -5,13 +5,11 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("event.target.value", event.target.value);
     setCurrentGenre("");
   };
 
   const handleGenreChange = (event) => {
     event.preventDefault();
-    console.log("event.target.value", event.target.value);
     setCurrentGenre(event.target.value);
   };
   console.log("currentGenre", currentGenre);
@@ -20,9 +18,11 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   }
   return (
     <div className="w-1/3 bg-red-200 rounded-md border-2 mt-2  p-2 border-gray-400">
-      {currentGenre
-        ? `Currently selected genre: ${currentGenre}`
-        : " No genre selected"}
+      <div className=" text-lg">
+        {currentGenre
+          ? `Currently selected genre: ${currentGenre}`
+          : " No genre selected"}
+      </div>
       <form onSubmit={(e) => handleSubmit(e)}>
         <label for="genres">Choose genre </label>
         <select
@@ -31,7 +31,7 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
           value={""}
           onChange={(e) => handleGenreChange(e)}
         >
-          <option selected>-- Choose genre --</option>
+          <option defaultValue={true}>-- Choose genre --</option>
           {genresResult.data.allGenres.map((genre) => (
             <option value={genre}>{genre}</option>
           ))}

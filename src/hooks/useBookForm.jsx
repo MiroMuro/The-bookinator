@@ -167,6 +167,8 @@ const useBookForm = (token, setToken) => {
   });
 
   useEffect(() => {
+    console.log("BookInfo", bookInfo);
+    console.log("The file", file);
     if (!token) {
       setDialogOpen(true);
       setMessageBoxContent(
@@ -220,9 +222,11 @@ const useBookForm = (token, setToken) => {
       console.log(validationMessage);
       setFileValidationMessage(validationMessage);
       return;
+    } else {
+      console.log("File validated successfully!");
+      setFileValidationMessage(validationMessage);
+      setFile(file);
     }
-    setFileValidationMessage(validationMessage);
-    setFile(file);
   };
 
   const validateFile = (file) => {

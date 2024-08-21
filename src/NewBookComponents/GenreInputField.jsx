@@ -11,7 +11,7 @@ const GenreInputField = ({
   return (
     <div className="flex my-2 justify-between p-2 ">
       <label
-        for="genresInput"
+        htmlFor="genresInput"
         className={`absolute ${
           isDuplicateGenre
             ? "duration-500 transform -translate-y-6 opacity-100 text-red-700"
@@ -21,7 +21,7 @@ const GenreInputField = ({
         Duplicate genre!
       </label>
       <label
-        for="genresInput"
+        htmlFor="genresInput"
         className={`absolute ${
           isTooLongGenre
             ? "duration-500 transform translate-y-6 opacity-100 text-red-700"
