@@ -34,13 +34,13 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     if (!showErrorMessage) return null;
     else {
       return (
-        <div>
+        <>
           {message.map((msg) => (
-            <div className="text-sm p-2 text-red-500 w-11/12 break-words">
+            <div className="text-sm  text-red-500 max-w-44 flex-grow-0 break-words">
               {msg}
             </div>
           ))}
-        </div>
+        </>
       );
     }
   };

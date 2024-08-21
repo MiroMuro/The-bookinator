@@ -23,7 +23,7 @@ const SingleAuthorPage = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         {data.allBooks.map((book) => (
           <Link to={"/book/" + book.id}>
             <div>
@@ -54,20 +54,24 @@ const SingleAuthorPage = () => {
           ></img>
         </div>
         <div className="my-4 border-2 border-black rounded-md bg-gray-200 w-6/12">
-          <p className="text-3xl mb-6">Born: {author.born}</p>
-          <p className="text-3xl mb-6">Books: {author.bookCount}</p>
-          <p className="text-3xl mb-6">Nationality: </p>
+          <p className="text-2xl mb-6 px-2">Born: {author.born}</p>
+          <p className="text-2xl mb-6 px-2">Books: {author.bookCount}</p>
+          <p className="text-2xl mb-6 px-2">Nationality: </p>
         </div>
       </div>
       <div className="border-b-gray-400 border-2">
-        <p className="text-3xl m-4">Description: </p>
+        <p className="text-3xl p-4 border-b-2 border-gray-400 bg-red-200">
+          Description:{" "}
+        </p>
         <div className="border-2 m-4 min-h-40 min-w-40 border-black">
           {" "}
           {author.description}
         </div>
       </div>
       <div>
-        <p className="text-3xl m-4">Books by this author:</p>
+        <p className="text-3xl p-4 bg-red-200 border-b-2 border-gray-400">
+          Books by this author:
+        </p>
         <div>
           <AuthorsBookList authorName={author.name} />
         </div>

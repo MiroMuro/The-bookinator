@@ -20,6 +20,13 @@ const Books = ({ setToken }) => {
   const [sortCriteria, setSortCriteria] = useState("");
   const [searchWord, setSearchWord] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [booksPerPage, setBooksPerPage] = useState(8);
+  let indexOfLastBook = currentPage * booksPerPage;
+  let indexOfFirstBook = indexOfLastBook - booksPerPage;
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       //This is the subscription query
@@ -76,6 +83,11 @@ const Books = ({ setToken }) => {
     } else {
       return;
     }
+  };
+
+  const handleBooksPerPageChange = (e) => {
+    setBooksPerPage(e.target.value);
+    paginate(1);
   };
 
   const sortBooks = (books, sortCriteria) => {
@@ -183,40 +195,44 @@ const Books = ({ setToken }) => {
       </div>
     );
   };
-  const BookGrid = ({ books }) => {
-    if (books.length === 0) {
+  const BookGrid = ({ filteredBooks }) => {
+    if (filteredBooks.length === 0) {
       return <div>No books added yet.</div>;
     } else {
-      console.log("Books are: ", books);
+      const currentBooksOnPage = filteredBooks.slice(
+        indexOfFirstBook,
+        indexOfLastBook
+      );
       return (
         <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {/* Cards go here*/}
-          {books.map((book) => (
-            <div
-              key={book.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ease-in-out duration-200 scale-100 transform hover:scale-105 hover:cursor-pointer"
-            >
-              <header className=" bg-red-200 p-2  min-h-16">
-                <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
-                  {book.title}
-                </h2>
-              </header>
-              <div>
-                <BookImage bookId={book.id} />
+          {currentBooksOnPage.map((book) => (
+            <Link to={"/book/" + book.id}>
+              <div
+                key={book.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ease-in-out duration-200 scale-100 transform hover:scale-105 hover:cursor-pointer"
+              >
+                <header className=" bg-red-200 p-2  min-h-16">
+                  <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
+                    {book.title}
+                  </h2>
+                </header>
+                <div>
+                  <BookImage bookId={book.id} />
+                </div>
+                <div className="p-4">
+                  <p className="text-sm text-gray-600 mb-1">
+                    <strong>Author:</strong> {book.author.name}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <strong>Born:</strong> {book.author.born}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Published:</strong> {book.published}
+                  </p>
+                </div>
               </div>
-              <div className="p-4">
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Author:</strong> {book.author.name}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Born:</strong> {book.author.born}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Published:</strong> {book.published}
-                </p>
-                <Link to={"/book/" + book.id}>Da link</Link>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       );
@@ -224,6 +240,49 @@ const Books = ({ setToken }) => {
   };
   const books = data.allBooks;
   const filteredBooks = filterBooks(books, currentGenre, searchWord);
+
+  const Pagination = ({
+    booksPerPage,
+    totalFilteredBooks,
+    paginate,
+    currentPage,
+    handleBooksPerPageChange,
+  }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalFilteredBooks / booksPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <nav className="flex">
+        <ul className="flex">
+          {pageNumbers.map((number) => (
+            <button
+              className={`px-3 py-1 border rounded ${
+                currentPage === number ? "bg-red-400 text-white" : "bg-white"
+              }`}
+              onClick={() => paginate(number)}
+            >
+              {number}
+            </button>
+          ))}
+        </ul>
+        <div className="flex w-full justify-end">
+          <p className="text-xl">Books per page: </p>
+          <select
+            onChange={(e) => handleBooksPerPageChange(e)}
+            value={booksPerPage}
+          >
+            <option value="8">8</option>
+            <option value="16">16</option>
+            <option value="24">24</option>
+            <option value="32">32</option>
+          </select>
+        </div>
+      </nav>
+    );
+  };
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -240,8 +299,18 @@ const Books = ({ setToken }) => {
           />
         </div>
       </div>
+      <div>
+        <Pagination
+          booksPerPage={booksPerPage}
+          totalFilteredBooks={filteredBooks.length}
+          paginate={paginate}
+          currentPage={currentPage}
+          setBooksPerPage={setBooksPerPage}
+          handleBooksPerPageChange={handleBooksPerPageChange}
+        />
+      </div>
       <div className="">
-        <BookGrid books={filteredBooks} />
+        <BookGrid filteredBooks={filteredBooks} />
       </div>
     </div>
   );

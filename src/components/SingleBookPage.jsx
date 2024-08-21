@@ -45,7 +45,7 @@ const SingleBookPage = () => {
       </div>
       <div>
         <p className="text-2xl m-4">Description: </p>
-        <div className="border-2 text-lg m-4 min-h-40 min-w-40 border-black">
+        <div className="border-2 text-lg m-4 min-h-40 min-w-40 border-gray-400">
           {" "}
           {bookData.description}
         </div>
