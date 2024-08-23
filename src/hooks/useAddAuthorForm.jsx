@@ -4,6 +4,7 @@ import {
   CREATE_AUTHOR,
   ALL_AUTHORS,
   AUTHOR_ADDED,
+  UPLOAD_AUTHOR_IMAGE,
 } from "../components/queries";
 const useAddAuthorForm = () => {
   const [author, setAuthor] = useState({
@@ -11,6 +12,9 @@ const useAddAuthorForm = () => {
     born: "",
     description: "",
   });
+  const [file, setFile] = useState(null);
+  //State for the file validation message;
+  const [fileValidationMessage, setFileValidationMessage] = useState("");
   const [addAuthorStatus, setAddAuthorStatus] = useState(""); // This is the status of the add author mutation.
   const [errorMessage, setErrorMessage] = useState({
     name: [],
@@ -130,6 +134,16 @@ const useAddAuthorForm = () => {
       return data.addAuthor;
     },
   });
+
+  const [uploadAuthorImage] = useMutation(UPLOAD_AUTHOR_IMAGE, {
+    onError: (error) => {
+      console.log("Error in uploading image", error);
+    },
+    onCompleted: (data) => {
+      console.log("Image uploaded successfully. Data is", data);
+    },
+  });
+
   //Submit doesn't work for the author form is actually nested in the book form.
   //So, we need to manually submit the author form.
   const handleManualSubmit = async () => {
@@ -149,8 +163,54 @@ const useAddAuthorForm = () => {
       },
     });
     console.log(addedAuthorData);
+    //Attempt to upload the image if the author was added successfully.
+    try {
+      const authorId = addedAuthorData.data.addAuthor.id;
+      const { data } = await uploadAuthorImage({
+        variables: { file, authorId },
+      });
+      console.log("The data is", data);
+    } catch (error) {
+      console.log("Error in adding author", error);
+    }
   };
 
+  const validateFile = (file) => {
+    let errorMessage = "";
+    //Check if the file is an image and if it is not too large. (10 megabytes in binary)
+    const allowedExtensions = [".jpg", ".jpeg", ".png"],
+      sizeLimit = 1000000;
+
+    const { name, fileSize } = file;
+    const fileExtensions = name.slice(name.lastIndexOf("."));
+
+    if (fileSize > sizeLimit) {
+      errorMessage = "The file is too large.";
+      return errorMessage;
+    }
+    if (
+      fileExtensions !== allowedExtensions[0] &&
+      fileExtensions !== allowedExtensions[1] &&
+      fileExtensions !== allowedExtensions[2]
+    ) {
+      errorMessage = "The file is not an image.";
+      return errorMessage;
+    }
+    return (errorMessage = "File validated successfully!");
+  };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    console.log("Author Image file", file);
+    const validationMessage = validateFile(file);
+    if (validationMessage !== "File validated successfully!") {
+      setFileValidationMessage(validationMessage);
+      return;
+    } else {
+      setFileValidationMessage(validationMessage);
+      setFile(file);
+      return;
+    }
+  };
   return {
     author,
     handleManualSubmit,
@@ -158,6 +218,8 @@ const useAddAuthorForm = () => {
     errorMessage,
     handleBlur,
     addAuthorStatus,
+    handleFileChange,
+    fileValidationMessage,
   };
 };
 export default useAddAuthorForm;

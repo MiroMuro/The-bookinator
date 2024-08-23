@@ -74,20 +74,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     observer.error(customError);
   });
 });
-/*const splitLink = split(
-  // * A function that's called for each operation to execute
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
-    );
-  },
-  // * The Link to use for an operation if the function returns a "truthy" value. (eg. subscription)
-  wsLink,
-  // * The Link to use for an operation if the function returns a "falsy" value. (eg. query or mutation)
-  authLink.concat(httpLink)
-);*/
+
 const uploadLink = createUploadLink({
   uri: httpUri,
   headers: {

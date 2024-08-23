@@ -2,7 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_SINGLE_AUTHOR, ALL_BOOKS } from "./queries";
 import image from "../static/images/book.jpg";
+import AuthorImage from "./AuthorImage";
 import BookImage from "./BookImage";
+
 const SingleAuthorPage = () => {
   const { authorId } = useParams();
 
@@ -53,11 +55,7 @@ const SingleAuthorPage = () => {
       </div>
       <div className="flex border-b-gray-400 border-2">
         <div>
-          <img
-            src={image}
-            className="max-w-60 m-4 border-2 border-black"
-            alt="Author"
-          ></img>
+          <AuthorImage authorId={author.id} />
         </div>
         <div className="my-4 border-2 border-black rounded-md bg-gray-200 w-6/12">
           <p className="text-2xl mb-6 px-2">Born: {author.born}</p>

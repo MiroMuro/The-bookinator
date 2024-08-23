@@ -175,10 +175,11 @@ const UPLOAD_BOOK_IMAGE = gql`
   }
 `;
 const UPLOAD_AUTHOR_IMAGE = gql`
-  mutation ($file: Upload!, $authorId: ID!){
-    uploadAuthorImage(file: $file, authorId: $authorId){
+  mutation ($file: Upload!, $authorId: ID!) {
+    uploadAuthorImage(file: $file, authorId: $authorId) {
       id
       imageId
+    }
   }
 `;
 const LOGIN = gql`

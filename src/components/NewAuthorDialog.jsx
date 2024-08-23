@@ -10,6 +10,8 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     errorMessage,
     handleBlur,
     addAuthorStatus,
+    handleFileChange,
+    fileValidationMessage,
   } = useAddAuthorForm();
   useEffect(() => {
     if (open) {
@@ -101,7 +103,20 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
           <aside className="font-semibold">Image:</aside>
           <main>
-            <input type="file" accept="image/*" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e)}
+            />
+            <div
+              className={`${
+                fileValidationMessage === "File validated successfully!"
+                  ? "border-2 border-black rounded-md bg-green-400"
+                  : "border-2 border-black rounded-md bg-red-500"
+              }`}
+            >
+              {fileValidationMessage}
+            </div>
           </main>
         </section>
         <section className="flex justify-between p-2 mb-4">
