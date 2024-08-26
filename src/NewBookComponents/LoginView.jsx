@@ -38,17 +38,12 @@ const LoginView = ({
   isTooLongGenre,
   setIsTooLongGenre,
   fileValidationMessage,
-  setFileValidationMessage,
 }) => {
   useEffect(() => {
-    console.log("Book info", bookInfo.published);
-    console.log("Book info", bookInfo);
-
     const currentYear = new Date().getFullYear();
     let errorMsg = "";
     let shouldPlayAnimation = false;
-    if (!bookInfo.published) {
-    } else if (bookInfo.published.length > 4) {
+    if (bookInfo.published.length > 4) {
       errorMsg = "Publish year must be 4 digits or less";
       shouldPlayAnimation = true;
     } else if (bookInfo.published > currentYear) {

@@ -54,7 +54,7 @@ const SingleAuthorPage = () => {
         </header>
       </div>
       <div className="flex border-b-gray-400 border-2">
-        <div>
+        <div className="max-w-60 m-4 border-2 border-gray-200">
           <AuthorImage authorId={author.id} />
         </div>
         <div className="my-4 border-2 border-black rounded-md bg-gray-200 w-6/12">
@@ -67,7 +67,7 @@ const SingleAuthorPage = () => {
         <p className="text-3xl p-4 border-b-2 border-gray-400 bg-red-200">
           Description:{" "}
         </p>
-        <div className="border-2 m-4 min-h-40 min-w-40 border-black">
+        <div className="border-2 m-4 min-h-40 min-w-40 border-gray-400 rounded-md">
           {" "}
           {author.description}
         </div>

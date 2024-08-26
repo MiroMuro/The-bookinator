@@ -1,4 +1,7 @@
-const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
+import React from "react";
+import PropTypes from "prop-types"; // Add this line to import PropTypes
+
+const AddBookButton = ({ type, bookInfo, setIsProcessing }) => {
   let isDisabled =
     bookInfo.title === "" ||
     bookInfo.author === "" ||
@@ -17,7 +20,13 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing, file }) => {
       </button>
     </div>
   );
-  /*}*/
+};
+
+// Add prop validation for the 'type' prop
+AddBookButton.propTypes = {
+  type: PropTypes.string.isRequired,
+  bookInfo: PropTypes.object.isRequired,
+  setIsProcessing: PropTypes.func.isRequired,
 };
 
 export default AddBookButton;

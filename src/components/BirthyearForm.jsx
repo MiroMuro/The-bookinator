@@ -47,7 +47,6 @@ const BirthyearForm = ({ authors }) => {
     let errorMsg = "";
     let shouldPlayAnimation = false;
     let shouldDisableButton = false;
-    console.log("birthyear in here", birthyear);
     if (!birthyear) {
       shouldDisableButton = true;
     } else if (birthyear.length > 4) {
@@ -151,7 +150,7 @@ const BirthyearForm = ({ authors }) => {
               {formState.errorMessage}
             </p>
             <input
-              className="border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+              className="border-b-2 w-36 border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
               maxLength={4}
               type="text"
               pattern="\d*"

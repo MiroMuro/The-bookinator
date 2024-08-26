@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { GET_SINGLE_BOOK, GET_BOOK_IMAGE } from "./queries";
+import { GET_SINGLE_BOOK } from "./queries";
 import BookImage from "./BookImage";
 const SingleBookPage = () => {
   const { bookId } = useParams();
@@ -9,16 +9,10 @@ const SingleBookPage = () => {
     variables: { bookId },
   });
 
-  /* const { imageLoading, imageError, imageData } = useQuery(GET_BOOK_IMAGE, {
-    variables: { bookId },
-  });*/
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  console.log("THe data is", data.getBookById);
-  console.log(bookId);
+
   const bookData = data.getBookById;
-  //const image = imageData.getBookImage;
   return (
     <div className="w-4/12 my-2 border-gray-400 border-2 rounded-md overflow-hidden">
       <div className="flex bg-red-200 border-b-gray-400 border-2 ">
@@ -45,7 +39,7 @@ const SingleBookPage = () => {
       </div>
       <div>
         <p className="text-2xl m-4">Description: </p>
-        <div className="border-2 text-lg m-4 min-h-40 min-w-40 border-gray-400">
+        <div className="border-2 text-lg m-4 min-h-40 min-w-40 border-gray-400 rounded-md">
           {" "}
           {bookData.description}
         </div>

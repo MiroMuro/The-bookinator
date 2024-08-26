@@ -141,13 +141,14 @@ const Authors = ({ token, setToken }) => {
   const AuthorsGrid = ({ filteredAuthors, allAuthors }) => {
     //Slice the filtered authors based on the current page.
     //The paginate function is used to change the current page.
-    const currentAuthorsOnPage = filteredAuthors.slice(
-      indexOfFirstAuthor,
-      indexOfLastAuthor
-    );
-    if (!authors) {
+
+    if (!filteredAuthors) {
       return <div>No authors added yet.</div>;
     } else {
+      const currentAuthorsOnPage = filteredAuthors.slice(
+        indexOfFirstAuthor,
+        indexOfLastAuthor
+      );
       return (
         <div>
           <div className="font-semibold grid grid-cols-3 shadow-2xl border-2 border-gray-400 min-w-72 w-full sm:w-5/12">

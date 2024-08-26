@@ -2,10 +2,9 @@ import AuthorsDialog from "../components/AuthorsDialog";
 import NewAuthorDialog from "../components/NewAuthorDialog";
 const AuthorInputField = ({
   label,
-  name,
+
   value,
-  onChange,
-  type,
+
   authorsDialogOpen,
   setAuthorsDialogOpen,
   setAuthor,

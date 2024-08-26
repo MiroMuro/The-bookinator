@@ -145,30 +145,37 @@ const Books = ({ setToken }) => {
     );
 
   const BookSorting = ({ sortCriteria, handleSort }) => (
-    <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2  p-2 border-gray-400">
-      <label htmlFor="sortMenu" className="text-xl ">
-        Sort by:{" "}
-      </label>
-      <select
-        onChange={(e) => handleSort(e)}
-        id="sortMenu"
-        value={sortCriteria}
-      >
-        <option defaultValue={true} disabled>
-          Select sort criteria
-        </option>
-        <option value="title">Title</option>
-        <option value="author">Author</option>
-        <option value="published">Published</option>
-      </select>
-      <button
-        className="text-xl mx-2"
-        value={sortCriteria}
-        onClick={(e) => handleSort(e)}
-      >
-        {" "}
-        ⬆⬇
-      </button>
+    <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2 flex  p-2 border-gray-400">
+      <div>
+        <label htmlFor="sortMenu" className="text-xl ">
+          Sort by:{" "}
+        </label>
+        <select
+          onChange={(e) => handleSort(e)}
+          id="sortMenu"
+          value={sortCriteria}
+        >
+          <option defaultValue={true} disabled>
+            Select sort criteria
+          </option>
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+          <option value="published">Published</option>
+        </select>
+      </div>
+      <div className="relative flex  items-center group w-10 h-10">
+        <button
+          className="text-xl mx-2 px-1 border-2 border-gray-400 rounded-md bg-white transform hover:scale-105 hover:cursor-pointer "
+          value={sortCriteria}
+          onClick={(e) => handleSort(e)}
+        >
+          {" "}
+          ⬆⬇
+        </button>
+        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-red-200 border-black border-2 text-sm rounded py-1 px-2 z-10">
+          Reverse the sorting order
+        </div>
+      </div>
     </div>
   );
   const BookSearchBar = ({ searchWord, setSearchWord }) => {
@@ -187,6 +194,7 @@ const Books = ({ setToken }) => {
           Search title:{" "}
         </label>
         <input
+          className="border-2 border-b-black border-gray-200"
           ref={inputRef}
           id="searchBar"
           value={searchWord}
