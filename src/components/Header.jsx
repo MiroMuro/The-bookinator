@@ -29,7 +29,7 @@ const Header = ({ token }) => {
   }, [token]);
 
   return (
-    <header className="flex justify-between sticky top-0 items-center border-2 border-gray-400 bg-red-200 p-3 z-10">
+    <header className="sticky top-0 z-10 flex items-center justify-between border-2 border-gray-400 bg-red-200 p-3">
       <img src={image} alt="Bookinator logo"></img>{" "}
       {/* Use the 'import' statement and add '.default' to the image source */}
       <p data-test="header-greeting">Welcome to the Bookinator!</p>

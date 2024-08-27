@@ -1,11 +1,11 @@
-import { ALL_BOOKS, BOOK_ADDED, ALL_AUTHORS } from "./queries";
+import { ALL_BOOKS, BOOK_ADDED } from "./queries";
 import { useQuery } from "@apollo/client";
 import { useState, useEffect, useRef } from "react";
 import GenresDropdown from "./GenresDropdown";
 import BookImage from "./BookImage";
 import TimeOutDialog from "./TimeOutDialog";
 import { Link } from "react-router-dom";
-//import BooksSorting from "./BooksSorting";
+import PropTypes from "prop-types";
 const Books = ({ setToken }) => {
   const [currentGenre, setCurrentGenre] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(true);
@@ -119,7 +119,7 @@ const Books = ({ setToken }) => {
 
   if (loading)
     return (
-      <div className="border-2 border-gray-400 rounded-md p-2 bg-yellow-200 m-2 h-1/6">
+      <div className="m-2 h-1/6 rounded-md border-2 border-gray-400 bg-yellow-200 p-2">
         Loading books...
       </div>
     );
@@ -139,18 +139,22 @@ const Books = ({ setToken }) => {
   }
   if (error)
     return (
-      <div className="border-2 border-gray-400 rounded-md p-2 bg-red-500 m-2 h-1/6">
+      <div className="m-2 h-1/6 rounded-md border-2 border-gray-400 bg-red-500 p-2">
         A netowrk error has occured. Please try again later.
       </div>
     );
 
   const BookSorting = ({ sortCriteria, handleSort }) => (
-    <div className="w-1/3 mx-2 bg-red-200 rounded-md border-2 mt-2 flex  p-2 border-gray-400">
+    <div
+      data-test="books-sorting-div"
+      className="mx-2 mt-2 flex w-1/3 rounded-md border-2 border-gray-400  bg-red-200 p-2"
+    >
       <div>
         <label htmlFor="sortMenu" className="text-xl ">
           Sort by:{" "}
         </label>
         <select
+          data-test="sort-menu"
           onChange={(e) => handleSort(e)}
           id="sortMenu"
           value={sortCriteria}
@@ -163,21 +167,27 @@ const Books = ({ setToken }) => {
           <option value="published">Published</option>
         </select>
       </div>
-      <div className="relative flex  items-center group w-10 h-10">
+      <div className="group relative  flex size-10 items-center">
         <button
-          className="text-xl mx-2 px-1 border-2 border-gray-400 rounded-md bg-white transform hover:scale-105 hover:cursor-pointer "
+          data-test="sort-button"
+          className="mx-2 rounded-md border-2 border-gray-400 bg-white px-1 text-xl hover:scale-105 hover:cursor-pointer"
           value={sortCriteria}
           onClick={(e) => handleSort(e)}
         >
           {" "}
           ⬆⬇
         </button>
-        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mb-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity bg-red-200 border-black border-2 text-sm rounded py-1 px-2 z-10">
+        <div className="invisible absolute left-1/2 top-full z-10 mb-2 -translate-x-1/2 rounded border-2 border-black bg-red-200 px-2 py-1 text-sm opacity-0 transition-opacity group-hover:visible group-hover:opacity-100">
           Reverse the sorting order
         </div>
       </div>
     </div>
   );
+  BookSorting.propTypes = {
+    sortCriteria: PropTypes.string,
+    handleSort: PropTypes.func,
+  };
+
   const BookSearchBar = ({ searchWord, setSearchWord }) => {
     const inputRef = useRef(null);
     //If a an input element is created in a nested component, react will lose focus after
@@ -189,12 +199,16 @@ const Books = ({ setToken }) => {
     }, [searchWord]);
 
     return (
-      <div className="w-1/3 bg-red-200 rounded-md border-2 mt-2 p-2 border-gray-400">
+      <div
+        data-test="books-searchbar-div"
+        className="mt-2 w-1/3 rounded-md border-2 border-gray-400 bg-red-200 p-2"
+      >
         <label htmlFor="searchBar" className="text-xl">
           Search title:{" "}
         </label>
         <input
-          className="border-2 border-b-black border-gray-200"
+          data-test="search-bar"
+          className="border-2 border-gray-200 border-b-black"
           ref={inputRef}
           id="searchBar"
           value={searchWord}
@@ -203,25 +217,34 @@ const Books = ({ setToken }) => {
       </div>
     );
   };
+
+  BookSearchBar.propTypes = {
+    searchWord: PropTypes.string,
+    setSearchWord: PropTypes.func,
+  };
+
   const BookGrid = ({ filteredBooks }) => {
     if (filteredBooks.length === 0) {
-      return <div>No books added yet.</div>;
+      return <div data-test="no-books-div">No books added yet.</div>;
     } else {
       const currentBooksOnPage = filteredBooks.slice(
         indexOfFirstBook,
         indexOfLastBook
       );
       return (
-        <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div
+          data-test="book-grid"
+          className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
           {/* Cards go here*/}
           {currentBooksOnPage.map((book) => (
-            <Link to={"/book/" + book.id}>
+            <Link key={book.id} to={"/book/" + book.id}>
               <div
                 key={book.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition ease-in-out duration-200 scale-100 transform hover:scale-105 hover:cursor-pointer"
+                className="scale-100 overflow-hidden rounded-lg bg-white shadow-md transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer hover:shadow-lg"
               >
-                <header className=" bg-red-200 p-2  min-h-16">
-                  <h2 className="font-semibold break-normal text-lg mb-2 sm:text-sm md:text-base lg:text-sm">
+                <header className=" min-h-16 bg-red-200  p-2">
+                  <h2 className="mb-2 break-normal text-lg font-semibold sm:text-sm md:text-base lg:text-sm">
                     {book.title}
                   </h2>
                 </header>
@@ -229,10 +252,10 @@ const Books = ({ setToken }) => {
                   <BookImage bookId={book.id} />
                 </div>
                 <div className="p-4">
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="mb-1 text-sm text-gray-600">
                     <strong>Author:</strong> {book.author.name}
                   </p>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="mb-1 text-sm text-gray-600">
                     <strong>Born:</strong> {book.author.born}
                   </p>
                   <p className="text-sm text-gray-600">
@@ -246,6 +269,11 @@ const Books = ({ setToken }) => {
       );
     }
   };
+
+  BookGrid.propTypes = {
+    filteredBooks: PropTypes.array,
+  };
+
   const books = data.allBooks;
   const filteredBooks = filterBooks(books, currentGenre, searchWord);
 
@@ -263,11 +291,12 @@ const Books = ({ setToken }) => {
     }
 
     return (
-      <nav className="flex">
+      <nav data-test="books-pagination-nav" className="flex">
         <ul className="flex">
           {pageNumbers.map((number) => (
             <button
-              className={`px-3 py-1 border rounded ${
+              key={number}
+              className={`rounded border px-3 py-1 ${
                 currentPage === number ? "bg-red-400 text-white" : "bg-white"
               }`}
               onClick={() => paginate(number)}
@@ -276,9 +305,13 @@ const Books = ({ setToken }) => {
             </button>
           ))}
         </ul>
-        <div className="flex w-full justify-end">
+        <div
+          data-test="pagination-dropdown"
+          className="flex w-full justify-end"
+        >
           <p className="text-xl">Books per page: </p>
           <select
+            data-test="books-per-page-select"
             onChange={(e) => handleBooksPerPageChange(e)}
             value={booksPerPage}
           >
@@ -291,10 +324,16 @@ const Books = ({ setToken }) => {
       </nav>
     );
   };
-
+  Pagination.propTypes = {
+    booksPerPage: PropTypes.number,
+    totalFilteredBooks: PropTypes.number,
+    paginate: PropTypes.func,
+    currentPage: PropTypes.number,
+    handleBooksPerPageChange: PropTypes.func,
+  };
   return (
-    <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex w-full align-top  bg-white top-60 mt-4 ">
+    <div className="mx-auto flex max-w-5xl flex-col px-4 sm:px-6 lg:px-8">
+      <div className="top-60 mt-4 flex  w-full bg-white align-top ">
         <div className="flex w-full ">
           <GenresDropdown
             setCurrentGenre={setCurrentGenre}
@@ -323,5 +362,8 @@ const Books = ({ setToken }) => {
     </div>
   );
 };
-
+Books.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  filteredBooks: PropTypes.array,
+};
 export default Books;

@@ -1,10 +1,12 @@
-import { useQuery, useMemo } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "./queries";
 import BirthyearForm from "./BirthyearForm";
 import AuthorFilter from "./AuthorFilter";
 import { useState } from "react";
 import TimeOutDialog from "./TimeOutDialog";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
 const Authors = ({ token, setToken }) => {
   //Different states of the query.
   const { loading, error, data } = useQuery(ALL_AUTHORS);
@@ -19,7 +21,7 @@ const Authors = ({ token, setToken }) => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [authorsPerPage, setAuthorsPerPage] = useState(10);
+  const authorsPerPage = 10;
   //2 * 10 = 20
   const indexOfLastAuthor = currentPage * authorsPerPage;
   const indexOfFirstAuthor = indexOfLastAuthor - authorsPerPage;
@@ -43,9 +45,9 @@ const Authors = ({ token, setToken }) => {
           <path
             d="M12 6V18M12 18L7 13M12 18L17 13"
             stroke="#000000"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       );
@@ -61,12 +63,15 @@ const Authors = ({ token, setToken }) => {
         <path
           d="M12 6V18M12 6L7 11M12 6L17 11"
           stroke="#000000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     );
+  };
+  SortingArrow.propTypes = {
+    isArrowUp: PropTypes.bool,
   };
 
   const handleTokenError = (error) => {
@@ -81,7 +86,7 @@ const Authors = ({ token, setToken }) => {
   };
   const handleGeneralError = () => {
     return (
-      <div className="border-2 border-gray-400 rounded-md p-2 bg-red-500 m-2 h-1/6">
+      <div className="m-2 h-1/6 rounded-md border-2 border-gray-400 bg-red-500 p-2">
         Error fetching the authors...
       </div>
     );
@@ -138,12 +143,12 @@ const Authors = ({ token, setToken }) => {
     }
   };
 
-  const AuthorsGrid = ({ filteredAuthors, allAuthors }) => {
+  const AuthorsGrid = ({ filteredAuthors }) => {
     //Slice the filtered authors based on the current page.
     //The paginate function is used to change the current page.
 
     if (!filteredAuthors) {
-      return <div>No authors added yet.</div>;
+      return <div data-test="no-authors-div">No authors added yet.</div>;
     } else {
       const currentAuthorsOnPage = filteredAuthors.slice(
         indexOfFirstAuthor,
@@ -151,23 +156,23 @@ const Authors = ({ token, setToken }) => {
       );
       return (
         <div>
-          <div className="font-semibold grid grid-cols-3 shadow-2xl border-2 border-gray-400 min-w-72 w-full sm:w-5/12">
+          <div className="grid w-full min-w-72 grid-cols-3 border-2 border-gray-400 font-semibold shadow-2xl sm:w-5/12">
             <header
-              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("name")}
             >
               Author
               <SortingArrow isArrowUp={reverseSort.name} />
             </header>
             <header
-              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("born")}
             >
               Born
               <SortingArrow isArrowUp={reverseSort.born} />
             </header>
             <header
-              className=" flex justify-center py-3 bg-red-400 text-center cursor-pointer"
+              className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("bookCount")}
             >
               Books
@@ -181,15 +186,15 @@ const Authors = ({ token, setToken }) => {
               paginate={paginate}
               currentPage={currentPage}
             />
-            <div className="border-2 border-gray-400 bg-red-100 w-full sm:w-5/12">
+            <div className="w-full border-2 border-gray-400 bg-red-100 sm:w-5/12">
               {authors.length === 0 && (
-                <div className="text-center font-semibold hover:bg-red-200 cursor-pointer  shadow-2xl border-b-2 border-gray-400 min-w-72 w-full">
+                <div className="w-full min-w-72 cursor-pointer border-b-2  border-gray-400 text-center font-semibold shadow-2xl hover:bg-red-200">
                   No authors found !
                 </div>
               )}
               {currentAuthorsOnPage.map((author) => (
-                <Link to={"/authors/" + author.id}>
-                  <section className="  cursor-pointer grid p-2 grid-cols-3 gap-3 shadow-2xl border-b-2 border-gray-400 min-w-72 w-full transition ease-linear duration-300 hover:bg-red-200 ">
+                <Link key={author.id} to={"/authors/" + author.id}>
+                  <section className="  grid w-full min-w-72 cursor-pointer grid-cols-3 gap-3 border-b-2 border-gray-400 p-2 shadow-2xl transition duration-300 ease-linear hover:bg-red-200 ">
                     <div className=" text-center">{author.name}</div>
                     <div className=" text-center">{author.born}</div>
                     <div className=" text-center">{author.bookCount}</div>
@@ -201,6 +206,10 @@ const Authors = ({ token, setToken }) => {
         </div>
       );
     }
+  };
+
+  AuthorsGrid.propTypes = {
+    filteredAuthors: PropTypes.array,
   };
 
   const Pagination = ({
@@ -226,7 +235,8 @@ const Authors = ({ token, setToken }) => {
         <ul className="flex">
           {pageNumbers.map((number) => (
             <button
-              className={`px-3 py-1 border rounded ${
+              key={number}
+              className={`rounded border px-3 py-1 ${
                 currentPage === number ? "bg-red-400 text-white" : "bg-white"
               }`}
               onClick={() => paginate(number)}
@@ -239,9 +249,16 @@ const Authors = ({ token, setToken }) => {
     );
   };
 
+  Pagination.propTypes = {
+    authorsPerPage: PropTypes.number,
+    totalFilteredAuthors: PropTypes.number,
+    paginate: PropTypes.func,
+    currentPage: PropTypes.number,
+  };
+
   if (loading) {
     return (
-      <div className="border-2 border-gray-400 rounded-md p-2 bg-yellow-200 m-2 h-1/6">
+      <div className="m-2 h-1/6 rounded-md border-2 border-gray-400 bg-yellow-200 p-2">
         Loading authors...
       </div>
     );
@@ -262,7 +279,7 @@ const Authors = ({ token, setToken }) => {
   const filteredAuthors = filterAuthors(authors, authorToSearch);
 
   return (
-    <div className="flex flex-col justify-start align-middle items-start-h-screen w-4/12 mx-auto sm:w-6/12">
+    <div className="items-start-h-screen mx-auto flex w-4/12 flex-col justify-start align-middle sm:w-6/12">
       {token && (
         <div className="w-full sm:w-5/12 ">
           <BirthyearForm authors={authors} />
@@ -277,6 +294,11 @@ const Authors = ({ token, setToken }) => {
       <AuthorsGrid filteredAuthors={filteredAuthors} allAuthors={authors} />
     </div>
   );
+};
+
+Authors.propTypes = {
+  token: PropTypes.string,
+  setToken: PropTypes.func,
 };
 
 export default Authors;

@@ -2,7 +2,7 @@ import { REGISTER } from "./queries";
 import { useMutation } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import PropTypes from "prop-types";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [isAnimating, setIsAnimating] = useState(false);
@@ -146,7 +146,7 @@ const RegisterForm = () => {
         {isProcessing ? (
           <div className="flex items-center justify-center">
             <svg
-              className="animate-spin h-6 w-6 mx-4 text-red-400 fill-red-600"
+              className="mx-4 size-6 animate-spin fill-red-600 text-red-400"
               viewBox="0 0 101 101"
             >
               <path
@@ -165,9 +165,14 @@ const RegisterForm = () => {
       </div>
     );
   };
+  InfoBox.propTypes = {
+    isAnimating: PropTypes.bool.isRequired,
+    isProcessing: PropTypes.bool.isRequired,
+    message: PropTypes.object.isRequired,
+  };
   return (
-    <div className="flex justify-center sm:justify-start py-3">
-      <div className="flex flex-col justify-end basis-28">
+    <div className="flex justify-center py-3 sm:justify-start">
+      <div className="flex basis-28 flex-col justify-end">
         {}
         <InfoBox
           isAnimating={isAnimating}
@@ -175,23 +180,23 @@ const RegisterForm = () => {
           message={message}
         />
         <form
-          className="border-black border-2 rounded-md"
+          className="rounded-md border-2 border-black"
           onSubmit={handleRegistration}
         >
           <div className="m-2.5">
             Username
             <div
-              className={` ${
+              className={`text-red-600 transition duration-500 ease-linear  ${
                 usernameIsInvalid(accountDetails.username)
-                  ? "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-100"
-                  : "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-0"
-              } `}
+                  ? "opacity-100"
+                  : "opacity-0"
+              }`}
             >
               Username invalid!
             </div>
             <div>
               <input
-                className="border-b-2 border-b-solid border-b-black"
+                className="border-b-2 border-solid border-b-black"
                 value={accountDetails.username}
                 name="username"
                 onChange={handleChange}
@@ -203,16 +208,16 @@ const RegisterForm = () => {
             <div>
               <div
                 title="Password must be between 8-100 characters, and cannot be empty or contain only spaces."
-                className={` ${
+                className={`text-red-600 transition duration-500 ease-linear  ${
                   passwordIsInvalid(accountDetails.password)
-                    ? "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-100"
-                    : "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-0"
+                    ? "opacity-100"
+                    : "opacity-0"
                 } `}
               >
                 Password invalid!
               </div>
               <input
-                className="border-b-2 border-b-solid border-b-black"
+                className="border-b-2 border-solid border-b-black"
                 value={accountDetails.password}
                 name="password"
                 type="password"
@@ -225,16 +230,16 @@ const RegisterForm = () => {
             <div>
               <div
                 title="Password must be between 8-100 characters, and cannot be empty or contain only spaces."
-                className={` ${
+                className={` text-red-600 transition duration-500  ease-linear  ${
                   accountDetails.password !== repeatPassword
-                    ? "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-100"
-                    : "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-0"
+                    ? "opacity-100"
+                    : "opacity-0"
                 } `}
               >
                 Passwords dont match!
               </div>
               <input
-                className="border-b-2 border-b-solid border-b-black"
+                className="border-b-2 border-solid border-b-black"
                 value={repeatPassword}
                 name="repeatPassword"
                 type="password"
@@ -247,16 +252,16 @@ const RegisterForm = () => {
             <div>
               <div
                 title="Genre must be between 2-30 characters,cannot be empty or contain only spaces."
-                className={` ${
+                className={` text-red-600 transition duration-500 ease-linear ${
                   favoriteGenreIsInvalid(accountDetails.favoriteGenre)
-                    ? "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-100"
-                    : "text-red-600 duration-500 transition ease-linear duration 300 transform opacity-0"
+                    ? "opacity-100"
+                    : " opacity-0"
                 } `}
               >
                 Genre invalid!
               </div>
               <input
-                className="border-b-2 border-b-solid border-b-black"
+                className="border-b-2 border-solid border-b-black"
                 name="favoriteGenre"
                 value={accountDetails.favoriteGenre}
                 onChange={handleChange}
