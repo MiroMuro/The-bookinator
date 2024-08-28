@@ -14,7 +14,17 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
-
+import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+before(() => {
+  cy.request("POST", "http://localhost:4000/graphql", {
+    query: `
+        mutation {
+          clearDatabase
+        }
+      `,
+  }).then((response) => {
+    expect(response.body.data.clearDatabase).to.equal(null);
+  });
+});

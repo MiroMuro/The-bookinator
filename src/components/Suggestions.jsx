@@ -35,15 +35,6 @@ const Suggestions = ({ setToken }) => {
 
   const [favoriteGenre, setFavoriteGenre] = useState("");
 
-  //Fetch the book image data.
-  /*const {
-    loadingImage: imageLoading,
-    errorImage: imageError,
-    dataImage: imageData,
-  } = useQuery(GET_BOOK_IMAGE, {
-    variables: { bookId },
-  });*/
-
   //Fetch the user data and set the favorite genre.
   //Fetch books according to the favorite genre.
   useEffect(() => {

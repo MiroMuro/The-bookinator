@@ -42,12 +42,18 @@ LoginForm.propTypes = {
 };
 
 const LoggedInView = ({ logout }) => (
-  <div className="mb-3 flex flex-col items-start justify-end">
+  <div
+    data-test="logged-in-view"
+    className="mb-3 flex flex-col items-start justify-end"
+  >
     <div className="rounded-md border-2 border-black p-4">
       <h2 className="mb-2 rounded bg-red-200 p-2 text-center">
         Already logged in
       </h2>
-      <div className="my-2 w-1/2 rounded-lg border-2 border-solid border-black p-1 text-center transition duration-500 ease-linear hover:scale-110 hover:border-transparent hover:bg-black hover:text-white">
+      <div
+        data-test="logout-button"
+        className="my-2 w-1/2 rounded-lg border-2 border-solid border-black p-1 text-center transition duration-500 ease-linear hover:scale-110 hover:border-transparent hover:bg-black hover:text-white"
+      >
         <button onClick={logout}>Logout</button>
       </div>
     </div>
@@ -74,14 +80,20 @@ const LoginView = ({
     >
       {message.text}
     </div>
-    <form onSubmit={handleSubmit} className="rounded-md border-2 border-black">
+    <form
+      data-test="login-form"
+      onSubmit={handleSubmit}
+      className="rounded-md border-2 border-black"
+    >
       <InputField
+        dataTest={"username-div"}
         label="Username:"
         name="username"
         value={credentials.username}
         onChange={handleChange}
       />
       <InputField
+        dataTest={"password-div"}
         label="Password:"
         name="password"
         type="password"
@@ -104,8 +116,15 @@ LoginView.propTypes = {
   isProcessing: PropTypes.bool.isRequired,
 };
 
-const InputField = ({ label, name, value, onChange, type = "text" }) => (
-  <div style={{ margin: "10px" }}>
+const InputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  dataTest,
+}) => (
+  <div data-test={dataTest} style={{ margin: "10px" }}>
     {label}
     <input
       autoComplete="off"
@@ -124,10 +143,11 @@ InputField.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
+  dataTest: PropTypes.string,
 };
 
 const SubmitButton = ({ isProcessing }) => (
-  <button type="submit" className="loginButton">
+  <button data-test="login-button" type="submit" className="loginButton">
     {isProcessing ? (
       <>
         <svg

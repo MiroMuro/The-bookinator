@@ -188,10 +188,8 @@ describe("Navigation testing", () => {
       cy.getDataTest("register-button").should("not.be.disabled"); //Submit button is disabled
       cy.getDataTest("register-button").click();
     });
-    cy.contains("Registration successful! Redirecting to login...").as(
-      "registrationSuccess"
-    );
-    cy.validateNavigation("/login");
+    cy.contains("Registration successful! Redirecting to login...");
+    cy.location("pathname").should("eq", "/login");
   });
   it("Registration fails with duplicate username", () => {
     cy.validateNavigation("/register");
@@ -211,5 +209,45 @@ describe("Navigation testing", () => {
       cy.getDataTest("register-button").click();
     });
     cy.contains("Username testUser1 already taken. Please try another one.");
+  });
+  it("Login fails with wrong credentials", () => {
+    cy.getDataTest("logged-in-view").should("not.exist");
+    cy.validateNavigation("/login");
+    cy.contains("Welcome back");
+    cy.getDataTest("login-form").within(() => {
+      cy.getDataTest("username-div").within(() => {
+        cy.contains("Username:");
+        cy.get("input").type("wrongUser1");
+      });
+      cy.getDataTest("password-div").within(() => {
+        cy.contains("Password:");
+        cy.get("input").type("wrongPassword1");
+        cy.get("input").invoke("attr", "type").should("eq", "password");
+      });
+      cy.getDataTest("login-button").click();
+    });
+    cy.contains("Login failed! Invalid credentials. Please try again.");
+    cy.location("pathname").should("eq", "/login");
+  });
+  it("Login is succesful with a registered user", () => {
+    cy.getDataTest("logged-in-view").should("not.exist");
+    cy.validateNavigation("/login");
+    cy.contains("Welcome back");
+    cy.getDataTest("login-form").within(() => {
+      cy.getDataTest("username-div").within(() => {
+        cy.contains("Username:");
+        cy.get("input").type("testUser1");
+      });
+      cy.getDataTest("password-div").within(() => {
+        cy.contains("Password:");
+        cy.get("input").type("testPassword1");
+        cy.get("input").invoke("attr", "type").should("eq", "password");
+      });
+      cy.getDataTest("login-button").click();
+    });
+    cy.contains("Login successful! Redirecting...");
+    cy.contains("Already logged in");
+    cy.getDataTest("logged-in-view").should("exist");
+    cy.getDataTest("logout-button").click();
   });
 });
