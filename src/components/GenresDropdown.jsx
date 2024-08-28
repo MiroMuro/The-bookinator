@@ -2,7 +2,11 @@ import { useQuery } from "@apollo/client";
 import { ALL_GENRES } from "./queries";
 import propTypes from "prop-types";
 const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
-  const genresResult = useQuery(ALL_GENRES);
+  const {
+    data: genresData,
+    loading: genresLoading,
+    error: genresError,
+  } = useQuery(ALL_GENRES);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -10,13 +14,40 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   };
 
   const handleGenreChange = (event) => {
-    event.preventDefault();
     setCurrentGenre(event.target.value);
   };
-  console.log("currentGenre", currentGenre);
-  if (genresResult.loading) {
-    return <div>loading...</div>;
-  }
+  const renderDropdownContent = () => {
+    if (genresLoading) {
+      return <div>loading...</div>;
+    }
+    if (genresError) {
+      return <div>Error: {genresError.message}</div>;
+    }
+    const genres = genresData?.allGenres || [];
+    return (
+      <select
+        data-test="genre-dropdown"
+        name="genres"
+        id="genres"
+        value={currentGenre}
+        onChange={handleGenreChange}
+      >
+        <option value="">-- Choose Genre --</option>
+        {genres.length > 0 ? (
+          genres.map((genre) => (
+            <option key={genre} value={genre}>
+              {genre}
+            </option>
+          ))
+        ) : (
+          <option value="" disabled>
+            -- No genres available --
+          </option>
+        )}
+      </select>
+    );
+  };
+
   return (
     <div
       data-test="genres-dropdown"
@@ -29,20 +60,7 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
       </div>
       <form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="genres">Choose genre </label>
-        <select
-          data-test="genre-dropdown"
-          name="genres"
-          id="genres"
-          value={""}
-          onChange={(e) => handleGenreChange(e)}
-        >
-          <option defaultValue={true}>-- Choose genre --</option>
-          {genresResult.data.allGenres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
-            </option>
-          ))}
-        </select>
+        {renderDropdownContent()}
         <button
           data-test="reset-filter-button"
           className="filterButton"

@@ -29,10 +29,14 @@ describe("Navigation testing", () => {
     //Genres dropdown tests
     cy.getDataTest("genres-dropdown").within(() => {
       cy.get("div").should("have.text", " No genre selected");
-      cy.getDataTest("genre-dropdown").should("have.length", 1);
-      cy.getDataTest("genre-dropdown")
-        .its(0)
-        .should("have.value", "-- Choose genre --");
+      cy.getDataTest("genre-dropdown").find("option").as("genreOptions");
+
+      cy.get("@genreOptions").should("have.length", 2);
+      cy.get("@genreOptions").eq(0).should("have.text", "-- Choose Genre --");
+      cy.get("@genreOptions")
+        .eq(1)
+        .should("have.text", "-- No genres available --")
+        .and("be.disabled");
       cy.getDataTest("genre-dropdown").select(0);
       cy.get("div").should("have.text", " No genre selected");
       cy.getDataTest("reset-filter-button").click();

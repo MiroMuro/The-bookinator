@@ -25,7 +25,7 @@ const Header = ({ token }) => {
 
   useEffect(() => {
     if (!token) {
-      setGreeting("Welcome! You are not logged in yet!");
+      setGreeting("Welcome!");
     } else if (userLoading) {
       setGreeting("Loading...");
     } else if (userError) {

@@ -34,6 +34,6 @@ Cypress.Commands.add("getHeaderAndGreeting", (headerGreeting, userGreeting) => {
 
 Cypress.Commands.add("validateNavigation", (pathname) => {
   cy.visit(pathname);
-  cy.getHeaderAndGreeting("Welcome to the Bookinator!", "Not logged in");
+  cy.getHeaderAndGreeting("Welcome to the Bookinator!", "Welcome!");
   cy.location("pathname").should("eq", pathname);
 });
