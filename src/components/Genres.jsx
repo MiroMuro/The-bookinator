@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Genres = ({ genres, setCurrentGenre }) => {
   const containerStyle = {
     border: "3px solid #fff",
@@ -9,6 +11,7 @@ const Genres = ({ genres, setCurrentGenre }) => {
       Filter by Genre:
       {genres.map((genre) => (
         <button
+          key={genre}
           style={{ marginLeft: "5px" }}
           onClick={() => setCurrentGenre(genre)}
         >
@@ -18,4 +21,9 @@ const Genres = ({ genres, setCurrentGenre }) => {
     </div>
   );
 };
+Genres.propTypes = {
+  genres: PropTypes.array.isRequired,
+  setCurrentGenre: PropTypes.func.isRequired,
+};
+
 export default Genres;

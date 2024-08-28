@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 const StatusBar = ({ initialStatus }) => {
   const [status, setStatus] = useState(initialStatus);
 
@@ -20,25 +21,28 @@ const StatusBar = ({ initialStatus }) => {
   }
   if (status === "loading") {
     return (
-      <div className="flex p-2 bg-yellow-200 rounded mb-2 border-2 border-gray-400 text-center">
+      <div className="mb-2 flex rounded border-2 border-gray-400 bg-yellow-200 p-2 text-center">
         <p>Status: Loading...</p>
-        <span class="loader"></span>
+        <span className="loader"></span>
       </div>
     );
   }
   if (status === "success") {
     return (
-      <div className=" p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center">
+      <div className=" mb-2 rounded border-2 border-gray-400 bg-green-400 p-2 text-center">
         <p> Status: Success!</p>
       </div>
     );
   }
   if (status === "error") {
     return (
-      <div className="p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center">
+      <div className="mb-2 rounded border-2 border-gray-400 bg-red-400 p-2 text-center">
         Status: Error! Please try again.
       </div>
     );
   }
+};
+StatusBar.propTypes = {
+  initialStatus: PropTypes.string.isRequired,
 };
 export default StatusBar;

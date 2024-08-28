@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import useAddAuthorForm from "../hooks/useAddAuthorForm";
 import StatusBar from "../NewAuthorComponents/StatusBar";
+import PropTypes from "prop-types";
 const NewAuthorDialog = ({ open, setDialogOpen }) => {
   const dialogRef = useRef(null);
   const {
@@ -38,7 +39,10 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       return (
         <>
           {message.map((msg) => (
-            <div className="text-sm  text-red-500 max-w-44 flex-grow-0 break-words">
+            <div
+              key={msg}
+              className="max-w-44  grow-0 break-words text-sm text-red-500"
+            >
               {msg}
             </div>
           ))}
@@ -47,19 +51,23 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     }
   };
 
+  ErrorMessageComponent.propTypes = {
+    message: PropTypes.array.isRequired,
+    showErrorMessage: PropTypes.bool.isRequired,
+  };
   return (
     <dialog className="newAuthorDialog" ref={dialogRef}>
       <form id="addAuthorForm">
-        <header className="flex justify-between text-2xl p-4 h-24 border-b-2 border-gray-400">
+        <header className="flex h-24 justify-between border-b-2 border-gray-400 p-4 text-2xl">
           <h2>Add a new author</h2>{" "}
           <StatusBar initialStatus={addAuthorStatus} />
         </header>
-        <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Name:</aside>
-          <main className="flex flex-col w-1/3">
+          <main className="flex w-1/3 flex-col">
             <input
               id="nameInput"
-              className="border-b-2 border-gray-400 w-11/12"
+              className="w-11/12 border-b-2 border-gray-400"
               name="name"
               value={author.name}
               onChange={(e) => handleChange(e)}
@@ -71,12 +79,12 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             />
           </main>
         </section>
-        <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Born:</aside>
-          <main className="flex flex-col w-1/3">
+          <main className="flex w-1/3 flex-col">
             <input
               id="bornInput"
-              className="border-b-2 border-gray-400 w-11/12"
+              className="w-11/12 border-b-2 border-gray-400"
               name="born"
               value={author.born}
               onChange={(e) => handleChange(e)}
@@ -88,7 +96,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             />
           </main>
         </section>
-        <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Description:</aside>
           <main className="relative">
             <textarea
@@ -100,7 +108,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             />
           </main>
         </section>
-        <section className="flex p-2 pb-8 justify-between border-b-2 border-gray-400">
+        <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Image:</aside>
           <main>
             <input
@@ -111,24 +119,24 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             <div
               className={`${
                 fileValidationMessage === "File validated successfully!"
-                  ? "border-2 border-black rounded-md bg-green-400"
-                  : "border-2 border-black rounded-md bg-red-500"
+                  ? "rounded-md border-2 border-black bg-green-400"
+                  : "rounded-md border-2 border-black bg-red-500"
               }`}
             >
               {fileValidationMessage}
             </div>
           </main>
         </section>
-        <section className="flex justify-between p-2 mb-4">
+        <section className="mb-4 flex justify-between p-2">
           <button
-            className={`border-2 border-black bg-red-500 p-2 rounded-md transition ease-linear duration-300 hover:scale-110`}
+            className={`rounded-md border-2 border-black bg-red-500 p-2 transition duration-300 ease-linear hover:scale-110`}
             type="button"
             onClick={() => setDialogOpen(false)}
           >
             Cancel
           </button>
           <button
-            className="border-2 border-black bg-green-500 p-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 transition ease-linear duration-300 hover:scale-110 "
+            className="rounded-md border-2 border-black bg-green-500 p-2 transition duration-300 ease-linear hover:scale-110 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:opacity-50 "
             type="button"
             id="addAuthorButton"
             onClick={handleManualSubmit}
@@ -140,6 +148,10 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       </form>
     </dialog>
   );
+};
+NewAuthorDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setDialogOpen: PropTypes.func.isRequired,
 };
 
 export default NewAuthorDialog;

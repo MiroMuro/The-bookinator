@@ -1,7 +1,7 @@
 import TimeOutDialog from "./TimeOutDialog";
 import useBookForm from "../hooks/useBookForm";
 import LoginView from "../NewBookComponents/LoginView";
-
+import PropTypes from "prop-types";
 const NewBook = ({ setToken, token }) => {
   const {
     bookInfo,
@@ -88,6 +88,10 @@ const NewBook = ({ setToken, token }) => {
       )}
     </div>
   );
+};
+NewBook.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  token: PropTypes.string,
 };
 
 export default NewBook;

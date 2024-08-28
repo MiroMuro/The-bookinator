@@ -1,4 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
+import PropTypes from "prop-types";
 const NavLink = ({ to, label }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
@@ -10,5 +11,9 @@ const NavLink = ({ to, label }) => {
       </button>
     </Link>
   );
+};
+NavLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 export default NavLink;

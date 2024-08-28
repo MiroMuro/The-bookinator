@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const GenreInputField = ({
   label,
   name,
@@ -8,13 +10,13 @@ const GenreInputField = ({
   isTooLongGenre,
 }) => {
   return (
-    <div className="flex my-2 justify-between p-2 ">
+    <div className="my-2 flex justify-between p-2 ">
       <label
         htmlFor="genresInput"
         className={`absolute ${
           isDuplicateGenre
-            ? "duration-500 transform -translate-y-6 opacity-100 text-red-700"
-            : "duration-500 transform -translate-y-6 opacity-0 fill-mode-forwards"
+            ? "-translate-y-6 text-red-700 opacity-100 duration-500"
+            : " -translate-y-6 opacity-0 duration-500"
         }`}
       >
         Duplicate genre!
@@ -23,8 +25,8 @@ const GenreInputField = ({
         htmlFor="genresInput"
         className={`absolute ${
           isTooLongGenre
-            ? "duration-500 transform translate-y-6 opacity-100 text-red-700"
-            : "duration-500 transform translate-y-6 opacity-0 fill-mode-forwards"
+            ? "translate-y-6 text-red-700 opacity-100 duration-500"
+            : " translate-y-6 opacity-0 duration-500"
         }`}
       >
         Genre name is too long!
@@ -33,7 +35,7 @@ const GenreInputField = ({
         className={`w-60 ${
           isDuplicateGenre
             ? "border-2 border-red-500 outline-none   transition duration-300"
-            : "border-b-2  border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+            : "border-2  border-x-gray-200  border-b-black border-t-gray-200"
         }`}
         id="genresInput"
         autoComplete="off"
@@ -46,4 +48,14 @@ const GenreInputField = ({
     </div>
   );
 };
+GenreInputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  isDuplicateGenre: PropTypes.bool.isRequired,
+  isTooLongGenre: PropTypes.bool.isRequired,
+};
+
 export default GenreInputField;

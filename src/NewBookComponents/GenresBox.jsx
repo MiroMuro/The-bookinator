@@ -1,19 +1,21 @@
+import PropTypes from "prop-types";
+
 const GenresBox = ({ genres, handleGenreDeletion }) => {
   return (
-    <div className="flex relative border-b-2 border-gray-400  bg-red-200 ">
-      <label className="absolute text-xl -top-4 left-2 bg-red-200">
+    <div className="relative flex border-b-2 border-gray-400  bg-red-200 ">
+      <label className="absolute -top-4 left-2 bg-red-200 text-xl">
         Genres
       </label>
       <div className="w-full  break-words">
-        <ul className="flex flex-wrap my-2 py-2">
+        <ul className="my-2 flex flex-wrap py-2">
           {genres.map((genre, index) => (
             <li
               key={index}
-              className="relative rounded-md border-white border-2 w-min p-1 m-1 text-center hover:bg-red-400 hover:text-white transition duration-300 ease-linear transform hover:scale-110"
+              className="relative m-1 w-min rounded-md border-2 border-white p-1 text-center transition duration-300 ease-linear hover:scale-110 hover:bg-red-400 hover:text-white"
             >
               {genre}
               <button
-                className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
+                className="absolute right-0 top-0 flex size-4 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-600 text-xs text-white"
                 onClick={() => handleGenreDeletion(genre)}
               >
                 x
@@ -24,6 +26,10 @@ const GenresBox = ({ genres, handleGenreDeletion }) => {
       </div>
     </div>
   );
+};
+GenresBox.propTypes = {
+  genres: PropTypes.array.isRequired,
+  handleGenreDeletion: PropTypes.func.isRequired,
 };
 
 export default GenresBox;

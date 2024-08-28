@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "./queries";
+import PropTypes from "prop-types";
+
 const BirthyearForm = ({ authors }) => {
   const [formState, setFormState] = useState({
     birthyear: "",
@@ -11,7 +13,7 @@ const BirthyearForm = ({ authors }) => {
   });
 
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
-    onError: (error, data) => {
+    onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       console.log("Error messages", messages);
     },
@@ -117,15 +119,15 @@ const BirthyearForm = ({ authors }) => {
 
   return (
     <>
-      <div className="flex flex-col bg-red-200 border-gray-400 border-2 rounded-md w-full mt-2 min-w-72 ">
+      <div className="mt-2 flex w-full min-w-72 flex-col rounded-md border-2 border-gray-400 bg-red-200 ">
         <h1 className="my-2 ml-2 font-semibold">
           Update birthyear of an author
         </h1>
         <form onSubmit={submit}>
-          <div className="flex justify-between m-2">
+          <div className="m-2 flex justify-between">
             <p>Select an author</p>
             <select
-              className="border-black border-2 rounded-lg p-1 hover:bg-gray-300"
+              className="rounded-lg border-2 border-black p-1 hover:bg-gray-300"
               onChange={({ target }) =>
                 setFormState({ selectedAuthorName: target.value })
               }
@@ -138,19 +140,19 @@ const BirthyearForm = ({ authors }) => {
               ))}
             </select>
           </div>
-          <div className="flex justify-between m-2 relative">
+          <div className="relative m-2 flex justify-between">
             <p>Birthyear: </p>
             <p
               className={`${
                 formState.playAnimation
-                  ? "absolute right-1 top-7 font-extralight  text-red-600 duration-500 transition ease-linear transform opacity-100 text-sm"
-                  : "absolute right-1 top-7 font-extralight text-red-600 duration-500 transition ease-linear transform opacity-0 text-smnpm"
+                  ? "absolute right-1 top-7 text-sm  font-extralight text-red-600 opacity-100 transition duration-500 ease-linear"
+                  : "absolute right-1 top-7 text-sm font-extralight text-red-600 opacity-0 transition duration-500 ease-linear"
               }`}
             >
               {formState.errorMessage}
             </p>
             <input
-              className="border-b-2 w-36 border-b-black  border-t-2 border-t-gray-200 border-r-2 border-r-gray-200 border-l-2 border-l-gray-200"
+              className="w-36 border-2 border-x-gray-200  border-b-black border-t-gray-200"
               maxLength={4}
               type="text"
               pattern="\d*"
@@ -171,5 +173,8 @@ const BirthyearForm = ({ authors }) => {
       </div>
     </>
   );
+};
+BirthyearForm.propTypes = {
+  authors: PropTypes.array,
 };
 export default BirthyearForm;

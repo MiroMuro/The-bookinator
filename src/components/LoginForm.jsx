@@ -1,5 +1,6 @@
 import useForm from "../hooks/useForm";
 import useLogin from "../hooks/useLogin";
+import PropTypes from "prop-types";
 
 const LoginForm = ({ setToken, token }) => {
   const [credentials, handleChange] = useForm({ username: "", password: "" });
@@ -35,18 +36,27 @@ const LoginForm = ({ setToken, token }) => {
   );
 };
 
+LoginForm.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  token: PropTypes.string,
+};
+
 const LoggedInView = ({ logout }) => (
-  <div className="flex flex-col justify-end items-start mb-3">
-    <div className="border-black border-2 p-4 rounded-md">
-      <h2 className="p-2 text-center bg-red-200 rounded mb-2">
+  <div className="mb-3 flex flex-col items-start justify-end">
+    <div className="rounded-md border-2 border-black p-4">
+      <h2 className="mb-2 rounded bg-red-200 p-2 text-center">
         Already logged in
       </h2>
-      <div className="rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-500 transform hover:scale-110">
+      <div className="my-2 w-1/2 rounded-lg border-2 border-solid border-black p-1 text-center transition duration-500 ease-linear hover:scale-110 hover:border-transparent hover:bg-black hover:text-white">
         <button onClick={logout}>Logout</button>
       </div>
     </div>
   </div>
 );
+
+LoggedInView.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
 const LoginView = ({
   credentials,
@@ -56,7 +66,7 @@ const LoginView = ({
   isAnimating,
   isProcessing,
 }) => (
-  <div className="flex flex-col justify-end basis-28 py-3">
+  <div className="flex basis-28 flex-col justify-end py-3">
     <div
       className={`${message.style} ${
         isAnimating ? "animate-scaleUpAndDown" : ""
@@ -64,7 +74,7 @@ const LoginView = ({
     >
       {message.text}
     </div>
-    <form onSubmit={handleSubmit} className="border-black border-2 rounded-md">
+    <form onSubmit={handleSubmit} className="rounded-md border-2 border-black">
       <InputField
         label="Username:"
         name="username"
@@ -85,6 +95,15 @@ const LoginView = ({
   </div>
 );
 
+LoginView.propTypes = {
+  credentials: PropTypes.object.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  message: PropTypes.object.isRequired,
+  isAnimating: PropTypes.bool.isRequired,
+  isProcessing: PropTypes.bool.isRequired,
+};
+
 const InputField = ({ label, name, value, onChange, type = "text" }) => (
   <div style={{ margin: "10px" }}>
     {label}
@@ -92,19 +111,27 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => (
       autoComplete="off"
       name={name}
       type={type}
-      className="border-b-2 border-b-solid border-b-black"
+      className="border-b-2 border-solid border-b-black"
       value={value}
       onChange={onChange}
     />
   </div>
 );
 
+InputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  type: PropTypes.string,
+};
+
 const SubmitButton = ({ isProcessing }) => (
   <button type="submit" className="loginButton">
     {isProcessing ? (
       <>
         <svg
-          className="animate-spin h-6 w-6 mx-4 text-red-400 fill-red-600"
+          className="mx-4 size-6 animate-spin fill-red-600 text-red-400"
           viewBox="0 0 101 101"
         >
           <path
@@ -127,5 +154,9 @@ const SubmitButton = ({ isProcessing }) => (
     )}
   </button>
 );
+
+SubmitButton.propTypes = {
+  isProcessing: PropTypes.bool.isRequired,
+};
 
 export default LoginForm;

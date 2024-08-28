@@ -1,5 +1,7 @@
 import AuthorsDialog from "../components/AuthorsDialog";
 import NewAuthorDialog from "../components/NewAuthorDialog";
+import PropTypes from "prop-types";
+
 const AuthorInputField = ({
   label,
 
@@ -11,26 +13,26 @@ const AuthorInputField = ({
   addAuthorDialogOpen,
   setAddAuthorDialogOpen,
 }) => (
-  <div className="flex my-2 justify-between border-b-2 p-2 border-b-gray-400">
+  <div className="my-2 flex justify-between border-b-2 border-b-gray-400 p-2">
     <div className="flex flex-col">
       <span className="flex min-w-80">
         <p className=" text-xl">{label} </p>
-        <p className=" break-words text-xl px-2 font-semibold h-14 w-30">
+        <p className="h-14 w-32 break-words px-2 text-xl font-semibold">
           {value}
         </p>
       </span>
 
       <button
-        className="flex-1 border-2 border-black rounded-md bg-white my-2 max-w-14"
+        className="my-2 max-w-14 flex-1 rounded-md border-2 border-black bg-white"
         type="button"
         onClick={() => setAuthor("")}
       >
         Clear
       </button>
     </div>
-    <div className="flex flex-col items-end  w-full">
+    <div className="flex w-full flex-col  items-end">
       <button
-        className=" mb-1 w-60  border-black border-2 bg-white text-black rounded-md p-2 transition ease-linear duration-300 scale-100 transform hover:bg-black hover:text-white "
+        className=" mb-1 w-60  scale-100 rounded-md border-2 border-black bg-white p-2 text-black transition duration-300 ease-linear hover:bg-black hover:text-white "
         type="button"
         onClick={() => {
           setAuthorsDialogOpen(true);
@@ -39,7 +41,7 @@ const AuthorInputField = ({
         Select an existing author
       </button>
       <button
-        className="w-60 mt-1 border-black border-2 bg-white rounded-md p-2 ease-linear duration-300 scale-100 transform hover:bg-black hover:text-white"
+        className="mt-1 w-60 scale-100 rounded-md border-2 border-black bg-white p-2 duration-300 ease-linear hover:bg-black hover:text-white"
         type="button"
         onClick={() => {
           setAddAuthorDialogOpen(true);
@@ -61,4 +63,13 @@ const AuthorInputField = ({
     />
   </div>
 );
+AuthorInputField.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  authorsDialogOpen: PropTypes.bool.isRequired,
+  setAuthorsDialogOpen: PropTypes.func.isRequired,
+  setAuthor: PropTypes.func.isRequired,
+  addAuthorDialogOpen: PropTypes.bool.isRequired,
+  setAddAuthorDialogOpen: PropTypes.func.isRequired,
+};
 export default AuthorInputField;

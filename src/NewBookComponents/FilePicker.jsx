@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const FilePicker = ({ handleFileChange, fileValidationMessage }) => {
   return (
     <div className="bg-red-200 py-2">
@@ -6,10 +8,10 @@ const FilePicker = ({ handleFileChange, fileValidationMessage }) => {
         <input type="file" accept="image/*" onChange={handleFileChange} />
         {fileValidationMessage && (
           <p
-            className={`flex ml-2 justify-center w-4/12 ${
+            className={`ml-2 flex w-4/12 justify-center ${
               fileValidationMessage === "File validated successfully!"
-                ? " bg-green-400 border-2 border-black rounded-md"
-                : " bg-red-500 border-2 border-black rounded-md"
+                ? " rounded-md border-2 border-black bg-green-400"
+                : " rounded-md border-2 border-black bg-red-500"
             }`}
           >
             {fileValidationMessage}
@@ -18,5 +20,9 @@ const FilePicker = ({ handleFileChange, fileValidationMessage }) => {
       </div>
     </div>
   );
+};
+FilePicker.propTypes = {
+  handleFileChange: PropTypes.func.isRequired,
+  fileValidationMessage: PropTypes.string,
 };
 export default FilePicker;

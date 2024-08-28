@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_AUTHOR_IMAGE } from "./queries";
 //Default image for books.
 import image from "../static/images/book.jpg";
-
+import propTypes from "prop-types";
 /**
  * Renders the image of a book based on the provided bookId.
  *
@@ -27,7 +27,7 @@ const AuthorImage = ({ authorId }) => {
   }
 
   return (
-    <div className="flex justify-center items-center m-2">
+    <div className="m-2 flex items-center justify-center">
       {imageUrl ? (
         // Display the book image if available. The image tag can translate Base64 strings to images.
         <img className="max-h-36 max-w-60" src={imageUrl} alt="" />
@@ -36,6 +36,9 @@ const AuthorImage = ({ authorId }) => {
       )}
     </div>
   );
+};
+AuthorImage.propTypes = {
+  authorId: propTypes.string.isRequired,
 };
 
 export default AuthorImage;

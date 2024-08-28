@@ -1,18 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import React from "react";
+import { memo } from "react";
 import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "./queries";
 import image from "../static/images/book.jpg";
 import AuthorFilter from "./AuthorFilter";
-
-const AuthorsDialog = ({
-  authorToSearch,
-  setAuthorToSearch,
-  token,
-  open,
-  setAuthorsDialogOpen,
-  setAuthor,
-}) => {
+import propTypes from "prop-types";
+const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS);
   const [selectedAuthor, setSelectedAuthor] = useState(null);
   const [authorSearchInput, setAuthorSearchinput] = useState("");
@@ -80,19 +73,22 @@ const AuthorsDialog = ({
   const AuthorsDialogHeader = ({ selectedAuthor }) => {
     return (
       <>
-        <h1 className="font-bold text-2xl">Authors</h1>
+        <h1 className="text-2xl font-bold">Authors</h1>
         <header className="flex py-2 text-xl">
           Selected author:{" "}
-          <p className="border-b-2 px-2 font-semibold border-black">
+          <p className="border-b-2 border-black px-2 font-semibold">
             {selectedAuthor}
           </p>
         </header>
       </>
     );
   };
+  AuthorsDialogHeader.propTypes = {
+    selectedAuthor: propTypes.string,
+  };
   const AuthorsSortCriteriaDropdown = ({ criteria }) => {
     return (
-      <div className=" p-1 bg-gray-200 border-2 border-gray-400  w-1/3 ">
+      <div className=" w-1/3 border-2 border-gray-400 bg-gray-200  p-1 ">
         <label htmlFor="sortMenu" className="text-xl ">
           Sort by:{" "}
         </label>
@@ -101,7 +97,7 @@ const AuthorsDialog = ({
           name="sortMenu"
           onChange={handleSortCriteriaChange}
           value={criteria}
-          className="border-2 border-gray-400 rounded-md p-1"
+          className="rounded-md border-2 border-gray-400 p-1"
         >
           <option defaultValue={true} disabled>
             Select sort criteria
@@ -113,7 +109,10 @@ const AuthorsDialog = ({
       </div>
     );
   };
-  const AuthorsDialogGrid = React.memo(
+  AuthorsSortCriteriaDropdown.propTypes = {
+    criteria: propTypes.string,
+  };
+  const AuthorsDialogGrid = memo(
     ({ data, filterAuthors, error, loading, authorSearchInput }) => {
       if (loading) return <div>Loading authors...</div>;
       if (error)
@@ -122,25 +121,26 @@ const AuthorsDialog = ({
       const filteredAuthors = filterAuthors(authors, authorSearchInput);
       return (
         <>
-          <section className="grid grid-cols-2 gap-4 py-2 my-2 border-2 border-gray-400 bg-gray-200">
-            <header className="text-xl px-1 border-r-2 border-gray-400 overflow">
+          <section className="my-2 grid grid-cols-2 gap-4 border-2 border-gray-400 bg-gray-200 py-2">
+            <header className="border-r-2 border-gray-400 px-1 text-xl">
               Author
             </header>
-            <header className="text-xl px-1">Info</header>
+            <header className="px-1 text-xl">Info</header>
           </section>
           <section>
             <form className="h-96 overflow-y-scroll ">
               <section className="grid grid-cols-2 gap-4">
                 {filteredAuthors.length === 0 && (
-                  <div className="col-span-2 text-xl flex bg-red-300 border-2 border-gray-400 rounded-md p-4 justify-center">
-                    No authors found with search term "{authorSearchInput}"!
+                  <div className="col-span-2 flex justify-center rounded-md border-2 border-gray-400 bg-red-300 p-4 text-xl">
+                    No authors found with search term &quot;{authorSearchInput}
+                    &quot;!
                   </div>
                 )}
                 {filteredAuthors.map((author) => (
                   <>
                     <img className="w-2/4" src={image} alt="swag"></img>
                     <div
-                      className="bg-gray-200 p-1 border-2 border-gray-400 rounded-md"
+                      className="rounded-md border-2 border-gray-400 bg-gray-200 p-1"
                       id={author.id}
                     >
                       <ul>
@@ -170,14 +170,14 @@ const AuthorsDialog = ({
 
           <button
             onClick={handleOk}
-            className="p-2 m-2 border-black border-2 rounded-md bg-green-500 transition ease-linear duration-300 scale-100 transform hover:scale-110"
+            className="m-2 scale-100 rounded-md border-2 border-black bg-green-500 p-2 transition duration-300 ease-linear hover:scale-110"
             type="button"
           >
             OK
           </button>
           <button
             onClick={handleClose}
-            className="p-2 m-2 border-black border-2 rounded-md bg-red-500 transition ease-linear duration-300 scale-100 transform hover:scale-110"
+            className="m-2 scale-100 rounded-md border-2 border-black bg-red-500 p-2 transition duration-300 ease-linear hover:scale-110"
             type="button"
           >
             Cancel
@@ -186,9 +186,17 @@ const AuthorsDialog = ({
       );
     }
   );
+  AuthorsDialogGrid.displayName = "AuthorsDialogGrid";
+  AuthorsDialogGrid.propTypes = {
+    data: propTypes.object,
+    filterAuthors: propTypes.func,
+    error: propTypes.object,
+    loading: propTypes.bool,
+    authorSearchInput: propTypes.string,
+  };
   return (
     <dialog
-      className={`sm:w-6/12 w-full p-2 border-2 border-gray-400 rounded-md bg-red-200 backdrop-blur-sm `}
+      className={`w-full rounded-md border-2 border-gray-400 bg-red-200 p-2 backdrop-blur-sm sm:w-6/12 `}
       ref={dialogRef}
     >
       <AuthorsDialogHeader selectedAuthor={selectedAuthor} />
@@ -205,5 +213,9 @@ const AuthorsDialog = ({
     </dialog>
   );
 };
-
+AuthorsDialog.propTypes = {
+  open: propTypes.bool,
+  setAuthorsDialogOpen: propTypes.func,
+  setAuthor: propTypes.func,
+};
 export default AuthorsDialog;

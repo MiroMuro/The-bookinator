@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const AddGenreButton = ({
   addGenre,
   genre,
@@ -28,6 +30,14 @@ const AddGenreButton = ({
       Add genre. Max 3.
     </button>
   );
+};
+AddGenreButton.propTypes = {
+  addGenre: PropTypes.func.isRequired,
+  genre: PropTypes.string.isRequired,
+  genres: PropTypes.array.isRequired,
+  isDuplicateGenre: PropTypes.bool.isRequired,
+  setIsDuplicateGenre: PropTypes.func.isRequired,
+  setIsTooLongGenre: PropTypes.func.isRequired,
 };
 
 export default AddGenreButton;

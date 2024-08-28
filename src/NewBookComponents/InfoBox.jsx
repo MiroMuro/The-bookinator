@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const InfoBox = ({ isAnimating, isProcessing, message }) => {
   return (
     <div
@@ -8,7 +10,7 @@ const InfoBox = ({ isAnimating, isProcessing, message }) => {
       {isProcessing ? (
         <div className="flex items-center justify-center">
           <svg
-            className="animate-spin h-6 w-6 mx-4 text-red-400 fill-red-600"
+            className="mx-4 size-6 animate-spin fill-red-600 text-red-400"
             viewBox="0 0 101 101"
           >
             <path
@@ -26,5 +28,10 @@ const InfoBox = ({ isAnimating, isProcessing, message }) => {
       )}
     </div>
   );
+};
+InfoBox.propTypes = {
+  isAnimating: PropTypes.bool.isRequired,
+  isProcessing: PropTypes.bool.isRequired,
+  message: PropTypes.object.isRequired,
 };
 export default InfoBox;

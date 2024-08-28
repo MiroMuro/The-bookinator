@@ -14,32 +14,32 @@ const SingleBookPage = () => {
 
   const bookData = data.getBookById;
   return (
-    <div className="w-4/12 my-2 border-gray-400 border-2 rounded-md overflow-hidden">
-      <div className="flex bg-red-200 border-b-gray-400 border-2 ">
+    <div className="my-2 w-4/12 overflow-hidden rounded-md border-2 border-gray-400">
+      <div className="flex border-2 border-b-gray-400 bg-red-200 ">
         <header className="p-2 text-4xl ">
           <h1>{bookData.title}</h1>
         </header>
       </div>
-      <div className="flex border-b-gray-400 border-2">
-        <div className="max-w-60 m-4 border-2 border-gray-200">
+      <div className="flex border-2 border-b-gray-400">
+        <div className="m-4 max-w-60 border-2 border-gray-200">
           <BookImage bookId={bookData.id} />
         </div>
-        <div className="my-4 w-6/12 border-2 border-black rounded-md bg-gray-200">
-          <p className="text-xl mb-6 px-2">Author: {bookData.author.name}</p>
-          <p className="text-xl mb-6 px-2">
+        <div className="my-4 w-6/12 rounded-md border-2 border-black bg-gray-200">
+          <p className="mb-6 px-2 text-xl">Author: {bookData.author.name}</p>
+          <p className="mb-6 px-2 text-xl">
             Author born: {bookData.author.born}
           </p>
-          <p className="text-xl mb-6 px-2">
+          <p className="mb-6 px-2 text-xl">
             Book published: {bookData.published}{" "}
           </p>
-          <p className="text-xl mb-6 px-2">
+          <p className="mb-6 px-2 text-xl">
             Genres: {bookData.genres.join(", ")}{" "}
           </p>
         </div>
       </div>
       <div>
-        <p className="text-2xl m-4">Description: </p>
-        <div className="border-2 text-lg m-4 min-h-40 min-w-40 border-gray-400 rounded-md">
+        <p className="m-4 text-2xl">Description: </p>
+        <div className="m-4 min-h-40 min-w-40 rounded-md border-2 border-gray-400 text-lg">
           {" "}
           {bookData.description}
         </div>

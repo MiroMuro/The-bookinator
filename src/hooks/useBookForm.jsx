@@ -7,7 +7,7 @@ import {
   AUTHOR_UPDATED,
   UPLOAD_BOOK_IMAGE,
 } from "../components/queries";
-const useBookForm = (token, setToken) => {
+const useBookForm = (token) => {
   const [
     bookInfo,
     handleChange,

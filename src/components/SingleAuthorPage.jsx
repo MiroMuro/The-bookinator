@@ -1,10 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_SINGLE_AUTHOR, ALL_BOOKS } from "./queries";
-import image from "../static/images/book.jpg";
 import AuthorImage from "./AuthorImage";
 import BookImage from "./BookImage";
-
+import PropTypes from "prop-types";
 const SingleAuthorPage = () => {
   const { authorId } = useParams();
 
@@ -28,15 +27,15 @@ const SingleAuthorPage = () => {
     return (
       <div className="flex flex-col ">
         {data.allBooks.map((book) => (
-          <Link to={"/book/" + book.id}>
-            <div className="grid grid-cols-2 border-2 border-gray-400 rounded-md m-4">
+          <Link key={book.id} to={"/book/" + book.id}>
+            <div className="m-4 grid grid-cols-2 rounded-md border-2 border-gray-400">
               <div>
                 <BookImage bookId={book.id} />
               </div>
-              <div className="bg-gray-200 border-2 border-l-gray-400">
-                <p className="text-xl m-4">Title: {book.title}</p>
-                <p className="text-xl m-4">Published: {book.published}</p>
-                <p className="text-xl m-4">Genres: {book.genres.join(", ")}</p>
+              <div className="border-2 border-l-gray-400 bg-gray-200">
+                <p className="m-4 text-xl">Title: {book.title}</p>
+                <p className="m-4 text-xl">Published: {book.published}</p>
+                <p className="m-4 text-xl">Genres: {book.genres.join(", ")}</p>
               </div>
             </div>
           </Link>
@@ -47,33 +46,33 @@ const SingleAuthorPage = () => {
 
   console.log(author);
   return (
-    <div className="w-4/12 my-2 border-gray-400 border-2">
-      <div className="flex bg-red-200 border-b-gray-400 border-2 overflow-hidden">
+    <div className="my-2 w-4/12 border-2 border-gray-400">
+      <div className="flex overflow-hidden border-2 border-b-gray-400 bg-red-200">
         <header className="p-2 text-4xl ">
           <h1>{author.name}</h1>
         </header>
       </div>
-      <div className="flex border-b-gray-400 border-2">
-        <div className="max-w-60 m-4 border-2 border-gray-200">
+      <div className="flex border-2 border-b-gray-400">
+        <div className="m-4 max-w-60 border-2 border-gray-200">
           <AuthorImage authorId={author.id} />
         </div>
-        <div className="my-4 border-2 border-black rounded-md bg-gray-200 w-6/12">
-          <p className="text-2xl mb-6 px-2">Born: {author.born}</p>
-          <p className="text-2xl mb-6 px-2">Books: {author.bookCount}</p>
-          <p className="text-2xl mb-6 px-2">Nationality: </p>
+        <div className="my-4 w-6/12 rounded-md border-2 border-black bg-gray-200">
+          <p className="mb-6 px-2 text-2xl">Born: {author.born}</p>
+          <p className="mb-6 px-2 text-2xl">Books: {author.bookCount}</p>
+          <p className="mb-6 px-2 text-2xl">Nationality: </p>
         </div>
       </div>
-      <div className="border-b-gray-400 border-2">
-        <p className="text-3xl p-4 border-b-2 border-gray-400 bg-red-200">
+      <div className="border-2 border-b-gray-400">
+        <p className="border-b-2 border-gray-400 bg-red-200 p-4 text-3xl">
           Description:{" "}
         </p>
-        <div className="border-2 m-4 min-h-40 min-w-40 border-gray-400 rounded-md">
+        <div className="m-4 min-h-40 min-w-40 rounded-md border-2 border-gray-400">
           {" "}
           {author.description}
         </div>
       </div>
       <div>
-        <p className="text-3xl p-4 bg-red-200 border-b-2 border-gray-400">
+        <p className="border-b-2 border-gray-400 bg-red-200 p-4 text-3xl">
           Books by this author:
         </p>
         <div>
@@ -84,4 +83,7 @@ const SingleAuthorPage = () => {
   );
 };
 
+SingleAuthorPage.propTypes = {
+  authorName: PropTypes.string.isRequired,
+};
 export default SingleAuthorPage;

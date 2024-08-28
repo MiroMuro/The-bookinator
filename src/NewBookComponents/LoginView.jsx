@@ -9,6 +9,7 @@ import InfoBox from "./InfoBox";
 import GenresBox from "./GenresBox";
 import FilePicker from "./FilePicker";
 import DescriptionField from "./DescriptionField";
+import PropTypes from "prop-types";
 
 const LoginView = ({
   bookInfo,
@@ -63,7 +64,7 @@ const LoginView = ({
   ]);
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto px-8 flex-wrap break-words">
+    <div className="mx-auto flex max-w-6xl flex-col flex-wrap break-words px-8">
       <InfoBox
         isAnimating={isAnimating}
         isProcessing={isProcessing}
@@ -71,7 +72,7 @@ const LoginView = ({
       />
 
       <form
-        className="flex flex-col border-gray-400 border-2 rounded-md overflow-hidden"
+        className="flex flex-col overflow-hidden rounded-md border-2 border-gray-400"
         onSubmit={handleSubmit}
       >
         <div className="bg-red-200">
@@ -114,8 +115,8 @@ const LoginView = ({
             value={bookInfo.description}
             onChange={handleChange}
           />
-          <div className="flex justify-between border-b-2 overflow-hidden border-gray-400 pl-1 pb-2 bg-red-200">
-            <p className="text-xl px-1 mt-2">Genre:</p>
+          <div className="flex justify-between overflow-hidden border-b-2 border-gray-400 bg-red-200 pb-2 pl-1">
+            <p className="mt-2 px-1 text-xl">Genre:</p>
             <div className="flex flex-col items-center">
               <GenreInputField
                 name="genre"
@@ -154,5 +155,35 @@ const LoginView = ({
       </form>
     </div>
   );
+};
+
+LoginView.propTypes = {
+  bookInfo: PropTypes.object.isRequired,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  message: PropTypes.string,
+  isAnimating: PropTypes.bool,
+  addGenre: PropTypes.func,
+  setIsDuplicateGenre: PropTypes.func,
+  isDuplicateGenre: PropTypes.bool,
+  isProcessing: PropTypes.bool,
+  setIsProcessing: PropTypes.func,
+  handleGenreDeletion: PropTypes.func,
+  handleFileChange: PropTypes.func,
+  handleBeforeInput: PropTypes.func,
+  setFile: PropTypes.func,
+  file: PropTypes.object,
+  setPlayPubYearErrorAnimation: PropTypes.func,
+  playPubYearErrorAnimation: PropTypes.bool,
+  setPubYearErrorMessage: PropTypes.func,
+  pubYearErrorMessage: PropTypes.string,
+  authorsDialogOpen: PropTypes.bool,
+  setAuthorsDialogOpen: PropTypes.func,
+  setAuthor: PropTypes.func,
+  addAuthorDialogOpen: PropTypes.bool,
+  setAddAuthorDialogOpen: PropTypes.func,
+  isTooLongGenre: PropTypes.bool,
+  setIsTooLongGenre: PropTypes.func,
+  fileValidationMessage: PropTypes.string,
 };
 export default LoginView;

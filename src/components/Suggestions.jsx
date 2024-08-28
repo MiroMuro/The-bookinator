@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { GET_USER, ALL_BOOKS, BOOK_ADDED, GET_BOOK_IMAGE } from "./queries";
-import image from "../static/images/book.jpg";
-import BookImage from "./BookImage";
+import { GET_USER, ALL_BOOKS, BOOK_ADDED } from "./queries";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import BookImage from "./BookImage";
 import TimeOutDialog from "./TimeOutDialog";
 const Suggestions = ({ setToken }) => {
   const [messageBoxContent, setMessageBoxContent] = useState("");
@@ -115,28 +115,28 @@ const Suggestions = ({ setToken }) => {
         errorMessage={messageBoxContent}
         setToken={setToken}
       ></TimeOutDialog>
-      <div className="flex flex-col ww-full sm:w-7/12">
-        <div className="flex bg-red-200 rounded-md border-2 my-4 p-2 border-red-400  m-auto">
+      <div className="flex w-full flex-col sm:w-7/12">
+        <div className="m-auto my-4 flex rounded-md border-2 border-red-400 bg-red-200  p-2">
           <h2>{messageBoxContent}</h2>
         </div>
         {booksData && (
-          <div className="flex flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-6">
+          <div className="mx-auto flex max-w-5xl flex-col px-4 sm:px-6 lg:px-6">
             <div className={`${booksData.allBooks.length < 1 ? "" : "hidden"}`}>
               <p>
                 {booksData.length < 1 && console.log(booksData.allBooks)}
                 No books in your favorite genre yet. <br />
-                Go add some in the "Add book" tab!
+                Go add some in the Add &quot;book&quot; tab!
               </p>
             </div>
             {/* Cards go here*/}
-            <div className="grid mt-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {booksData.allBooks.map((book) => (
                 <div
                   key={book.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                  className="overflow-hidden rounded-lg bg-white shadow-md"
                 >
-                  <header className="bg-red-200 p-2 min-h-16">
-                    <h2 className="font-semibold break-normal text-sm">
+                  <header className="min-h-16 bg-red-200 p-2">
+                    <h2 className="break-normal text-sm font-semibold">
                       {book.title}
                     </h2>
                   </header>
@@ -144,13 +144,13 @@ const Suggestions = ({ setToken }) => {
                     <BookImage bookId={book.id} />
                   </div>
                   <div className="p-4">
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="mb-1 text-sm text-gray-600">
                       Author: {book.author.name}
                     </p>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="mb-1 text-sm text-gray-600">
                       Born: {book.author.born}
                     </p>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="mb-1 text-sm text-gray-600">
                       Published: {book.published}
                     </p>
                   </div>
@@ -162,5 +162,8 @@ const Suggestions = ({ setToken }) => {
       </div>
     </>
   );
+};
+Suggestions.propTypes = {
+  setToken: PropTypes.func.isRequired,
 };
 export default Suggestions;
