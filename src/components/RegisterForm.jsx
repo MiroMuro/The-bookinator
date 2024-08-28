@@ -116,10 +116,10 @@ const RegisterForm = () => {
   const RegisterButton = () => {
     let isDisabled;
     if (
-      accountDetails.username === "" ||
-      accountDetails.password === "" ||
-      repeatPassword === "" ||
-      accountDetails.favoriteGenre === ""
+      accountDetails.username.length < 3 ||
+      accountDetails.password.length < 8 ||
+      repeatPassword !== accountDetails.password ||
+      accountDetails.favoriteGenre.length < 3
     ) {
       isDisabled = true;
     } else {
@@ -127,6 +127,7 @@ const RegisterForm = () => {
     }
     return (
       <button
+        data-test="register-button"
         type="submit"
         className="registerButton"
         disabled={isDisabled}
@@ -139,6 +140,7 @@ const RegisterForm = () => {
   const InfoBox = ({ isAnimating, isProcessing, message }) => {
     return (
       <div
+        data-test="register-info-box"
         className={`${message.style} ${
           isAnimating ? "animate-scaleUpAndDown" : ""
         }`}
@@ -180,12 +182,14 @@ const RegisterForm = () => {
           message={message}
         />
         <form
+          data-test="register-form"
           className="rounded-md border-2 border-black"
           onSubmit={handleRegistration}
         >
-          <div className="m-2.5">
+          <div data-test="username-div" className="m-2.5">
             Username
             <div
+              data-test="username-error"
               className={`text-red-600 transition duration-500 ease-linear  ${
                 usernameIsInvalid(accountDetails.username)
                   ? "opacity-100"
@@ -203,10 +207,11 @@ const RegisterForm = () => {
               />
             </div>
           </div>
-          <div className="m-2.5">
+          <div data-test="password-div" className="m-2.5">
             Password
             <div>
               <div
+                data-test="password-error"
                 title="Password must be between 8-100 characters, and cannot be empty or contain only spaces."
                 className={`text-red-600 transition duration-500 ease-linear  ${
                   passwordIsInvalid(accountDetails.password)
@@ -225,10 +230,11 @@ const RegisterForm = () => {
               />
             </div>
           </div>
-          <div className="m-2.5">
+          <div data-test="repeat-password-div" className="m-2.5">
             Repeat password
             <div>
               <div
+                data-test="repeat-password-error"
                 title="Password must be between 8-100 characters, and cannot be empty or contain only spaces."
                 className={` text-red-600 transition duration-500  ease-linear  ${
                   accountDetails.password !== repeatPassword
@@ -236,7 +242,7 @@ const RegisterForm = () => {
                     : "opacity-0"
                 } `}
               >
-                Passwords dont match!
+                Passwords do not match!
               </div>
               <input
                 className="border-b-2 border-solid border-b-black"
@@ -247,10 +253,11 @@ const RegisterForm = () => {
               />
             </div>
           </div>
-          <div className="m-2.5">
+          <div data-test="favorite-genre-div" className="m-2.5">
             Favorite genre
             <div>
               <div
+                data-test="favorite-genre-error"
                 title="Genre must be between 2-30 characters,cannot be empty or contain only spaces."
                 className={` text-red-600 transition duration-500 ease-linear ${
                   favoriteGenreIsInvalid(accountDetails.favoriteGenre)

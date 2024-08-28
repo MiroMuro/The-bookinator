@@ -11,7 +11,7 @@ describe("Navigation testing", () => {
     cy.validateNavigation("/login");
     cy.validateNavigation("/register");
   });
-  it("Authors and Books render correctly empty and interaction with the page doesn't break the app", () => {
+  it("Authors and Books behave correctly not logged in and empty.", () => {
     cy.validateNavigation("/");
     cy.getDataTest("no-authors-div").should(
       "have.text",
@@ -112,5 +112,104 @@ describe("Navigation testing", () => {
       cy.getDataTest("books-per-page-select").select("32");
     });
     cy.getDataTest("no-books-div").should("have.text", "No books added yet.");
+  });
+  it("Registration works correctly", () => {
+    cy.validateNavigation("/register");
+    cy.contains("Register here!");
+    cy.getDataTest("register-button").should("be.disabled"); //Submit button is disabled
+    cy.getDataTest("register-form").within(() => {
+      //Username tests
+      cy.getDataTest("username-div").within(() => {
+        cy.contains("Username");
+        cy.getDataTest("username-error")
+          .should("be.visible")
+          .and("have.text", "Username invalid!");
+        //usename min length is 3
+        cy.get("input").type("aa");
+        cy.getDataTest("username-error")
+          .should("be.visible")
+          .and("have.text", "Username invalid!");
+        cy.get("input").clear();
+        cy.get("input").type("testUser1");
+        cy.getDataTest("username-error").should("not.be.visible");
+      });
+      cy.getDataTest("register-button").should("be.disabled"); //Submit button is disabled
+
+      //Password tests
+      cy.getDataTest("password-div").within(() => {
+        cy.contains("Password");
+        cy.getDataTest("password-error")
+          .should("be.visible")
+          .and("have.text", "Password invalid!");
+        //Password too short (Min. 8 characters)
+        cy.get("input").type("tooshrt");
+        cy.getDataTest("password-error")
+          .should("be.visible")
+          .and("have.text", "Password invalid!");
+        cy.get("input").clear();
+        //Password is good
+        cy.get("input").type("testPassword1");
+        cy.getDataTest("password-error").should("not.be.visible");
+      });
+
+      //Repeat password tests
+      cy.getDataTest("register-button").should("be.disabled"); //Submit button is disabled
+      cy.getDataTest("repeat-password-div").within(() => {
+        cy.contains("Repeat password");
+        cy.getDataTest("repeat-password-error")
+          .should("be.visible")
+          .and("have.text", "Passwords do not match!");
+        cy.get("input").type("testPassword1");
+        cy.getDataTest("repeat-password-error").should("not.be.visible");
+      });
+      cy.getDataTest("register-button").should("be.disabled"); //Submit button is disabled
+
+      //Genre test
+      cy.getDataTest("favorite-genre-div").within(() => {
+        cy.contains("Favorite genre");
+        //Genre min length is 3 characters
+        cy.get("input").type("aa");
+        cy.getDataTest("favorite-genre-error")
+          .should("be.visible")
+          .and("have.text", "Genre invalid!");
+        cy.get("input").clear();
+        //Genre max length is 3 characters
+        cy.get("input").type(
+          "thistestgenrenameistoolongandtheerrorshouldshowup"
+        );
+        cy.getDataTest("favorite-genre-error")
+          .should("be.visible")
+          .and("have.text", "Genre invalid!");
+        cy.get("input").clear();
+        //Genre is good
+        cy.get("input").type("Thriller");
+        cy.getDataTest("favorite-genre-error").should("not.be.visible");
+      });
+      cy.getDataTest("register-button").should("not.be.disabled"); //Submit button is disabled
+      cy.getDataTest("register-button").click();
+    });
+    cy.contains("Registration successful! Redirecting to login...").as(
+      "registrationSuccess"
+    );
+    cy.validateNavigation("/login");
+  });
+  it("Registration fails with duplicate username", () => {
+    cy.validateNavigation("/register");
+    cy.getDataTest("register-form").within(() => {
+      cy.getDataTest("username-div").within(() => {
+        cy.get("input").type("testUser1");
+      });
+      cy.getDataTest("password-div").within(() => {
+        cy.get("input").type("testPassword1");
+      });
+      cy.getDataTest("repeat-password-div").within(() => {
+        cy.get("input").type("testPassword1");
+      });
+      cy.getDataTest("favorite-genre-div").within(() => {
+        cy.get("input").type("Thriller");
+      });
+      cy.getDataTest("register-button").click();
+    });
+    cy.contains("Username testUser1 already taken. Please try another one.");
   });
 });
