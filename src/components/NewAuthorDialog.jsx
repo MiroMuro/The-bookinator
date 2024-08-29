@@ -125,6 +125,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
               onChange={(e) => handleFileChange(e)}
             />
             <div
+              data-test="filevalidationMessage"
               className={`${
                 fileValidationMessage === "File validated successfully!"
                   ? "rounded-md border-2 border-black bg-green-400"
