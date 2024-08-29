@@ -56,8 +56,12 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     showErrorMessage: PropTypes.bool.isRequired,
   };
   return (
-    <dialog className="newAuthorDialog" ref={dialogRef}>
-      <form id="addAuthorForm">
+    <dialog
+      data-test="add-author-dialog"
+      className="newAuthorDialog"
+      ref={dialogRef}
+    >
+      <form data-test="add-author-form" id="addAuthorForm">
         <header className="flex h-24 justify-between border-b-2 border-gray-400 p-4 text-2xl">
           <h2>Add a new author</h2>{" "}
           <StatusBar initialStatus={addAuthorStatus} />
@@ -66,6 +70,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Name:</aside>
           <main className="flex w-1/3 flex-col">
             <input
+              data-test="nameInput"
               id="nameInput"
               className="w-11/12 border-b-2 border-gray-400"
               name="name"
@@ -83,6 +88,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Born:</aside>
           <main className="flex w-1/3 flex-col">
             <input
+              data-test="bornInput"
               id="bornInput"
               className="w-11/12 border-b-2 border-gray-400"
               name="born"
@@ -100,6 +106,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Description:</aside>
           <main className="relative">
             <textarea
+              data-test="descriptionInput"
               className="h-40 border-b-2 border-gray-400"
               name="description"
               value={author.description}
@@ -112,6 +119,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Image:</aside>
           <main>
             <input
+              data-test="fileInput"
               type="file"
               accept="image/*"
               onChange={(e) => handleFileChange(e)}
@@ -136,6 +144,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             Cancel
           </button>
           <button
+            data-test="add-author-button"
             className="rounded-md border-2 border-black bg-green-500 p-2 transition duration-300 ease-linear hover:scale-110 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:opacity-50 "
             type="button"
             id="addAuthorButton"

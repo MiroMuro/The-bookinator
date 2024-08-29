@@ -32,6 +32,7 @@ const AuthorInputField = ({
     </div>
     <div className="flex w-full flex-col  items-end">
       <button
+        data-test="author-select-button"
         className=" mb-1 w-60  scale-100 rounded-md border-2 border-black bg-white p-2 text-black transition duration-300 ease-linear hover:bg-black hover:text-white "
         type="button"
         onClick={() => {
@@ -41,6 +42,7 @@ const AuthorInputField = ({
         Select an existing author
       </button>
       <button
+        data-test="author-add-button"
         className="mt-1 w-60 scale-100 rounded-md border-2 border-black bg-white p-2 duration-300 ease-linear hover:bg-black hover:text-white"
         type="button"
         onClick={() => {

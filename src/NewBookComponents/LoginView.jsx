@@ -72,7 +72,7 @@ const LoginView = ({
       />
 
       <form
-        className="flex flex-col overflow-hidden rounded-md border-2 border-gray-400"
+        className="flex flex-col  rounded-md border-2 border-gray-400"
         onSubmit={handleSubmit}
       >
         <div className="bg-red-200">
@@ -115,7 +115,7 @@ const LoginView = ({
             value={bookInfo.description}
             onChange={handleChange}
           />
-          <div className="flex justify-between overflow-hidden border-b-2 border-gray-400 bg-red-200 pb-2 pl-1">
+          <div className="flex justify-between  border-b-2 border-gray-400 bg-red-200 pb-2 pl-1">
             <p className="mt-2 px-1 text-xl">Genre:</p>
             <div className="flex flex-col items-center">
               <GenreInputField

@@ -18,10 +18,8 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   }, [setAuthorsDialogOpen]);
 
   const handleOk = useCallback(() => {
-    console.log("Haloo");
     setAuthor(selectedAuthor);
     setSelectedAuthor(selectedAuthor);
-    //setAuthorSearchinput(selectedAuthor);
     setAuthorsDialogOpen(false);
   }, [selectedAuthor, setAuthorsDialogOpen, setAuthor]);
 
