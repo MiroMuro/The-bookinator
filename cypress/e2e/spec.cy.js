@@ -252,6 +252,11 @@ describe("Navigation testing", () => {
     cy.contains("Login successful! Redirecting...");
     cy.contains("Already logged in");
     cy.getDataTest("logged-in-view").should("exist");
+    cy.contains("Already logged in");
+    cy.getDataTest("logged-in-nav").should("exist");
+    cy.getDataTest("nav-logout").should("exist");
+    cy.getDataTest("nav-Ssuggestions").should("exist");
+    cy.getDataTest("nav-addbook").should("exist");
     cy.getDataTest("logout-button").click();
   });
 });

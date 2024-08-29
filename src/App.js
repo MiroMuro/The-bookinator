@@ -97,9 +97,9 @@ const App = () => {
       <div className="font-body">
         <Header token={token} />
         <div className="flex flex-col sm:flex-row">
-          <div className="flex z-50 w-full min-w-24 mx-2 py-3 h-52 overflow-auto sticky top-11 sm:mt-80 sm:w-4/12 sm:min-w-32 sm:justify-end sm:top-20">
-            <header className="flex w-full overflow-hidden border-2 mr-4 justify-center border-gray-400 rounded-md  bg-red-200 sticky sm:justify-end sm:w-1/4 sm:min-w-32 sm:mr-0">
-              <div className="flex flex-col justify-center text-red-400 text-xl">
+          <div className="sticky top-11 z-50 mx-2 flex h-52 w-full min-w-24 overflow-auto py-3 sm:top-20 sm:mt-80 sm:w-4/12 sm:min-w-32 sm:justify-end">
+            <header className="sticky mr-4 flex w-full justify-center overflow-hidden rounded-md border-2  border-gray-400 bg-red-200 sm:mr-0 sm:w-1/4 sm:min-w-32 sm:justify-end">
+              <div className="flex flex-col justify-center text-xl text-red-400">
                 <div className="navBarLinks">
                   <NavLink
                     style={padding}
@@ -132,25 +132,25 @@ const App = () => {
                     </div>
                   )}
                   {token && (
-                    <div className="text-red-400 text-xl">
+                    <div
+                      data-test="logged-in-nav"
+                      className="text-xl text-red-400"
+                    >
                       <div className="navBarLinks">
                         <NavLink
-                          style={padding}
-                          data-test="nav-addbook"
+                          dataTest="nav-addbook"
                           to="/addbook"
                           label="Add book"
                         ></NavLink>
                         <NavLink
-                          style={padding}
-                          data-test="nav-suggestions"
+                          dataTest="nav-suggestions"
                           to="/suggestions"
                           label="Suggestions"
                         ></NavLink>
                         <NavLink
-                          data-test="nav-logout"
-                          style={padding}
                           to="/login"
                           label="Logout"
+                          dataTest="nav-logout"
                           state={{ logoutStatus: true }}
                         ></NavLink>
                       </div>

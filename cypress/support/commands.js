@@ -37,3 +37,23 @@ Cypress.Commands.add("validateNavigation", (pathname) => {
   cy.getHeaderAndGreeting("Welcome to the Bookinator!", "Welcome!");
   cy.location("pathname").should("eq", pathname);
 });
+
+Cypress.Commands.add(
+  "registerAndLogin",
+  (username, password, favoriteGenre) => {
+    cy.validateNavigation("/register");
+    cy.getDataTest("register-form").within(() => {
+      cy.get("input[name='username']").type(username);
+      cy.get("input[name='password']").type(password);
+      cy.get("input[name='repeatPassword']").type(password);
+      cy.get("input[name='favoriteGenre']").type(favoriteGenre);
+      cy.getDataTest("register-button").click();
+    });
+    cy.validateNavigation("/login");
+    cy.getDataTest("login-form").within(() => {
+      cy.get("input[name='username']").type(username);
+      cy.get("input[name='password']").type(password);
+      cy.getDataTest("login-button").click();
+    });
+  }
+);
