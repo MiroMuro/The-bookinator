@@ -13,6 +13,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     addAuthorStatus,
     handleFileChange,
     fileValidationMessage,
+    isFormValid,
   } = useAddAuthorForm();
   useEffect(() => {
     if (open) {
@@ -22,7 +23,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     }
   }, [open]);
 
-  const isFormValid = () => {
+  /*const isFormValid = () => {
     if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
       return true;
     } else if (
@@ -31,7 +32,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     ) {
       return false;
     }
-  };
+  };*/
 
   const ErrorMessageComponent = ({ message, showErrorMessage }) => {
     if (!showErrorMessage) return null;
@@ -123,6 +124,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
               type="file"
               accept="image/*"
               onChange={(e) => handleFileChange(e)}
+              onBlur={(e) => handleBlur(e)}
             />
             <div
               data-test="filevalidationMessage"

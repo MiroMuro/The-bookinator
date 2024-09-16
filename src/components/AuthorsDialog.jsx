@@ -24,14 +24,12 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   }, [selectedAuthor, setAuthorsDialogOpen, setAuthor]);
 
   const handleChange = useCallback((e) => {
-    console.log("MIRO HERE", e.target.value);
     e.preventDefault();
     setAuthorSearchinput(e.target.value);
   }, []);
 
   const handleSortCriteriaChange = useCallback((e) => {
     const criteria = e.target.value;
-    console.log("The criteria is: ", criteria);
     setSortCriteria(criteria);
   }, []);
 

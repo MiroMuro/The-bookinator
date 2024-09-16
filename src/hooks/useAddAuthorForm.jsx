@@ -99,11 +99,16 @@ const useAddAuthorForm = () => {
   };
 
   const isFormValid = () => {
-    if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
+    if (
+      errorMessage.isNameErrorMessage ||
+      errorMessage.isBornErrorMessage ||
+      errorMessage.isImageErrorMessage
+    ) {
       return true;
     } else if (
       !errorMessage.isNameErrorMessage &&
-      !errorMessage.isBornErrorMessage
+      !errorMessage.isBornErrorMessage &&
+      !errorMessage.isImageErrorMessage
     ) {
       return false;
     }
@@ -154,7 +159,6 @@ const useAddAuthorForm = () => {
       console.log("Form is not valid");
       return;
     }
-    console.log("Adding author", author);
     const addedAuthorData = await addAuthor({
       variables: {
         name: author.name,
@@ -186,6 +190,11 @@ const useAddAuthorForm = () => {
 
     if (fileSize > sizeLimit) {
       errorMessage = "The file is too large.";
+      setErrorMessage((prev) => ({
+        ...prev,
+        image: errorMessage,
+        isImageErrorMessage: true,
+      }));
       return errorMessage;
     }
     if (
@@ -194,8 +203,18 @@ const useAddAuthorForm = () => {
       fileExtensions !== allowedExtensions[2]
     ) {
       errorMessage = "The file is not an image.";
+      setErrorMessage((prev) => ({
+        ...prev,
+        image: errorMessage,
+        isImageErrorMessage: true,
+      }));
       return errorMessage;
     }
+    setErrorMessage((prev) => ({
+      ...prev,
+      image: "",
+      isImageErrorMessage: false,
+    }));
     return (errorMessage = "File validated successfully!");
   };
   const handleFileChange = (e) => {
@@ -220,6 +239,7 @@ const useAddAuthorForm = () => {
     addAuthorStatus,
     handleFileChange,
     fileValidationMessage,
+    isFormValid,
   };
 };
 export default useAddAuthorForm;
