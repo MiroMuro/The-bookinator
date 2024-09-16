@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 
 const AuthorInputField = ({
   label,
-
   value,
-
   authorsDialogOpen,
   setAuthorsDialogOpen,
   setAuthor,
@@ -17,7 +15,10 @@ const AuthorInputField = ({
     <div className="flex flex-col">
       <span className="flex min-w-80">
         <p className=" text-xl">{label} </p>
-        <p className="h-14 w-32 break-words px-2 text-xl font-semibold">
+        <p
+          data-test="selected-author"
+          className="h-14 w-32 break-words px-2 text-xl font-semibold"
+        >
           {value}
         </p>
       </span>

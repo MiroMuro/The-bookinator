@@ -88,7 +88,7 @@ const useAddAuthorForm = () => {
     } else {
       const bornYear = parseInt(born);
       if (bornYear > currentYear) {
-        errors.push("Born year cannot be in the future.");
+        errors.push("Author cannot be born in the future.");
       }
     }
     setErrorMessage((prev) => ({

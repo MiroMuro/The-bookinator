@@ -23,17 +23,6 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     }
   }, [open]);
 
-  /*const isFormValid = () => {
-    if (errorMessage.isNameErrorMessage || errorMessage.isBornErrorMessage) {
-      return true;
-    } else if (
-      !errorMessage.isNameErrorMessage &&
-      !errorMessage.isBornErrorMessage
-    ) {
-      return false;
-    }
-  };*/
-
   const ErrorMessageComponent = ({ message, showErrorMessage }) => {
     if (!showErrorMessage) return null;
     else {
@@ -120,6 +109,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Image:</aside>
           <main>
             <input
+              className="max-w-56"
               data-test="fileInput"
               type="file"
               accept="image/*"
@@ -128,7 +118,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             />
             <div
               data-test="filevalidationMessage"
-              className={`${
+              className={`my-2 p-2 ${
                 fileValidationMessage === "File validated successfully!"
                   ? "rounded-md border-2 border-black bg-green-400"
                   : "rounded-md border-2 border-black bg-red-500"
@@ -140,11 +130,12 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </section>
         <section className="mb-4 flex justify-between p-2">
           <button
+            data-test="back-button"
             className={`rounded-md border-2 border-black bg-red-500 p-2 transition duration-300 ease-linear hover:scale-110`}
             type="button"
             onClick={() => setDialogOpen(false)}
           >
-            Cancel
+            Back
           </button>
           <button
             data-test="add-author-button"

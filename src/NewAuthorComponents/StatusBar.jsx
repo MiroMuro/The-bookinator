@@ -29,15 +29,18 @@ const StatusBar = ({ initialStatus }) => {
   }
   if (status === "success") {
     return (
-      <div className=" mb-2 rounded border-2 border-gray-400 bg-green-400 p-2 text-center">
-        <p> Status: Success!</p>
+      <div
+        data-test="successStatusBar"
+        className=" mb-2 rounded border-2 border-gray-400 bg-green-400 p-2 text-center"
+      >
+        <p>Status: Success!</p>
       </div>
     );
   }
   if (status === "error") {
     return (
       <div className="mb-2 rounded border-2 border-gray-400 bg-red-400 p-2 text-center">
-        Status: Error! Please try again.
+        <p>Status: Error! Please try again.</p>
       </div>
     );
   }

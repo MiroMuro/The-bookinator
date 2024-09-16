@@ -2,8 +2,9 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { memo } from "react";
 import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "./queries";
-import image from "../static/images/book.jpg";
+//import image from "../static/images/book.jpg";
 import AuthorFilter from "./AuthorFilter";
+import AuthorImage from "./AuthorImage";
 import propTypes from "prop-types";
 const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS);
@@ -58,7 +59,6 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   );
 
   useEffect(() => {
-    console.log("Authors dialog open: ", open);
     if (open) {
       dialogRef.current.showModal();
     } else {
@@ -72,7 +72,10 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
         <h1 className="text-2xl font-bold">Authors</h1>
         <header className="flex py-2 text-xl">
           Selected author:{" "}
-          <p className="border-b-2 border-black px-2 font-semibold">
+          <p
+            data-test="current-author"
+            className="border-b-2 border-black px-2 font-semibold"
+          >
             {selectedAuthor}
           </p>
         </header>
@@ -124,7 +127,10 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
             <header className="px-1 text-xl">Info</header>
           </section>
           <section>
-            <form className="h-96 overflow-y-scroll ">
+            <form
+              data-test="author-search-form"
+              className="h-96 overflow-y-scroll "
+            >
               <section className="grid grid-cols-2 gap-4">
                 {filteredAuthors.length === 0 && (
                   <div className="col-span-2 flex justify-center rounded-md border-2 border-gray-400 bg-red-300 p-4 text-xl">
@@ -134,22 +140,26 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
                 )}
                 {filteredAuthors.map((author) => (
                   <>
-                    <img className="w-2/4" src={image} alt="swag"></img>
+                    <AuthorImage authorId={author.id} />
                     <div
                       className="rounded-md border-2 border-gray-400 bg-gray-200 p-1"
                       id={author.id}
                     >
                       <ul>
-                        <li className="py-1">
+                        <li data-test="author-name" className="py-1">
                           Name: <b>{author.name}</b>
                         </li>
-                        <li className="py-1">Born: {author.born}</li>
-                        <li className="py-1">
+                        <li data-test="author-born" className="py-1">
+                          Born: {author.born}
+                        </li>
+                        <li data-test="author-books" className="py-1">
                           Total Books: {author.bookCount}
                         </li>
                         <li className="py-1">
                           <button
+                            data-test="select-author-button"
                             className="registerButton"
+                            type="button"
                             onClick={() => setSelectedAuthor(author.name)}
                           >
                             Select Author
@@ -166,12 +176,14 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
 
           <button
             onClick={handleOk}
+            data-test="ok-button"
             className="m-2 scale-100 rounded-md border-2 border-black bg-green-500 p-2 transition duration-300 ease-linear hover:scale-110"
             type="button"
           >
             OK
           </button>
           <button
+            data-test="cancel-button"
             onClick={handleClose}
             className="m-2 scale-100 rounded-md border-2 border-black bg-red-500 p-2 transition duration-300 ease-linear hover:scale-110"
             type="button"
