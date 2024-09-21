@@ -24,6 +24,7 @@ const AuthorInputField = ({
       </span>
 
       <button
+        data-test="author-clear-button"
         className="my-2 max-w-14 flex-1 rounded-md border-2 border-black bg-white"
         type="button"
         onClick={() => setAuthor("")}

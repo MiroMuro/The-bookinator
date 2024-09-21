@@ -191,20 +191,23 @@ const Authors = ({ token, setToken }) => {
             />
             <div
               data-test="authors-mapped"
-              className="w-full border-2 border-gray-400 bg-red-100 sm:w-5/12"
+              className=" w-full min-w-72 border-2 border-gray-400 bg-red-100 sm:w-5/12"
             >
               {authors.length === 0 && (
                 <div className="w-full min-w-72 cursor-pointer border-b-2  border-gray-400 text-center font-semibold shadow-2xl hover:bg-red-200">
                   No authors found !
                 </div>
               )}
-              {currentAuthorsOnPage.map((author) => (
+              {currentAuthorsOnPage.map((author, index) => (
                 <Link
-                  data-test={author.name + "-page"}
+                  data-test={"author" + index + "-page"}
                   key={author.id}
                   to={"/authors/" + author.id}
                 >
-                  <section className="  grid w-full min-w-72 cursor-pointer grid-cols-3 gap-3 border-b-2 border-gray-400 p-2 shadow-2xl transition duration-300 ease-linear hover:bg-red-200 ">
+                  <section
+                    data-test={"author" + index + "-section"}
+                    className="grid w-full min-w-72 cursor-pointer grid-cols-3 gap-3 border-b-2 border-gray-400 p-2 shadow-2xl transition duration-300 ease-linear hover:bg-red-200 "
+                  >
                     <div data-test="author-name" className=" text-center">
                       {author.name}
                     </div>
@@ -247,7 +250,7 @@ const Authors = ({ token, setToken }) => {
     }
 
     return (
-      <nav>
+      <nav className="sm:w-5/12">
         <ul className="flex">
           {pageNumbers.map((number) => (
             <button

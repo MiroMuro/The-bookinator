@@ -48,7 +48,7 @@ describe("Author form testing", () => {
       cy.getDataTest("add-author-button").should("be.disabled");
     });
   });
-  it("New author can be added by a logged in user", () => {
+  it("New authors can be added by a logged in user", () => {
     cy.validateNavigation("/addbook");
     cy.registerAndLogin("testuser1", "testpassword1", "testgenre1");
     cy.getDataTest("nav-addbook").should("exist").click();
@@ -72,13 +72,44 @@ describe("Author form testing", () => {
     });
     cy.getDataTest("successStatusBar").should("exist");
     cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
+
+    cy.getDataTest("back-button").click();
+
+    cy.getDataTest("author-add-button").should("exist").click();
+    cy.getDataTest("add-author-dialog").should("be.visible");
+
+    cy.getDataTest("add-author-form").within(() => {
+      cy.getDataTest("nameInput").type("Adamn Weathers");
+      cy.getDataTest("bornInput").type("1954");
+      cy.getDataTest("descriptionInput").type(
+        "Adam Weathers was a great author of his time."
+      );
+      cy.getDataTest("fileInput").attachFile("testAuthor.jpg");
+      cy.getDataTest("filevalidationMessage").should(
+        "have.text",
+        "File validated successfully!",
+        ""
+      );
+
+      cy.getDataTest("add-author-button").click();
+    });
+
+    cy.getDataTest("successStatusBar").should("exist");
+    cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
   });
-  it("New author is found and has its own page", () => {
+  it("New authors are found and have their own pages", () => {
     cy.validateNavigation("/");
-    cy.getDataTest("author-name").should("have.text", "testauthor");
-    cy.getDataTest("author-born").should("have.text", "2020");
-    cy.getDataTest("author-books").should("have.text", "0");
-    cy.getDataTest("testauthor-page").click();
+    cy.getDataTest("author0-section").within(() => {
+      cy.getDataTest("author-name").should("have.text", "testauthor");
+      cy.getDataTest("author-born").should("have.text", "2020");
+      cy.getDataTest("author-books").should("have.text", "0");
+    });
+    cy.getDataTest("author1-section").within(() => {
+      cy.getDataTest("author-name").should("have.text", "Adamn Weathers");
+      cy.getDataTest("author-born").should("have.text", "1954");
+      cy.getDataTest("author-books").should("have.text", "0");
+    });
+    cy.getDataTest("author0-page").click();
     cy.getDataTest("author-name-header").should("have.text", "testauthor");
     cy.getDataTest("author-info-box").should("exist");
     cy.getDataTest("author-info-box").within(() => {
@@ -99,60 +130,36 @@ describe("Author form testing", () => {
       "No books found by this author"
     );
   });
-  it("New author can be selected in the New Book form", () => {});
-  /*it("New author can be selected in the New Book form", () => {
-    cy.validateNavigation("/addbook");
-    cy.registerAndLogin("testuser1", "testpassword1", "testgenre1");
+  it("Selection of addded authors work in New Book Form", () => {
+    cy.Login("testuser1", "testpassword1");
     cy.getDataTest("nav-addbook").should("exist").click();
-    cy.getDataTest("author-add-button").click();
-
-    cy.getDataTest("add-author-form").within(() => {
-      cy.getDataTest("nameInput").type("Harry Saints");
-      cy.getDataTest("bornInput").type("1996");
-      cy.getDataTest("descriptionInput").type("A test author");
-      cy.getDataTest("fileInput").attachFile("testAuthor.jpg");
-      cy.getDataTest("filevalidationMessage").should(
-        "have.text",
-        "File validated successfully!",
-        ""
-      );
-    });
-    cy.getDataTest("add-author-button").click();
-    cy.getDataTest("successStatusBar").should("exist");
-    cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
-
-    cy.getDataTest("back-button").click();
     cy.getDataTest("author-select-button").click();
-    cy.getDataTest("author-search-form").should("exist");
-    cy.getDataTest("author-search-form").within(() => {
-      cy.getDataTest("author-name").should("have.text", "Name: Harry Saints");
-      cy.getDataTest("author-born").should("have.text", "Born: 1996");
-      cy.getDataTest("author-books").should("have.text", "Total Books: ");
+    cy.getDataTest("authors-div").should("exist");
+    cy.getDataTest("authors-div").should("have.length", 2);
+    //Select different authors and ensure selected author changes.
+    cy.getDataTest("author0-info").within(() => {
+      cy.getDataTest("author-name").should("have.text", "Name: testauthor");
+      cy.getDataTest("author-born").should("have.text", "Born: 2020");
+      cy.getDataTest("author-books").should("have.text", "Total Books: 0");
       cy.getDataTest("select-author-button").click();
     });
-    cy.getDataTest("current-author").should("have.text", "Harry Saints");
-    cy.getDataTest("ok-button").click();
-    cy.getDataTest("selected-author").should("have.text", "Harry Saints");
-  });*/
-  it("New author is on the list and has a profile page", () => {
-    cy.validateNavigation("/authors");
-    cy.registerAndLogin("testuser1", "testpassword1", "testgenre1");
-    cy.getDataTest("nav-addbook").should("exist").click();
-    cy.getDataTest("author-add-button").click();
-
-    cy.getDataTest("add-author-form").within(() => {
-      cy.getDataTest("nameInput").type("Michael Harris");
-      cy.getDataTest("bornInput").type("1977");
-      cy.getDataTest("descriptionInput").type("A test author");
-      cy.getDataTest("fileInput").attachFile("testAuthor.jpg");
-      cy.getDataTest("filevalidationMessage").should(
-        "have.text",
-        "File validated successfully!",
-        ""
-      );
+    cy.getDataTest("selected-author-header").should(
+      "have.text",
+      "Selected author:testauthor"
+    );
+    cy.getDataTest("author1-info").within(() => {
+      cy.getDataTest("author-name").should("have.text", "Name: Adamn Weathers");
+      cy.getDataTest("author-born").should("have.text", "Born: 1954");
+      cy.getDataTest("author-books").should("have.text", "Total Books: 0");
+      cy.getDataTest("select-author-button").click();
     });
-    cy.getDataTest("add-author-button").click();
-    cy.getDataTest("successStatusBar").should("exist");
-    cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
+    cy.getDataTest("selected-author-header").should(
+      "have.text",
+      "Selected author:Adamn Weathers"
+    );
+    cy.getDataTest("ok-button").click();
+    cy.getDataTest("selected-author").should("have.text", "Adamn Weathers");
+    cy.getDataTest("author-clear-button").click();
+    cy.getDataTest("selected-author").should("not.have.text");
   });
 });

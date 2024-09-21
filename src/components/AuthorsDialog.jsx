@@ -70,12 +70,12 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
     return (
       <>
         <h1 className="text-2xl font-bold">Authors</h1>
-        <header className="flex py-2 text-xl">
-          Selected author:{" "}
-          <p
-            data-test="current-author"
-            className="border-b-2 border-black px-2 font-semibold"
-          >
+        <header
+          data-test="selected-author-header"
+          className="flex py-2 text-xl"
+        >
+          Selected author:
+          <p className="border-b-2 border-black px-2 font-semibold">
             {selectedAuthor}
           </p>
         </header>
@@ -138,14 +138,15 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
                     &quot;!
                   </div>
                 )}
-                {filteredAuthors.map((author) => (
+                {filteredAuthors.map((author, index) => (
                   <>
                     <AuthorImage authorId={author.id} />
                     <div
+                      data-test="authors-div"
                       className="rounded-md border-2 border-gray-400 bg-gray-200 p-1"
                       id={author.id}
                     >
-                      <ul>
+                      <ul data-test={"author" + index + "-info"}>
                         <li data-test="author-name" className="py-1">
                           Name: <b>{author.name}</b>
                         </li>

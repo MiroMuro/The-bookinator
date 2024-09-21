@@ -59,3 +59,11 @@ Cypress.Commands.add(
     });
   }
 );
+Cypress.Commands.add("Login", (username, password) => {
+  cy.validateNavigation("/login");
+  cy.getDataTest("login-form").within(() => {
+    cy.get("input[name='username']").type(username);
+    cy.get("input[name='password']").type(password);
+    cy.getDataTest("login-button").click();
+  });
+});
