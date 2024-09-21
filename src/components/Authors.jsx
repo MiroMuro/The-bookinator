@@ -155,9 +155,10 @@ const Authors = ({ token, setToken }) => {
         indexOfLastAuthor
       );
       return (
-        <div>
+        <div data-test="authors-grid">
           <div className="grid w-full min-w-72 grid-cols-3 border-2 border-gray-400 font-semibold shadow-2xl sm:w-5/12">
             <header
+              data-test="author-name-header"
               className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("name")}
             >
@@ -165,6 +166,7 @@ const Authors = ({ token, setToken }) => {
               <SortingArrow isArrowUp={reverseSort.name} />
             </header>
             <header
+              data-test="author-born-header"
               className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("born")}
             >
@@ -172,6 +174,7 @@ const Authors = ({ token, setToken }) => {
               <SortingArrow isArrowUp={reverseSort.born} />
             </header>
             <header
+              data-test="author-books-header"
               className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
               onClick={() => handleSort("bookCount")}
             >
@@ -186,18 +189,31 @@ const Authors = ({ token, setToken }) => {
               paginate={paginate}
               currentPage={currentPage}
             />
-            <div className="w-full border-2 border-gray-400 bg-red-100 sm:w-5/12">
+            <div
+              data-test="authors-mapped"
+              className="w-full border-2 border-gray-400 bg-red-100 sm:w-5/12"
+            >
               {authors.length === 0 && (
                 <div className="w-full min-w-72 cursor-pointer border-b-2  border-gray-400 text-center font-semibold shadow-2xl hover:bg-red-200">
                   No authors found !
                 </div>
               )}
               {currentAuthorsOnPage.map((author) => (
-                <Link key={author.id} to={"/authors/" + author.id}>
+                <Link
+                  data-test={author.name + "-page"}
+                  key={author.id}
+                  to={"/authors/" + author.id}
+                >
                   <section className="  grid w-full min-w-72 cursor-pointer grid-cols-3 gap-3 border-b-2 border-gray-400 p-2 shadow-2xl transition duration-300 ease-linear hover:bg-red-200 ">
-                    <div className=" text-center">{author.name}</div>
-                    <div className=" text-center">{author.born}</div>
-                    <div className=" text-center">{author.bookCount}</div>
+                    <div data-test="author-name" className=" text-center">
+                      {author.name}
+                    </div>
+                    <div data-test="author-born" className=" text-center">
+                      {author.born}
+                    </div>
+                    <div data-test="author-books" className=" text-center">
+                      {author.bookCount}
+                    </div>
                   </section>
                 </Link>
               ))}
@@ -279,7 +295,7 @@ const Authors = ({ token, setToken }) => {
   const filteredAuthors = filterAuthors(authors, authorToSearch);
 
   return (
-    <div className="items-start-h-screen mx-auto flex w-4/12 flex-col justify-start align-middle sm:w-6/12">
+    <div className=" mx-auto flex w-4/12 flex-col justify-start align-middle sm:w-6/12">
       {token && (
         <div className="w-full sm:w-5/12 ">
           <BirthyearForm authors={authors} />
