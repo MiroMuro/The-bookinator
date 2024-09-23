@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 const InfoBox = ({ isAnimating, isProcessing, message }) => {
+  console.log("The message is: ", message);
   return (
     <div
       className={`text-xl ${message.style} ${

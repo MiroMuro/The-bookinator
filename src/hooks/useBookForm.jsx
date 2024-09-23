@@ -71,6 +71,14 @@ const useBookForm = (token) => {
   //State for the "Add a new author" dialog.
   const [addAuthorDialogOpen, setAddAuthorDialogOpen] = useState(false);
 
+  const ERROR_TYPES = {
+    TOKEN_EXPIRED: "TokenExpiredError",
+    DUPLICATE_BOOK: "DUPLICATE_BOOK_TITLE",
+    BAD_BOOK_GENRES: "BAD_BOOK_GENRES",
+    NETWORK_ERROR: "NETWORK_ERROR",
+    BAD_TITLE: "BAD_BOOK_TITLE",
+  };
+
   const [uploadBookImage] = useMutation(UPLOAD_BOOK_IMAGE, {
     onError: (error) => {
       console.log("Error in uploading image");
@@ -103,36 +111,41 @@ const useBookForm = (token) => {
 
   const handleError = (error) => {
     //Error handling for bad user inputs, network errors and token expiration.
-    if (error.networkError) {
-      const { code, result, extensions } = error.networkError;
-      if (result && result.name === "TokenExpiredError") {
-        setMessageBoxContent("You were timed out! Please log in again.");
-        setDialogOpen(true);
-      } else if (code === "DUPLICATE_BOOK_TITLE") {
-        setMessage({
-          text: "A book with the same title already exists!",
-          style:
-            "p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
-        });
-        resetMessage();
-      } else if (code === "BAD_BOOK_GENRES") {
-        setMessage({
-          text: extensions.message,
-          style:
-            "p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
-        });
-        resetMessage();
-      } else if (code === "NETWORK_ERROR") {
-        setMessage({
-          text:
-            extensions?.message ||
-            "A network error occurred. Please try again later.",
-          style:
-            " p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center",
-        });
-        resetMessage();
-      }
+
+    if (!error.networkError) return;
+
+    const { code, result, extensions } = error.networkError;
+
+    if (result?.name === ERROR_TYPES.TOKEN_EXPIRED) {
+      setMessageBoxContent("You were timed out! Please log in again.");
+      setDialogOpen(true);
     }
+
+    const messageBoxErrorStyle =
+      "p-2 bg-red-400 rounded mb-2 border-2 border-gray-400 text-center";
+    let messageText;
+
+    switch (code) {
+      case ERROR_TYPES.DUPLICATE_BOOK:
+        messageText = extensions.message;
+        break;
+      case ERROR_TYPES.BAD_BOOK_GENRES:
+        messageText = extensions.message;
+        break;
+      case ERROR_TYPES.BAD_TITLE:
+        messageText = extensions.message;
+        break;
+      case ERROR_TYPES.NETWORK_ERROR:
+        messageText =
+          extensions?.message ||
+          "A network error occurred. Please try again later.";
+        break;
+      default:
+        messageText = "An error occurred. Please try again later.";
+        return;
+    }
+    setMessage({ text: messageText, style: messageBoxErrorStyle });
+    resetMessage();
   };
 
   //Mutation to add a new book
@@ -252,6 +265,7 @@ const useBookForm = (token) => {
     }
     return (errorMessage = "File validated successfully!");
   };
+
   const submit = async (event) => {
     event.preventDefault();
     event.stopPropagation();

@@ -85,10 +85,8 @@ const App = () => {
   });
 
   useSubscription(AUTHOR_ADDED, {
-    onData: ({ data, error }) => {
+    onData: ({ data }) => {
       const addedAuthor = data.data.authorAdded;
-      console.log("Author sub error   ", error);
-      console.log("Author sub data   ", data);
       updateAuthorCache(client.cache, { query: ALL_AUTHORS }, addedAuthor);
     },
   });

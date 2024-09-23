@@ -20,10 +20,8 @@ const AuthorImage = ({ authorId }) => {
 
   if (loading) return <p>Loading...</p>;
   if (error) {
-    console.log("ERROR", error);
     imageUrl = image;
   } else {
-    console.log("DATA", data);
     imageUrl = data.getAuthorImage;
   }
 
