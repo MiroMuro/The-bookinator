@@ -10,7 +10,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     handleChange,
     errorMessage,
     handleBlur,
-    addAuthorStatus,
+    addAuthorMutationInfo,
     handleFileChange,
     fileValidationMessage,
     isFormValid,
@@ -45,6 +45,32 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
     message: PropTypes.array.isRequired,
     showErrorMessage: PropTypes.bool.isRequired,
   };
+
+  const FileValidationMessageComponent = ({ message }) => {
+    let style;
+    switch (message) {
+      case "File validated successfully!":
+        style = "rounded-md border-2 border-black bg-green-400";
+        break;
+      case "The file is too large.":
+        style = "rounded-md border-2 border-black bg-red-500";
+        break;
+      case "The file is not an image.":
+        style = "rounded-md border-2 border-black bg-red-500";
+        break;
+      default:
+        style = "";
+        return;
+    }
+    return (
+      <div data-test="filevalidationMessage" className={`my-2 p-2 ${style}`}>
+        {message}
+      </div>
+    );
+  };
+
+  FileValidationMessageComponent.propTypes = { message: PropTypes.string };
+
   return (
     <dialog
       data-test="add-author-dialog"
@@ -54,7 +80,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
       <form data-test="add-author-form" id="addAuthorForm">
         <header className="flex h-24 justify-between border-b-2 border-gray-400 p-4 text-2xl">
           <h2>Add a new author</h2>{" "}
-          <StatusBar initialStatus={addAuthorStatus} />
+          <StatusBar addAuthorMutationInfo={addAuthorMutationInfo} />
         </header>
         <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Name:</aside>
@@ -116,16 +142,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
               onChange={(e) => handleFileChange(e)}
               onBlur={(e) => handleBlur(e)}
             />
-            <div
-              data-test="filevalidationMessage"
-              className={`my-2 p-2 ${
-                fileValidationMessage === "File validated successfully!"
-                  ? "rounded-md border-2 border-black bg-green-400"
-                  : "rounded-md border-2 border-black bg-red-500"
-              }`}
-            >
-              {fileValidationMessage}
-            </div>
+            <FileValidationMessageComponent message={fileValidationMessage} />
           </main>
         </section>
         <section className="mb-4 flex justify-between p-2">

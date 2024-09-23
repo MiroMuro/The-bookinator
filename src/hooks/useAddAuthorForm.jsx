@@ -15,7 +15,10 @@ const useAddAuthorForm = () => {
   const [file, setFile] = useState(null);
   //State for the file validation message;
   const [fileValidationMessage, setFileValidationMessage] = useState("");
-  const [addAuthorStatus, setAddAuthorStatus] = useState(""); // This is the status of the add author mutation.
+  const [addAuthorMutationInfo, setaddAuthorMutationInfo] = useState({
+    status: "",
+    message: "",
+  });
   const [errorMessage, setErrorMessage] = useState({
     name: [],
     isNameErrorMessage: false,
@@ -26,6 +29,23 @@ const useAddAuthorForm = () => {
     isImageErrorMessage: false,
     image: "",
   });
+
+  const ERROR_TYPES = {
+    TOKEN_EXPIRED: "TokenExpiredError",
+    BAD_AUTHOR_NAME: "BAD_AUTHOR_NAME",
+    DUPLICATE_AUTHOR_NAME: "DUPLICATE_AUTHOR_NAME",
+    BAD_AUTHOR_BORN: "BAD_AUTHOR_BIRTH_YEAR",
+    INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  };
+
+  const resetAuthorInfo = () => {
+    setAuthor({
+      name: "",
+      born: "",
+      description: "",
+    });
+    setFile(null);
+  };
 
   const handleChange = (event) => {
     let { name, value } = event.target;
@@ -90,6 +110,9 @@ const useAddAuthorForm = () => {
       if (bornYear > currentYear) {
         errors.push("Author cannot be born in the future.");
       }
+      if (bornYear < 0) {
+        errors.push("Author birth year cannot be negative.");
+      }
     }
     setErrorMessage((prev) => ({
       ...prev,
@@ -126,19 +149,64 @@ const useAddAuthorForm = () => {
   const [addAuthor] = useMutation(CREATE_AUTHOR, {
     onError: (error) => {
       console.log("***********ERROR IN ADDING AUTHOR**************", error);
-      setAddAuthorStatus("error");
+      handleError(error);
     },
     onCompleted: (data) => {
       console.log("***********AUTHOR ADDED**************", data);
-      setAddAuthorStatus("success");
-      setAuthor({
-        name: "",
-        born: "",
-        description: "",
+      setaddAuthorMutationInfo({
+        status: "success",
+        message: "Author" + data.addAuthor.name + "added successfully!",
       });
+      resetAuthorInfo();
       return data.addAuthor;
     },
   });
+
+  const handleError = (error) => {
+    let errorMessage = "An error occurred. Please try again later.";
+
+    if (!error.networkError) {
+      setaddAuthorMutationInfo({
+        status: "error",
+        message: errorMessage,
+      });
+      return;
+    }
+
+    const { code, result, extensions } = error.networkError;
+
+    if (result?.name === ERROR_TYPES.TOKEN_EXPIRED) {
+      errorMessage = "You were timed out! Please log in again.";
+      setaddAuthorMutationInfo({
+        status: "error",
+        message: errorMessage,
+      });
+      return;
+    }
+
+    switch (code) {
+      case ERROR_TYPES.BAD_AUTHOR_NAME:
+        errorMessage = extensions.message;
+        break;
+      case ERROR_TYPES.DUPLICATE_AUTHOR_NAME:
+        errorMessage = extensions.message;
+        break;
+      case ERROR_TYPES.BAD_AUTHOR_BORN:
+        errorMessage = extensions.message;
+        break;
+      case ERROR_TYPES.INTERNAL_SERVER_ERROR:
+        errorMessage =
+          extensions?.message || "An error occurred. Please try again later.";
+        break;
+      default:
+        errorMessage = "An error occurred. Please try again later.";
+        return;
+    }
+    setaddAuthorMutationInfo({
+      status: "error",
+      message: errorMessage,
+    });
+  };
 
   const [uploadAuthorImage] = useMutation(UPLOAD_AUTHOR_IMAGE, {
     onError: (error) => {
@@ -152,7 +220,10 @@ const useAddAuthorForm = () => {
   //Submit doesn't work for the author form is actually nested in the book form.
   //So, we need to manually submit the author form.
   const handleManualSubmit = async () => {
-    setAddAuthorStatus("loading");
+    setaddAuthorMutationInfo({
+      status: "loading",
+      message: "Adding author...",
+    });
     validateBorn(author.born);
     validateName(author.name);
     if (isFormValid()) {
@@ -184,11 +255,11 @@ const useAddAuthorForm = () => {
     //Check if the file is an image and if it is not too large. (10 megabytes in binary)
     const allowedExtensions = [".jpg", ".jpeg", ".png"],
       sizeLimit = 1000000;
-
-    const { name, fileSize } = file;
+    const { name, size } = file;
     const fileExtensions = name.slice(name.lastIndexOf("."));
 
-    if (fileSize > sizeLimit) {
+    if (size > sizeLimit) {
+      console.log("File size is too large");
       errorMessage = "The file is too large.";
       setErrorMessage((prev) => ({
         ...prev,
@@ -236,7 +307,7 @@ const useAddAuthorForm = () => {
     handleChange,
     errorMessage,
     handleBlur,
-    addAuthorStatus,
+    addAuthorMutationInfo,
     handleFileChange,
     fileValidationMessage,
     isFormValid,

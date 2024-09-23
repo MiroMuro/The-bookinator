@@ -34,6 +34,12 @@ describe("Author form testing", () => {
       cy.contains("Author cannot be born in the future.");
 
       cy.getDataTest("bornInput").clear();
+      cy.getDataTest("bornInput").type("-1");
+      cy.getDataTest("bornInput").blur();
+
+      cy.contains("Author birth year cannot be negative.");
+
+      cy.getDataTest("bornInput").clear();
       cy.getDataTest("bornInput").type("2020");
       cy.getDataTest("descriptionInput").click();
 
