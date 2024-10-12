@@ -23,6 +23,7 @@ const AddGenreButton = ({
     isGenreEmpty || isGenreDuplicate || isGenreMax || isGenreTooLong;
   return (
     <button
+      data-test="add-genre-button"
       className="addGenreButton"
       onClick={isDisabled ? null : addGenre}
       disabled={isDisabled}

@@ -80,6 +80,7 @@ const LoginView = ({
             name="title"
             label="Title:"
             type="text"
+            dataTest="titleInput"
             value={bookInfo.title}
             onChange={handleChange}
           />

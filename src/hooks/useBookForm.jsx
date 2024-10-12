@@ -180,8 +180,6 @@ const useBookForm = (token) => {
   });
 
   useEffect(() => {
-    console.log("BookInfo", bookInfo);
-    console.log("The file", file);
     if (!token) {
       setDialogOpen(true);
       setMessageBoxContent(

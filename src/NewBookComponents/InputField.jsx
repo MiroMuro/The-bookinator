@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 
-const InputField = ({ label, name, value, onChange, type }) => (
+const InputField = ({ label, name, value, onChange, type, dataTest }) => (
   <div className="my-2 flex  justify-between border-b-2 border-b-gray-400 p-2">
     <p className="text-xl"> {label}</p>
     <input
+      data-test={dataTest}
       autoComplete="off"
       label={label}
       name={name}
@@ -15,6 +16,7 @@ const InputField = ({ label, name, value, onChange, type }) => (
   </div>
 );
 InputField.propTypes = {
+  dataTest: PropTypes.string,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,

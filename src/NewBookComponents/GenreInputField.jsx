@@ -13,6 +13,7 @@ const GenreInputField = ({
     <div className="my-2 flex justify-between p-2 ">
       <label
         htmlFor="genresInput"
+        data-test="duplicate-genre-label"
         className={`absolute ${
           isDuplicateGenre
             ? "-translate-y-6 text-red-700 opacity-100 duration-500"
@@ -23,6 +24,7 @@ const GenreInputField = ({
       </label>
       <label
         htmlFor="genresInput"
+        data-test="too-long-genre-label"
         className={`absolute ${
           isTooLongGenre
             ? "translate-y-6 text-red-700 opacity-100 duration-500"
@@ -37,6 +39,7 @@ const GenreInputField = ({
             ? "border-2 border-red-500 outline-none   transition duration-300"
             : "border-2  border-x-gray-200  border-b-black border-t-gray-200"
         }`}
+        data-test="genre-input"
         id="genresInput"
         autoComplete="off"
         label={label}

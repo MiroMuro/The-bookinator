@@ -13,7 +13,10 @@ const PubYearInputField = ({
   playPubYearErrorAnimation,
   pubYearErrorMessage,
 }) => (
-  <div className="relative my-2 flex justify-between border-b-2 border-b-gray-400 p-2 pb-8 ">
+  <div
+    className="relative my-2 flex justify-between border-b-2 border-b-gray-400 p-2 pb-8"
+    data-test="pubYearDiv"
+  >
     <p className="text-xl"> {label}</p>
     <p
       className={`${
@@ -25,6 +28,7 @@ const PubYearInputField = ({
       {pubYearErrorMessage}
     </p>
     <input
+      data-test="pubYearInput"
       autoComplete="off"
       label={label}
       maxLength={maxlength}

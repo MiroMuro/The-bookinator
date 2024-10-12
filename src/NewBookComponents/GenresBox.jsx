@@ -6,7 +6,7 @@ const GenresBox = ({ genres, handleGenreDeletion }) => {
       <label className="absolute -top-4 left-2 bg-red-200 text-xl">
         Genres
       </label>
-      <div className="w-full  break-words">
+      <div className="w-full  break-words" data-test="genres-box">
         <ul className="my-2 flex flex-wrap py-2">
           {genres.map((genre, index) => (
             <li
