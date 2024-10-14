@@ -48,7 +48,6 @@ const LoginView = ({
       errorMsg = "Publish year must be 4 digits or less";
       shouldPlayAnimation = true;
     } else if (bookInfo.published > currentYear) {
-      console.log("Current year", currentYear);
       errorMsg = "Publish year cannot be in the future";
       shouldPlayAnimation = true;
     } else if (bookInfo.published < 0) {
@@ -70,7 +69,6 @@ const LoginView = ({
         isProcessing={isProcessing}
         message={message}
       />
-
       <form
         className="flex flex-col  rounded-md border-2 border-gray-400"
         onSubmit={handleSubmit}

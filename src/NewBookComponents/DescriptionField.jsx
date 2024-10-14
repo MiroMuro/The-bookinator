@@ -3,6 +3,7 @@ const InputField = ({ label, name, value, onChange, type }) => (
   <div className="my-2 flex justify-between border-b-2 border-b-gray-400 p-2">
     <p className="text-xl"> {label}</p>
     <textarea
+      data-test="book-descriptionInput"
       autoComplete="off"
       label={label}
       name={name}

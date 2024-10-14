@@ -155,7 +155,7 @@ const useAddAuthorForm = () => {
       console.log("***********AUTHOR ADDED**************", data);
       setaddAuthorMutationInfo({
         status: "success",
-        message: "Author" + data.addAuthor.name + "added successfully!",
+        message: "Author " + data.addAuthor.name + " added successfully!",
       });
       resetAuthorInfo();
       return data.addAuthor;

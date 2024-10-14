@@ -15,7 +15,7 @@ describe("Author form testing", () => {
 
       cy.getDataTest("nameInput").click();
       cy.getDataTest("nameInput").type("testauthor");
-      cy.getDataTest("add-author-button").should("be.disabled");
+      cy.getDataTest("submit-author-button").should("be.disabled");
       cy.getDataTest("bornInput").click();
 
       cy.contains("Name must be at least 4 characters long.").should(
@@ -23,13 +23,13 @@ describe("Author form testing", () => {
       );
       cy.getDataTest("bornInput").type("a");
       cy.getDataTest("bornInput").blur();
-      cy.getDataTest("add-author-button").should("be.disabled");
+      cy.getDataTest("submit-author-button").should("be.disabled");
 
       cy.contains("Born year should only contain numbers.");
 
       cy.getDataTest("bornInput").clear();
       cy.getDataTest("bornInput").type("2025");
-      cy.getDataTest("descriptionInput").click();
+      cy.getDataTest("author-descriptionInput").click();
 
       cy.contains("Author cannot be born in the future.");
 
@@ -41,7 +41,7 @@ describe("Author form testing", () => {
 
       cy.getDataTest("bornInput").clear();
       cy.getDataTest("bornInput").type("2020");
-      cy.getDataTest("descriptionInput").click();
+      cy.getDataTest("author-descriptionInput").click();
 
       cy.contains("Author cannot be born in the future.").should("not.exist");
 
@@ -51,7 +51,7 @@ describe("Author form testing", () => {
         "The file is not an image."
       );
 
-      cy.getDataTest("add-author-button").should("be.disabled");
+      cy.getDataTest("submit-author-button").should("be.disabled");
     });
   });
   it("New authors can be added by a logged in user", () => {
@@ -64,7 +64,7 @@ describe("Author form testing", () => {
     cy.getDataTest("add-author-form").within(() => {
       cy.getDataTest("nameInput").type("testauthor");
       cy.getDataTest("bornInput").type("2020");
-      cy.getDataTest("descriptionInput").type(
+      cy.getDataTest("author-descriptionInput").type(
         "test description for a test author"
       );
       cy.getDataTest("fileInput").attachFile("book.jpg");
@@ -74,10 +74,13 @@ describe("Author form testing", () => {
         ""
       );
 
-      cy.getDataTest("add-author-button").click();
+      cy.getDataTest("submit-author-button").click();
     });
     cy.getDataTest("successStatusBar").should("exist");
-    cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
+    cy.getDataTest("successStatusBar").should(
+      "have.text",
+      "Status: Success! Author testauthor added successfully!"
+    );
 
     cy.getDataTest("back-button").click();
 
@@ -87,7 +90,7 @@ describe("Author form testing", () => {
     cy.getDataTest("add-author-form").within(() => {
       cy.getDataTest("nameInput").type("Adamn Weathers");
       cy.getDataTest("bornInput").type("1954");
-      cy.getDataTest("descriptionInput").type(
+      cy.getDataTest("author-descriptionInput").type(
         "Adam Weathers was a great author of his time."
       );
       cy.getDataTest("fileInput").attachFile("testAuthor.jpg");
@@ -97,11 +100,14 @@ describe("Author form testing", () => {
         ""
       );
 
-      cy.getDataTest("add-author-button").click();
+      cy.getDataTest("submit-author-button").click();
     });
 
     cy.getDataTest("successStatusBar").should("exist");
-    cy.getDataTest("successStatusBar").should("have.text", "Status: Success!");
+    cy.getDataTest("successStatusBar").should(
+      "have.text",
+      "Status: Success! Author Adamn Weathers added successfully!"
+    );
   });
   it("New authors are found and have their own pages", () => {
     cy.validateNavigation("/");

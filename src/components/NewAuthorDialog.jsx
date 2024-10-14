@@ -122,7 +122,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
           <aside className="font-semibold">Description:</aside>
           <main className="relative">
             <textarea
-              data-test="descriptionInput"
+              data-test="author-descriptionInput"
               className="h-40 border-b-2 border-gray-400"
               name="description"
               value={author.description}
@@ -155,7 +155,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
             Back
           </button>
           <button
-            data-test="add-author-button"
+            data-test="submit-author-button"
             className="rounded-md border-2 border-black bg-green-500 p-2 transition duration-300 ease-linear hover:scale-110 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:opacity-50 "
             type="button"
             id="addAuthorButton"

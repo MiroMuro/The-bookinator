@@ -11,6 +11,7 @@ const AddBookButton = ({ type, bookInfo, setIsProcessing }) => {
   return (
     <div className="flex justify-center">
       <button
+        data-test="add-book-button"
         className="addBookButton"
         type={type}
         disabled={isDisabled}

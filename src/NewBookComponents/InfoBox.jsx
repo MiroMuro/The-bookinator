@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 
 const InfoBox = ({ isAnimating, isProcessing, message }) => {
-  console.log("The message is: ", message);
   return (
     <div
       className={`text-xl ${message.style} ${
@@ -25,7 +24,9 @@ const InfoBox = ({ isAnimating, isProcessing, message }) => {
           </svg>
         </div>
       ) : (
-        <p className="w-full break-words">{message.text}</p>
+        <p data-test="book-submit-info-message" className="w-full break-words">
+          {message.text}
+        </p>
       )}
     </div>
   );

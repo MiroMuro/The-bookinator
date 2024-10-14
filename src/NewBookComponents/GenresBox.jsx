@@ -15,6 +15,8 @@ const GenresBox = ({ genres, handleGenreDeletion }) => {
             >
               {genre}
               <button
+                type="button"
+                data-test={`delete-${genre}-button`}
                 className="absolute right-0 top-0 flex size-4 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-600 text-xs text-white"
                 onClick={() => handleGenreDeletion(genre)}
               >

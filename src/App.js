@@ -28,14 +28,11 @@ const updateCache = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-  const anotherBook = addedBook;
-  //Update the genres cache with the added book
-  updateCacheWithGenres(cache, { query: ALL_GENRES }, anotherBook);
+
   // Update the books cache with the added book
   cache.updateQuery(query, ({ allBooks }) => {
     return { allBooks: uniqByName(allBooks.concat(addedBook)) };
   });
-  console.log("Genre of the added book", addedBook.genres);
 };
 
 const updateAuthorCache = (cache, query, addedAuthor) => {
@@ -61,6 +58,9 @@ export const updateCacheWithGenres = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
+  console.log("The cache", cache);
+  console.log("The query", query);
+  console.log("The added book", addedBook);
   cache.updateQuery(query, ({ allGenres }) => {
     return { allGenres: uniqByName(allGenres.concat(addedBook.genres[0])) };
   });
@@ -68,6 +68,7 @@ export const updateCacheWithGenres = (cache, query, addedBook) => {
 
 const App = () => {
   const client = useApolloClient();
+
   //Get the token from local storage to check if the user is logged in.
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
@@ -81,6 +82,7 @@ const App = () => {
       const addedBook = data.data.bookAdded;
       console.log(error);
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+      updateCacheWithGenres(client.cache, { query: ALL_GENRES }, addedBook);
     },
   });
 
@@ -101,13 +103,13 @@ const App = () => {
                 <div className="navBarLinks">
                   <NavLink
                     style={padding}
-                    data-test="nav-authors"
+                    dataTest="nav-authors"
                     to="/"
                     label="Authors"
                   ></NavLink>
                   <NavLink
                     style={padding}
-                    data-test="nav-books"
+                    dataTest="nav-books"
                     to="/books"
                     label="Books"
                   ></NavLink>
@@ -117,12 +119,12 @@ const App = () => {
                     <div className="navBarLinks">
                       <NavLink
                         style={padding}
-                        data-test="nav-login"
+                        dataTest="nav-login"
                         to="/login"
                         label="Login"
                       ></NavLink>
                       <NavLink
-                        data-test="nav-register"
+                        dataTest="nav-register"
                         style={padding}
                         to="/register"
                         label="Register"

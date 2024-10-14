@@ -85,3 +85,30 @@ Cypress.Commands.add("LoginAndNavigateTo", (username, password, pathname) => {
   cy.Login(username, password);
   cy.validateNavigationAndGreetingForLoggedInUsers(pathname, username);
 });
+
+Cypress.Commands.add(
+  "AddAuthorWithDefaultImage",
+  (authorName, authorBorn, authorDescription) => {
+    cy.getDataTest("author-add-button").click();
+    cy.getDataTest("add-author-dialog").should("be.visible");
+
+    cy.getDataTest("add-author-form").within(() => {
+      cy.getDataTest("nameInput").type(authorName);
+      cy.getDataTest("bornInput").type(authorBorn);
+      cy.getDataTest("author-descriptionInput").type(authorDescription);
+
+      cy.getDataTest("fileInput").attachFile("testAuthor.jpg");
+      cy.getDataTest("filevalidationMessage").should(
+        "have.text",
+        "File validated successfully!"
+      );
+      cy.getDataTest("submit-author-button").click();
+    });
+    cy.getDataTest("successStatusBar").should("exist");
+    cy.getDataTest("successStatusBar").should(
+      "have.text",
+      `Status: Success! Author ${authorName} added successfully!`
+    );
+    cy.getDataTest("back-button").click();
+  }
+);

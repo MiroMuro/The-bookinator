@@ -167,7 +167,7 @@ const useBookForm = (token) => {
       setTimeout(() => {
         triggerAnimation(true);
         setMessage({
-          text: `${data.addBook.title} by ${data.addBook.author.name} was added succesfully!`,
+          text: `${data.addBook.title} by ${data.addBook.author.name} was added successfully!`,
           style:
             " p-2 bg-green-400 rounded mb-2 border-2 border-gray-400 text-center",
         });
