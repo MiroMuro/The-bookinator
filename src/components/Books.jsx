@@ -241,10 +241,10 @@ const Books = ({ setToken }) => {
             <Link key={book.id} to={"/book/" + book.id}>
               <div
                 key={book.id}
-                className="scale-100 overflow-hidden rounded-lg bg-white shadow-md transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer hover:shadow-lg"
+                className="scale-100 overflow-hidden rounded-lg bg-white shadow-2xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer hover:shadow-lg"
               >
-                <header className=" min-h-16 bg-red-200  p-2">
-                  <h2 className="mb-2 break-normal text-lg font-semibold sm:text-sm md:text-base lg:text-sm">
+                <header className=" min-h-20 bg-red-200  p-2">
+                  <h2 className=" break-normal text-lg font-semibold sm:text-sm md:text-base lg:text-sm">
                     {book.title}
                   </h2>
                 </header>
@@ -332,32 +332,34 @@ const Books = ({ setToken }) => {
     handleBooksPerPageChange: PropTypes.func,
   };
   return (
-    <div className=" flex mx-auto w-6/12 flex-col md:w-8/12  ">
-      <div className="top-60 mt-4 flex  w-full bg-white align-top ">
-        <div className="flex w-full ">
-          <GenresDropdown
-            setCurrentGenre={setCurrentGenre}
-            currentGenre={currentGenre}
-          />
-          <BookSorting sortCriteria={sortCriteria} handleSort={handleSort} />
-          <BookSearchBar
-            searchWord={searchWord}
-            setSearchWord={setSearchWord}
+    <div className=" flex mx-auto w-6/12 flex-col md:w-8/12">
+      <div className="w-8/12">
+        <div className="top-60 mt-4 flex  w-full bg-white align-top ">
+          <div className="flex w-full ">
+            <GenresDropdown
+              setCurrentGenre={setCurrentGenre}
+              currentGenre={currentGenre}
+            />
+            <BookSorting sortCriteria={sortCriteria} handleSort={handleSort} />
+            <BookSearchBar
+              searchWord={searchWord}
+              setSearchWord={setSearchWord}
+            />
+          </div>
+        </div>
+        <div>
+          <Pagination
+            booksPerPage={booksPerPage}
+            totalFilteredBooks={filteredBooks.length}
+            paginate={paginate}
+            currentPage={currentPage}
+            setBooksPerPage={setBooksPerPage}
+            handleBooksPerPageChange={handleBooksPerPageChange}
           />
         </div>
-      </div>
-      <div>
-        <Pagination
-          booksPerPage={booksPerPage}
-          totalFilteredBooks={filteredBooks.length}
-          paginate={paginate}
-          currentPage={currentPage}
-          setBooksPerPage={setBooksPerPage}
-          handleBooksPerPageChange={handleBooksPerPageChange}
-        />
-      </div>
-      <div className="">
-        <BookGrid filteredBooks={filteredBooks} />
+        <div className="">
+          <BookGrid filteredBooks={filteredBooks} />
+        </div>
       </div>
     </div>
   );

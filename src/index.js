@@ -100,31 +100,9 @@ const httpAndUploadLink = ApolloLink.from([
   ),
 ]);
 
-const uniqByName = (a) => {
-  let seen = new Set();
-  return a.filter((item) => {
-    let k = item.name;
-    return seen.has(k) ? false : seen.add(k);
-  });
-};
-
-const cache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        allBooks: {
-          merge(existing = [], incoming) {
-            return uniqByName([...existing, ...incoming]);
-          },
-        },
-      },
-    },
-  },
-});
-
 const client = new ApolloClient({
   link: ApolloLink.from([errorLink, httpAndUploadLink]),
-  cache: cache,
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(

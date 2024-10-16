@@ -111,7 +111,7 @@ const useBookForm = (token) => {
 
   const handleError = (error) => {
     //Error handling for bad user inputs, network errors and token expiration.
-
+    console.log("Error hanlder", error);
     if (!error.networkError) return;
 
     const { code, result, extensions } = error.networkError;
@@ -279,6 +279,7 @@ const useBookForm = (token) => {
     });
     //Try to upload the image after the book has been added.
     try {
+      console.log("Addedbookdata: ", addedBookData);
       const bookId = addedBookData.data.addBook.id;
       const { data } = await uploadBookImage({
         variables: { file, bookId },

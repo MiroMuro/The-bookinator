@@ -30,8 +30,10 @@ const updateCache = (cache, query, addedBook) => {
   };
 
   // Update the books cache with the added book
-  cache.updateQuery(query, ({ allBooks }) => {
-    return { allBooks: uniqByName(allBooks.concat(addedBook)) };
+  cache.updateQuery({ query: ALL_BOOKS }, (data) => {
+    console.log("The query is: ", query);
+    console.log("The data is: ", data);
+    return { allBooks: uniqByName(data.allBooks.concat(addedBook)) };
   });
 };
 
@@ -58,8 +60,14 @@ export const updateCacheWithGenres = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-  cache.updateQuery(query, ({ allGenres }) => {
-    return { allGenres: uniqByName(allGenres.concat(addedBook.genres[0])) };
+  cache.updateQuery(query, (data) => {
+    const existingGenres = data?.allGenres || [];
+
+    // Ensure 'addedBook.genres' is defined and an array before concatenating
+    const newGenres = addedBook.genres ? addedBook.genres[0] : [];
+
+    // Merge and filter duplicates
+    return { allGenres: uniqByName(existingGenres.concat(newGenres)) };
   });
 };
 
@@ -98,7 +106,7 @@ const App = () => {
   return (
     <Router>
       <div className="font-body">
-        <Header />
+        <Header token={token} />
         <div className="flex flex-col md:flex-row">
           {/* Hamburger Button */}
           <div className="my-2 flex flex-row rounded-md border-2 border-solid border-gray-400 p-4 md:hidden">
