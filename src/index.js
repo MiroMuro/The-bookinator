@@ -17,7 +17,7 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import "./index.css";
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
-import { ALL_BOOKS, ALL_GENRES } from "./components/queries.js";
+//import { ALL_BOOKS, ALL_GENRES } from "./components/queries.js";
 
 //Set the authorization token to the request headers
 const authLink = setContext((_, { headers }) => {
@@ -100,27 +100,36 @@ const httpAndUploadLink = ApolloLink.from([
   ),
 ]);
 
+const uniqByName = (a) => {
+  let seen = new Set();
+  return a.filter((item) => {
+    let k = item.name;
+    return seen.has(k) ? false : seen.add(k);
+  });
+};
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        allBooks: {
+          merge(existing = [], incoming) {
+            return uniqByName([...existing, ...incoming]);
+          },
+        },
+      },
+    },
+  },
+});
+
 const client = new ApolloClient({
   link: ApolloLink.from([errorLink, httpAndUploadLink]),
-  cache: new InMemoryCache(),
+  cache: cache,
 });
 
-// This is necessary to prevent errors when the cache is queried before the data is loaded.
-client.writeQuery({
-  query: ALL_BOOKS,
-  data: {
-    allBooks: [],
-  },
-});
-
-client.writeQuery({
-  query: ALL_GENRES,
-  data: {
-    allGenres: [],
-  },
-});
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
     <App />
   </ApolloProvider>
 );

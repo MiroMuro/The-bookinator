@@ -13,6 +13,7 @@
     "graphql": "^16.8.1",
     "graphql-upload": "^16.0.2",
     "graphql-ws": "^5.16.0",
+    "lucide-react": "^0.453.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",

@@ -332,7 +332,7 @@ const Books = ({ setToken }) => {
     handleBooksPerPageChange: PropTypes.func,
   };
   return (
-    <div className="mx-auto flex max-w-5xl flex-col px-4 sm:px-6 lg:px-8">
+    <div className=" flex mx-auto w-6/12 flex-col md:w-8/12  ">
       <div className="top-60 mt-4 flex  w-full bg-white align-top ">
         <div className="flex w-full ">
           <GenresDropdown

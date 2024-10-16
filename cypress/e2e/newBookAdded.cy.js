@@ -37,7 +37,7 @@ describe("Testing the book form validation functionality", () => {
   });
 });
 describe("Testing the book form submit functionality", () => {
-  it.only("A new book can be added by a logged in user", () => {
+  it("A new book can be added by a logged in user", () => {
     cy.registerAndLogin("testuser-1", "testpassword-1", "testgenre-1");
     cy.getDataTest("nav-addbook").click();
     cy.AddAuthorWithDefaultImage(
@@ -80,4 +80,6 @@ describe("Testing the book form submit functionality", () => {
     cy.getDataTest("nav-books").click();
     cy.getDataTest("book-grid").find("a").should("have.length", 1);
   });
+  it("New book holds correct information", () => {});
+  it("");
 });

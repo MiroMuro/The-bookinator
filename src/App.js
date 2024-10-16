@@ -58,9 +58,6 @@ export const updateCacheWithGenres = (cache, query, addedBook) => {
       return seen.has(k) ? false : seen.add(k);
     });
   };
-  console.log("The cache", cache);
-  console.log("The query", query);
-  console.log("The added book", addedBook);
   cache.updateQuery(query, ({ allGenres }) => {
     return { allGenres: uniqByName(allGenres.concat(addedBook.genres[0])) };
   });
@@ -74,7 +71,13 @@ const App = () => {
     localStorage.getItem("library-user-token")
   );
 
-  const padding = { padding: 5 };
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const padding = { padding: "8px" };
 
   //Subscription to listen for new books and alert if adding is succesful.
   useSubscription(BOOK_ADDED, {
@@ -95,40 +98,78 @@ const App = () => {
   return (
     <Router>
       <div className="font-body">
-        <Header token={token} />
-        <div className="flex flex-col sm:flex-row">
-          <div className="sticky top-11 z-50 mx-2 flex h-52 w-full min-w-24 overflow-auto py-3 sm:top-20 sm:mt-80 sm:w-4/12 sm:min-w-32 sm:justify-end">
-            <header className="sticky mr-4 flex w-full justify-center overflow-hidden rounded-md border-2  border-gray-400 bg-red-200 sm:mr-0 sm:w-1/4 sm:min-w-32 sm:justify-end">
+        <Header />
+        <div className="flex flex-col md:flex-row">
+          {/* Hamburger Button */}
+          <div className="my-2 flex flex-row rounded-md border-2 border-solid border-gray-400 p-4 md:hidden">
+            <button
+              className="text-gray-800 focus:outline-none"
+              onClick={toggleMenu}
+            >
+              <svg
+                className="size-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {menuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                )}
+              </svg>
+            </button>
+            <p className="ml-6 text-lg">Menu</p>
+          </div>
+
+          {/* Menu */}
+          <div
+            className={`sticky top-11 z-50 mx-auto flex w-10/12 min-w-24 overflow-auto py-3 md:top-20 md:m-2 md:mt-80 md:flex md:max-h-52 md:w-4/12 md:min-w-28 md:flex-row-reverse md:justify-center  ${
+              menuOpen ? "block" : "hidden"
+            } md:block`}
+          >
+            <header className="flex w-full justify-center overflow-hidden rounded-md border-2 border-gray-400 bg-red-200 md:mr-0 md:w-1/4 md:min-w-36 md:justify-end">
               <div className="flex flex-col justify-center text-xl text-red-400">
                 <div className="navBarLinks">
                   <NavLink
                     style={padding}
-                    dataTest="nav-authors"
+                    data-test="nav-authors"
                     to="/"
                     label="Authors"
-                  ></NavLink>
+                  />
                   <NavLink
                     style={padding}
-                    dataTest="nav-books"
+                    data-test="nav-books"
                     to="/books"
                     label="Books"
-                  ></NavLink>
+                  />
                 </div>
                 <main>
                   {!token && (
                     <div className="navBarLinks">
                       <NavLink
                         style={padding}
-                        dataTest="nav-login"
+                        data-test="nav-login"
                         to="/login"
                         label="Login"
-                      ></NavLink>
+                      />
                       <NavLink
-                        dataTest="nav-register"
+                        data-test="nav-register"
                         style={padding}
                         to="/register"
                         label="Register"
-                      ></NavLink>
+                      />
                     </div>
                   )}
                   {token && (
@@ -138,21 +179,21 @@ const App = () => {
                     >
                       <div className="navBarLinks">
                         <NavLink
-                          dataTest="nav-addbook"
+                          data-test="nav-addbook"
                           to="/addbook"
                           label="Add book"
-                        ></NavLink>
+                        />
                         <NavLink
-                          dataTest="nav-suggestions"
+                          data-test="nav-suggestions"
                           to="/suggestions"
                           label="Suggestions"
-                        ></NavLink>
+                        />
                         <NavLink
                           to="/login"
                           label="Logout"
-                          dataTest="nav-logout"
+                          data-test="nav-logout"
                           state={{ logoutStatus: true }}
-                        ></NavLink>
+                        />
                       </div>
                     </div>
                   )}
@@ -160,6 +201,8 @@ const App = () => {
               </div>
             </header>
           </div>
+
+          {/* Main Content */}
           <Routes>
             <Route
               path="/"
@@ -177,13 +220,10 @@ const App = () => {
             <Route
               path="/suggestions"
               element={<Suggestions setToken={setToken} />}
-            ></Route>
-            <Route path="/register" element={<RegisterForm />}></Route>
-            <Route path="/book/:bookId" element={<SingleBookPage />}></Route>
-            <Route
-              path="/authors/:authorId"
-              element={<SingleAuthorPage />}
-            ></Route>
+            />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/book/:bookId" element={<SingleBookPage />} />
+            <Route path="/authors/:authorId" element={<SingleAuthorPage />} />
           </Routes>
         </div>
       </div>
