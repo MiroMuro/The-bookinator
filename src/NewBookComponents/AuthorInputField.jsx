@@ -11,28 +11,27 @@ const AuthorInputField = ({
   addAuthorDialogOpen,
   setAddAuthorDialogOpen,
 }) => (
-  <div className="my-2 flex justify-between border-b-2 border-b-gray-400 p-2">
-    <div className="flex flex-col">
-      <span className="flex min-w-80">
-        <p className=" text-xl">{label} </p>
+  <div className="my-2 flex justify-between border-b-2 border-b-gray-400 p-2 md:flex-col">
+    <div className="flex flex-col md:flex-row md:w-full ">
+      <span className="flex md:w-full md:justify-between md:items-center">
+        <p className=" text-xl text-center">{label} </p>
         <p
           data-test="selected-author"
-          className="h-14 w-32 break-words px-2 text-xl font-semibold"
+          className=" w-32 break-words px-2 text-xl text-center font-semibold md:text-lg md:grow  "
         >
           {value}
         </p>
+        <button
+          data-test="author-clear-button"
+          className="my-2 max-w-14 flex-1 rounded-md border-2 border-black bg-white"
+          type="button"
+          onClick={() => setAuthor("")}
+        >
+          Clear
+        </button>
       </span>
-
-      <button
-        data-test="author-clear-button"
-        className="my-2 max-w-14 flex-1 rounded-md border-2 border-black bg-white"
-        type="button"
-        onClick={() => setAuthor("")}
-      >
-        Clear
-      </button>
     </div>
-    <div className="flex w-full flex-col  items-end">
+    <div className="flex w-full flex-col  items-end md:my-2 md:items-center">
       <button
         data-test="author-select-button"
         className=" mb-1 w-60  scale-100 rounded-md border-2 border-black bg-white p-2 text-black transition duration-300 ease-linear hover:bg-black hover:text-white "

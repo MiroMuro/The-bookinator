@@ -201,14 +201,14 @@ const Books = ({ setToken }) => {
     return (
       <div
         data-test="books-searchbar-div"
-        className="mt-2 w-1/3 rounded-md border-2 border-gray-400 bg-red-200 p-2"
+        className="mt-2 flex w-1/3 flex-col rounded-md border-2 border-gray-400 bg-red-200 p-2"
       >
         <label htmlFor="searchBar" className="text-xl">
           Search title:{" "}
         </label>
         <input
           data-test="search-bar"
-          className="border-2 border-gray-200 border-b-black"
+          className="w-full border-2 border-gray-200 border-b-black"
           ref={inputRef}
           id="searchBar"
           value={searchWord}
@@ -234,7 +234,7 @@ const Books = ({ setToken }) => {
       return (
         <div
           data-test="book-grid"
-          className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3"
         >
           {/* Cards go here*/}
           {currentBooksOnPage.map((book) => (
@@ -332,10 +332,10 @@ const Books = ({ setToken }) => {
     handleBooksPerPageChange: PropTypes.func,
   };
   return (
-    <div className=" flex mx-auto w-6/12 flex-col md:w-8/12">
+    <div className=" mx-auto flex w-6/12 flex-col md:w-8/12 lg:w-10/12">
       <div className="w-8/12">
         <div className="top-60 mt-4 flex  w-full bg-white align-top ">
-          <div className="flex w-full ">
+          <div className="flex flex-col w-full xl:flex-row">
             <GenresDropdown
               setCurrentGenre={setCurrentGenre}
               currentGenre={currentGenre}

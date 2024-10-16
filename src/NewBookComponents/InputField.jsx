@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const InputField = ({ label, name, value, onChange, type, dataTest }) => (
-  <div className="my-2 flex  justify-between border-b-2 border-b-gray-400 p-2">
+  <div className="my-2 flex  justify-between border-b-2 border-b-gray-400 p-2 md:flex-col">
     <p className="text-xl"> {label}</p>
     <input
       data-test={dataTest}

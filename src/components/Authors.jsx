@@ -156,7 +156,7 @@ const Authors = ({ token, setToken }) => {
       );
       return (
         <div data-test="authors-grid">
-          <div className="grid w-full min-w-72 grid-cols-3 border-2 border-gray-400 font-semibold shadow-2xl sm:w-5/12">
+          <div className="grid w-full min-w-72 grid-cols-3 border-2 border-gray-400 font-semibold shadow-2xl md:w-8/12 lg:max-w-lg">
             <header
               data-test="author-name-header"
               className=" flex cursor-pointer justify-center bg-red-400 py-3 text-center"
@@ -191,7 +191,7 @@ const Authors = ({ token, setToken }) => {
             />
             <div
               data-test="authors-mapped"
-              className=" w-full min-w-72 border-2 border-gray-400 bg-red-100 sm:w-5/12"
+              className=" w-full min-w-72 border-2 border-gray-400 bg-red-100 md:w-8/12 lg:max-w-lg"
             >
               {authors.length === 0 && (
                 <div className="w-full min-w-72 cursor-pointer border-b-2  border-gray-400 text-center font-semibold shadow-2xl hover:bg-red-200">
@@ -250,7 +250,7 @@ const Authors = ({ token, setToken }) => {
     }
 
     return (
-      <nav className="sm:w-5/12">
+      <nav className="sm:w-5/12 lg:max-w-lg">
         <ul className="flex">
           {pageNumbers.map((number) => (
             <button
@@ -298,9 +298,9 @@ const Authors = ({ token, setToken }) => {
   const filteredAuthors = filterAuthors(authors, authorToSearch);
 
   return (
-    <div className=" mx-auto flex w-6/12 flex-col justify-start align-middle md:mx-auto md:w-8/12">
+    <div className=" mx-auto flex w-6/12 flex-col justify-start align-middle md:mx-auto md:w-10/12 lg:w-10/12 lg:mx-auto">
       {token && (
-        <div className="w-full sm:w-5/12 ">
+        <div className="w-full  md:w-8/12 lg:max-w-lg">
           <BirthyearForm authors={authors} />
         </div>
       )}

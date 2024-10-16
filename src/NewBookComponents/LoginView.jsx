@@ -70,7 +70,7 @@ const LoginView = ({
         message={message}
       />
       <form
-        className="flex flex-col  rounded-md border-2 border-gray-400"
+        className="flex flex-col  rounded-md border-2 border-gray-400 lg:w-1/2 lg:mx-auto lg:mt-4 md:w-3/4 md:mx-auto md:mt-4 sm:w-11/12 sm:mx-auto sm:mt-4"
         onSubmit={handleSubmit}
       >
         <div className="bg-red-200">

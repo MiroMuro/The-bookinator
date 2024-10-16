@@ -38,7 +38,7 @@ const NewBook = ({ setToken, token }) => {
   } = useBookForm(token, setToken);
 
   return (
-    <div className="w-4/12 pt-2">
+    <div className="w-4/12 pt-2 sm:w-8/12 md:w-8/12 lg:w-8/12">
       {token ? (
         <>
           <TimeOutDialog
