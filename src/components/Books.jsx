@@ -147,7 +147,7 @@ const Books = ({ setToken }) => {
   const BookSorting = ({ sortCriteria, handleSort }) => (
     <div
       data-test="books-sorting-div"
-      className="mx-2 mt-2 flex w-1/3 rounded-md border-2 border-gray-400  bg-red-200 p-2"
+      className=" h-full flex w-full rounded-md border-2 border-gray-400  bg-red-200 p-2 xl:mx-2"
     >
       <div>
         <label htmlFor="sortMenu" className="text-xl ">
@@ -201,7 +201,7 @@ const Books = ({ setToken }) => {
     return (
       <div
         data-test="books-searchbar-div"
-        className="mt-2 flex w-1/3 flex-col rounded-md border-2 border-gray-400 bg-red-200 p-2"
+        className=" h-full flex w-full flex-col rounded-md border-2 border-gray-400 bg-red-200 p-2"
       >
         <label htmlFor="searchBar" className="text-xl">
           Search title:{" "}
@@ -234,7 +234,7 @@ const Books = ({ setToken }) => {
       return (
         <div
           data-test="book-grid"
-          className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3"
+          className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
         >
           {/* Cards go here*/}
           {currentBooksOnPage.map((book) => (
@@ -243,12 +243,12 @@ const Books = ({ setToken }) => {
                 key={book.id}
                 className="scale-100 overflow-hidden rounded-lg bg-white shadow-2xl transition duration-200 ease-in-out hover:scale-105 hover:cursor-pointer hover:shadow-lg"
               >
-                <header className=" min-h-20 bg-red-200  p-2">
-                  <h2 className=" break-normal text-lg font-semibold sm:text-sm md:text-base lg:text-sm">
+                <header className=" min-h-24 bg-red-200  p-2">
+                  <h2 className=" break-normal text-md font-semibold sm:text-md md:text-sm lg:text-sm xl_text-sm">
                     {book.title}
                   </h2>
                 </header>
-                <div>
+                <div className="min-h-36 max-h-36">
                   <BookImage bookId={book.id} />
                 </div>
                 <div className="p-4">
@@ -332,19 +332,24 @@ const Books = ({ setToken }) => {
     handleBooksPerPageChange: PropTypes.func,
   };
   return (
-    <div className=" mx-auto flex w-6/12 flex-col md:w-8/12 lg:w-10/12">
-      <div className="w-8/12">
-        <div className="top-60 mt-4 flex  w-full bg-white align-top ">
+    <div className=" mx-auto flex w-10/12 flex-col sm:w-10/12 md:w-8/12 lg:w-10/12">
+      <div className=" w-full sm:w-full md:w-10/12 lg:w-8/12">
+        <div className="top-60 my-2 flex  w-full bg-white align-top ">
           <div className="flex flex-col w-full xl:flex-row">
             <GenresDropdown
               setCurrentGenre={setCurrentGenre}
               currentGenre={currentGenre}
             />
-            <BookSorting sortCriteria={sortCriteria} handleSort={handleSort} />
-            <BookSearchBar
-              searchWord={searchWord}
-              setSearchWord={setSearchWord}
-            />
+            <div className="my-2 flex flex-row w-full xl:w-2/3 xl:my-0 xl:mt-2">
+              <BookSorting
+                sortCriteria={sortCriteria}
+                handleSort={handleSort}
+              />
+              <BookSearchBar
+                searchWord={searchWord}
+                setSearchWord={setSearchWord}
+              />
+            </div>
           </div>
         </div>
         <div>

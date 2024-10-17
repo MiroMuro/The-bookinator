@@ -51,11 +51,11 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
   return (
     <div
       data-test="genres-dropdown"
-      className="mt-2 w-1/3 rounded-md border-2 border-gray-400  bg-red-200 p-2"
+      className=" flex-1 flex-row mt-2 w-full rounded-md border-2 border-gray-400  bg-red-200 p-2 xl:flex-col xl:w-1/3"
     >
-      <div className="text-lg">
+      <div className="text-lg align-middle ">
         {currentGenre
-          ? `Currently selected genre: ${currentGenre}`
+          ? `Selected genre: ${currentGenre}`
           : " No genre selected"}
       </div>
       <form onSubmit={(e) => handleSubmit(e)}>
@@ -67,7 +67,7 @@ const GenresDropdown = ({ setCurrentGenre, currentGenre }) => {
           type="submit"
           value="Filter"
         >
-          Reset filter
+          Reset genre
         </button>
       </form>
     </div>

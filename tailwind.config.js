@@ -42,6 +42,9 @@ module.exports = {
       "2xl": "1536px",
       // => @media (min-width: 1536px) { ... }
     },
+    flex: {
+      2: "2 2 100%",
+    },
   },
   plugins: [],
 };
