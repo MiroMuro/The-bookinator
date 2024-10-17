@@ -106,7 +106,7 @@ const Suggestions = ({ setToken }) => {
         errorMessage={messageBoxContent}
         setToken={setToken}
       ></TimeOutDialog>
-      <div className="flex w-full flex-col sm:w-7/12">
+      <div className="flex  mx-auto flex w-10/12 flex-col sm:w-10/12 md:w-8/12 lg:w-10/12">
         <div className="m-auto my-4 flex rounded-md border-2 border-red-400 bg-red-200  p-2">
           <h2>{messageBoxContent}</h2>
         </div>

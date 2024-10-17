@@ -39,10 +39,10 @@
   @apply flex flex-col ml-3 items-center rounded-lg w-1/2 border-solid border-2 text-center border-black my-2 p-1 bg-gray-300 text-gray-600 cursor-not-allowed;
 }
 .addGenreButton:enabled {
-  @apply w-60 rounded-lg border-solid bg-white border-2 border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110;
+  @apply w-1/2 mx-2 rounded-lg border-solid bg-white border-2 border-black my-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110;
 }
 .addGenreButton:disabled {
-  @apply w-60 rounded-lg border-solid border-2 border-black my-2 p-1 bg-gray-300 text-gray-600 cursor-not-allowed;
+  @apply w-1/2 mx-2 rounded-lg border-solid border-2 border-black my-2 p-1 bg-gray-300 text-gray-600 cursor-not-allowed;
 }
 .registerButton:enabled {
   @apply rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-300 scale-100 transform hover:scale-110;

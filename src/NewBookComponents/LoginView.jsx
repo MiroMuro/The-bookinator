@@ -63,14 +63,14 @@ const LoginView = ({
   ]);
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col flex-wrap break-words px-8">
+    <div className="mr-auto flex w-full flex-col flex-wrap break-words px-8">
       <InfoBox
         isAnimating={isAnimating}
         isProcessing={isProcessing}
         message={message}
       />
       <form
-        className="flex flex-col  rounded-md border-2 border-gray-400 lg:w-1/2 lg:mx-auto lg:mt-4 md:w-3/4 md:mx-auto md:mt-4 sm:w-11/12 sm:mx-auto sm:mt-4"
+        className="flex flex-col w-full rounded-md border-2 border-gray-400 lg:w-1/2 lg:mx-0 lg:mt-4 md:w-3/4 md:mr-auto md:mt-4 sm:w-11/12 sm:mx-auto sm:mt-4"
         onSubmit={handleSubmit}
       >
         <div className="bg-red-200">
@@ -114,9 +114,9 @@ const LoginView = ({
             value={bookInfo.description}
             onChange={handleChange}
           />
-          <div className="flex justify-between  border-b-2 border-gray-400 bg-red-200 pb-2 pl-1">
-            <p className="mt-2 px-1 text-xl">Genre:</p>
-            <div className="flex flex-col items-center">
+          <div className="flex flex-col justify-between  border-b-2 border-gray-400 bg-red-200 pb-2 pl-1">
+            <div className="flex flex-row ">
+              <p className="mt-2 w-4/12 px-1 text-xl">Genre:</p>
               <GenreInputField
                 name="genre"
                 type="text"
@@ -126,14 +126,14 @@ const LoginView = ({
                 isDuplicateGenre={isDuplicateGenre}
                 isTooLongGenre={isTooLongGenre}
               />
-              <AddGenreButton
-                addGenre={addGenre}
-                genres={bookInfo.genres}
-                genre={bookInfo.genre}
-                setIsDuplicateGenre={setIsDuplicateGenre}
-                setIsTooLongGenre={setIsTooLongGenre}
-              />
             </div>
+            <AddGenreButton
+              addGenre={addGenre}
+              genres={bookInfo.genres}
+              genre={bookInfo.genre}
+              setIsDuplicateGenre={setIsDuplicateGenre}
+              setIsTooLongGenre={setIsTooLongGenre}
+            />
           </div>
         </div>
         <GenresBox

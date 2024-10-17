@@ -17,7 +17,7 @@ const PubYearInputField = ({
     className="relative my-2 flex justify-between border-b-2 border-b-gray-400 p-2 pb-8"
     data-test="pubYearDiv"
   >
-    <p className="text-xl"> {label}</p>
+    <p className="w-4/12 text-xl"> {label}</p>
     <p
       className={`${
         playPubYearErrorAnimation
@@ -36,7 +36,7 @@ const PubYearInputField = ({
       name={name}
       inputMode={inputMode}
       type={type}
-      className="w-60 border-2 border-x-gray-200  border-b-black border-t-gray-200"
+      className="w-8/12 border-2 border-x-gray-200  border-b-black border-t-gray-200"
       value={value}
       onChange={onChange}
       onBeforeInput={onBeforeInput}

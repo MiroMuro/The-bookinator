@@ -11,19 +11,19 @@ const AuthorInputField = ({
   addAuthorDialogOpen,
   setAddAuthorDialogOpen,
 }) => (
-  <div className="my-2 flex justify-between border-b-2 border-b-gray-400 p-2 md:flex-col">
-    <div className="flex flex-col md:flex-row md:w-full ">
-      <span className="flex md:w-full md:justify-between md:items-center">
-        <p className=" text-xl text-center">{label} </p>
+  <div className="my-2 flex flex-col justify-between border-b-2 border-b-gray-400 p-2 md:flex-col">
+    <div className="flex flex-col md:w-full md:flex-row ">
+      <span className="flex justify-between md:w-full md:items-center">
+        <p className=" text-center text-xl">{label} </p>
         <p
           data-test="selected-author"
-          className=" w-32 break-words px-2 text-xl text-center font-semibold md:text-lg md:grow  "
+          className=" w-32 break-words px-2 text-center text-xl font-semibold md:grow md:text-lg  "
         >
           {value}
         </p>
         <button
           data-test="author-clear-button"
-          className="my-2 max-w-14 flex-1 rounded-md border-2 border-black bg-white"
+          className="flex-1 my-2 max-w-14 rounded-md border-2 border-black bg-white "
           type="button"
           onClick={() => setAuthor("")}
         >
@@ -31,20 +31,20 @@ const AuthorInputField = ({
         </button>
       </span>
     </div>
-    <div className="flex w-full flex-col  items-end md:my-2 md:items-center">
+    <div className="flex w-full flex-row justify-between md:my-2 md:flex-col md:items-end">
       <button
         data-test="author-select-button"
-        className=" mb-1 w-60  scale-100 rounded-md border-2 border-black bg-white p-2 text-black transition duration-300 ease-linear hover:bg-black hover:text-white "
+        className="md:w-6/12 md:mb-1 scale-100 rounded-md border-2 border-black bg-white p-2 text-black transition duration-300 ease-linear hover:bg-black hover:text-white "
         type="button"
         onClick={() => {
           setAuthorsDialogOpen(true);
         }}
       >
-        Select an existing author
+        Select author
       </button>
       <button
         data-test="author-add-button"
-        className="mt-1 w-60 scale-100 rounded-md border-2 border-black bg-white p-2 duration-300 ease-linear hover:bg-black hover:text-white"
+        className=" md:w-6/12 md:mt-1 scale-100 rounded-md border-2 border-black bg-white p-2 duration-300 ease-linear hover:bg-black hover:text-white"
         type="button"
         onClick={() => {
           setAddAuthorDialogOpen(true);

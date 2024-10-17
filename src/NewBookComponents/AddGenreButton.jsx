@@ -22,15 +22,17 @@ const AddGenreButton = ({
   const isDisabled =
     isGenreEmpty || isGenreDuplicate || isGenreMax || isGenreTooLong;
   return (
-    <button
-      type="button"
-      data-test="add-genre-button"
-      className="addGenreButton"
-      onClick={isDisabled ? null : addGenre}
-      disabled={isDisabled}
-    >
-      Add genre. Max 3.
-    </button>
+    <div className="flex flex-row w-full justify-end">
+      <button
+        type="button"
+        data-test="add-genre-button"
+        className="addGenreButton"
+        onClick={isDisabled ? null : addGenre}
+        disabled={isDisabled}
+      >
+        Add genre. Max 3.
+      </button>
+    </div>
   );
 };
 AddGenreButton.propTypes = {

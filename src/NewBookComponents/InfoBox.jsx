@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 const InfoBox = ({ isAnimating, isProcessing, message }) => {
   return (
     <div
-      className={`text-xl ${message.style} ${
-        isAnimating ? "animate-scaleUpAndDown" : ""
-      }`}
+      className={`w-full text-xl sm:mx-auto sm:w-11/12  md:mx-auto md:w-3/4 lg:mx-0 lg:mr-auto lg:w-1/2 ${
+        message.style
+      } ${isAnimating ? "animate-scaleUpAndDown" : ""}`}
     >
       {isProcessing ? (
         <div className="flex items-center justify-center">

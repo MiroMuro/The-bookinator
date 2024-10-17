@@ -19,7 +19,7 @@ const LoginForm = ({ setToken, token }) => {
     logout();
   };
   return (
-    <div className="flex justify-center sm:justify-start">
+    <div className="flex justify-center sm:justify-end sm:mb-2 flex  mx-auto flex w-10/12 flex-col sm:w-10/12 md:w-8/12 lg:w-10/12">
       {token ? (
         <LoggedInView logout={handleLogOut} />
       ) : (
@@ -44,7 +44,7 @@ LoginForm.propTypes = {
 const LoggedInView = ({ logout }) => (
   <div
     data-test="logged-in-view"
-    className="mb-3 flex flex-col items-start justify-end"
+    className="mb-4  flex flex-col items-start justify-end"
   >
     <div className="rounded-md border-2 border-black p-4">
       <h2 className="mb-2 rounded bg-red-200 p-2 text-center">
@@ -72,7 +72,7 @@ const LoginView = ({
   isAnimating,
   isProcessing,
 }) => (
-  <div className="flex basis-28 flex-col justify-end py-3">
+  <div className="flex w-3/12 flex-col justify-end py-3">
     <div
       className={`${message.style} ${
         isAnimating ? "animate-scaleUpAndDown" : ""
@@ -130,7 +130,7 @@ const InputField = ({
       autoComplete="off"
       name={name}
       type={type}
-      className="border-b-2 border-solid border-b-black"
+      className="border-b-2 border-solid border-b-black w-full"
       value={value}
       onChange={onChange}
     />

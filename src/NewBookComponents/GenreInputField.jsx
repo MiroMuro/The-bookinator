@@ -10,7 +10,7 @@ const GenreInputField = ({
   isTooLongGenre,
 }) => {
   return (
-    <div className="my-2 flex justify-between p-2 ">
+    <div className="w-8/12 my-2 flex justify-between p-2 ">
       <label
         htmlFor="genresInput"
         data-test="duplicate-genre-label"
@@ -34,7 +34,7 @@ const GenreInputField = ({
         Genre name is too long!
       </label>
       <input
-        className={`w-60 ${
+        className={`w-full ${
           isDuplicateGenre
             ? "border-2 border-red-500 outline-none   transition duration-300"
             : "border-2  border-x-gray-200  border-b-black border-t-gray-200"
