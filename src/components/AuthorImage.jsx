@@ -26,10 +26,14 @@ const AuthorImage = ({ authorId }) => {
   }
 
   return (
-    <div className="m-2 flex items-center justify-center">
+    <div className="min-w-40 h-36 m-2 flex items-center justify-center border-2 rounded-md border-solid border-gray-400 bg-white">
       {imageUrl ? (
         // Display the book image if available. The image tag can translate Base64 strings to images.
-        <img className="max-h-36 max-w-60" src={imageUrl} alt="" />
+        <img
+          className="w-full h-full object-contain p-2"
+          src={imageUrl}
+          alt=""
+        />
       ) : (
         <p>No image available</p>
       )}

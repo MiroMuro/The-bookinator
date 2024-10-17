@@ -87,7 +87,7 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   };
   const AuthorsSortCriteriaDropdown = ({ criteria }) => {
     return (
-      <div className=" w-1/3 border-2 border-gray-400 bg-gray-200  p-1 ">
+      <div className=" w-72 border-2 border-gray-400 bg-gray-200  p-1 ">
         <label htmlFor="sortMenu" className="text-xl ">
           Sort by:{" "}
         </label>
@@ -205,12 +205,14 @@ const AuthorsDialog = ({ open, setAuthorsDialogOpen, setAuthor }) => {
   };
   return (
     <dialog
-      className={`w-full rounded-md border-2 border-gray-400 bg-red-200 p-2 backdrop-blur-sm sm:w-6/12 `}
+      className={`w-full rounded-md border-2 border-gray-400 bg-red-200 p-2 backdrop-blur-sm sm:w-8/12 `}
       ref={dialogRef}
     >
       <AuthorsDialogHeader selectedAuthor={selectedAuthor} />
-      <AuthorFilter setAuthorToSearch={setAuthorSearchinput} />
-      <AuthorsSortCriteriaDropdown criteria={sortCriteria} />
+      <div className="flex flex-col">
+        <AuthorFilter setAuthorToSearch={setAuthorSearchinput} />
+        <AuthorsSortCriteriaDropdown criteria={sortCriteria} />
+      </div>
       <AuthorsDialogGrid
         data={data}
         filterAuthors={filterAuthors}

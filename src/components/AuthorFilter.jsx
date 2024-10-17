@@ -8,10 +8,10 @@ const AuthorFilter = ({ setAuthorToSearch }) => {
   return (
     <div
       data-test="author-filter-div"
-      className=" my-4 w-full min-w-72 rounded-md border-2 border-gray-400 bg-red-200 p-4 md:w-8/12 lg:max-w-lg "
+      className=" my-4  w-72 rounded-md border-2 border-gray-400 bg-red-200 p-2 md:w-72 lg:max-w-xs "
     >
       <form>
-        <label htmlFor="genres">Search for an author: </label>
+        <label htmlFor="genres">Search: </label>
         <input
           className="border-2  border-x-gray-200  border-b-black border-t-gray-200"
           id="genres"
