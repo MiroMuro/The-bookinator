@@ -48,7 +48,7 @@
   @apply rounded-lg border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-300 scale-100 transform hover:scale-110;
 }
 .registerButton:disabled {
-  @apply rounded-lg border-solid border-2 border-black m-2 p-1 bg-gray-300 text-gray-600 cursor-not-allowed;
+  @apply rounded-lg w-10/12 border-solid border-2 border-black m-2 p-1 bg-gray-300 text-gray-600 cursor-not-allowed;
 }
 .updateAuthorButton:enabled {
   @apply rounded-lg bg-white border-solid border-2 border-black m-2 p-1 hover:bg-black hover:text-white hover:border-transparent transition ease-linear duration-200 scale-100 transform hover:scale-110;

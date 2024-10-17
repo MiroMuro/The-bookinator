@@ -126,15 +126,17 @@ const RegisterForm = () => {
       isDisabled = false;
     }
     return (
-      <button
-        data-test="register-button"
-        type="submit"
-        className="registerButton"
-        disabled={isDisabled}
-        title={isDisabled ? "Please fill in all fields." : "Register"}
-      >
-        Register
-      </button>
+      <div className="flex justify-center">
+        <button
+          data-test="register-button"
+          type="submit"
+          className="registerButton"
+          disabled={isDisabled}
+          title={isDisabled ? "Please fill in all fields." : "Register"}
+        >
+          Register
+        </button>
+      </div>
     );
   };
   const InfoBox = ({ isAnimating, isProcessing, message }) => {
@@ -173,8 +175,8 @@ const RegisterForm = () => {
     message: PropTypes.object.isRequired,
   };
   return (
-    <div className="flex justify-center py-3 sm:justify-start">
-      <div className="flex basis-28 flex-col justify-end">
+    <div className=" mx-auto flex w-10/12 flex-col justify-end align-middle md:mx-auto md:w-10/12 lg:w-10/12 lg:mx-auto sm:w-full ">
+      <div className="flex mx-auto flex-col w-80 justify-end pb-3 mb-2 md:mx-0">
         {}
         <InfoBox
           isAnimating={isAnimating}
@@ -200,7 +202,7 @@ const RegisterForm = () => {
             </div>
             <div>
               <input
-                className="border-b-2 border-solid border-b-black"
+                className="border-b-2 border-solid border-b-black w-full"
                 value={accountDetails.username}
                 name="username"
                 onChange={handleChange}
@@ -222,7 +224,7 @@ const RegisterForm = () => {
                 Password invalid!
               </div>
               <input
-                className="border-b-2 border-solid border-b-black"
+                className="border-b-2 border-solid border-b-black w-full"
                 value={accountDetails.password}
                 name="password"
                 type="password"
@@ -245,7 +247,7 @@ const RegisterForm = () => {
                 Passwords do not match!
               </div>
               <input
-                className="border-b-2 border-solid border-b-black"
+                className="border-b-2 border-solid border-b-black w-full"
                 value={repeatPassword}
                 name="repeatPassword"
                 type="password"
@@ -268,7 +270,7 @@ const RegisterForm = () => {
                 Genre invalid!
               </div>
               <input
-                className="border-b-2 border-solid border-b-black"
+                className="border-b-2 border-solid border-b-black w-full"
                 name="favoriteGenre"
                 value={accountDetails.favoriteGenre}
                 onChange={handleChange}
