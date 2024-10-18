@@ -36,6 +36,9 @@ const httpUri =
     : "http://localhost:4000/";
 const httpLink = createHttpLink({
   uri: httpUri,
+  fetchOptions: {
+    timeout: 60000,
+  },
 });
 
 const wsUri =
