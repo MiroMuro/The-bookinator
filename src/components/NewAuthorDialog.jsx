@@ -84,7 +84,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </header>
         <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Name:</aside>
-          <main className="flex w-1/3 flex-col">
+          <main className="flex min-w-52 w-2/5 flex-col">
             <input
               data-test="nameInput"
               id="nameInput"
@@ -102,7 +102,7 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </section>
         <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Born:</aside>
-          <main className="flex w-1/3 flex-col">
+          <main className="flex w-2/5 min-w-52 flex-col">
             <input
               data-test="bornInput"
               id="bornInput"
@@ -120,13 +120,13 @@ const NewAuthorDialog = ({ open, setDialogOpen }) => {
         </section>
         <section className="flex justify-between border-b-2 border-gray-400 p-2 pb-8">
           <aside className="font-semibold">Description:</aside>
-          <main className="relative">
+          <main className="relative w-2/5 min-w-52">
             <textarea
               data-test="author-descriptionInput"
-              className="h-40 border-b-2 border-gray-400"
+              className="h-40 border-b-2 border-gray-400 w-11/12 "
               name="description"
               value={author.description}
-              placeholder="Enter a description. Max 600 characters."
+              placeholder="Enter a description. Max 1000 characters."
               onChange={(e) => handleChange(e)}
             />
           </main>

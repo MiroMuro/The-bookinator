@@ -14,17 +14,17 @@ const SingleBookPage = () => {
 
   const bookData = data.getBookById;
   return (
-    <div className="my-2 w-4/12 overflow-hidden rounded-md border-2 border-gray-400">
+    <div className="my-2 mx-auto w-4/12 min-w-96 overflow-hidden rounded-md border-2 border-gray-400 md:mx-0">
       <div className="flex border-2 border-b-gray-400 bg-red-200 ">
         <header className="p-2 text-4xl ">
           <h1>{bookData.title}</h1>
         </header>
       </div>
       <div className="flex border-2 border-b-gray-400">
-        <div className="m-4 max-w-60 border-2 border-gray-200">
+        <div className="m-4 w-4/12 border-2 border-gray-200">
           <BookImage bookId={bookData.id} />
         </div>
-        <div className="my-4 w-6/12 rounded-md border-2 border-black bg-gray-200">
+        <div className="m-4 w-8/12 rounded-md border-2 border-black bg-gray-200">
           <p className="mb-6 px-2 text-xl">Author: {bookData.author.name}</p>
           <p className="mb-6 px-2 text-xl">
             Author born: {bookData.author.born}
@@ -39,7 +39,7 @@ const SingleBookPage = () => {
       </div>
       <div>
         <p className="m-4 text-2xl">Description: </p>
-        <div className="m-4 min-h-40 min-w-40 rounded-md border-2 border-gray-400 text-lg">
+        <div className="m-4 p-2 min-h-40 min-w-40 rounded-md border-2 border-gray-400 text-lg">
           {" "}
           {bookData.description}
         </div>

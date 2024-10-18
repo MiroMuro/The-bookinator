@@ -59,19 +59,19 @@ const SingleAuthorPage = () => {
   };
 
   return (
-    <div className="my-2 w-4/12 border-2 border-gray-400">
+    <div className="mx-auto my-2 w-4/12 min-w-96 overflow-hidden rounded-md border-2 border-gray-400 md:mx-0">
       <div className="flex overflow-hidden border-2 border-b-gray-400 bg-red-200">
         <header className="p-2 text-4xl ">
           <h1 data-test="author-name-header">{author.name}</h1>
         </header>
       </div>
       <div className="flex border-2 border-b-gray-400">
-        <div className="m-4 max-w-60 border-2 border-gray-200">
+        <div className="m-4 max-w-60">
           <AuthorImage authorId={author.id} />
         </div>
         <div
           data-test="author-info-box"
-          className="my-4 w-6/12 rounded-md border-2 border-black bg-gray-200"
+          className="m-4 w-6/12 rounded-md border-2 border-black bg-gray-200"
         >
           <p className="mb-6 px-2 text-2xl">Born: {author.born}</p>
           <p className="mb-6 px-2 text-2xl">Books: {author.bookCount}</p>
