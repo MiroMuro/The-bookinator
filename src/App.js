@@ -30,10 +30,14 @@ const updateCache = (cache, query, addedBook) => {
   };
 
   // Update the books cache with the added book
-  cache.updateQuery({ query: ALL_BOOKS }, (data) => {
-    console.log("The query is: ", query);
-    console.log("The data is: ", data);
-    return { allBooks: uniqByName(data.allBooks.concat(addedBook)) };
+  cache.updateQuery({ query: ALL_BOOKS }, (existingData) => {
+    const currentBooks = existingData?.allBooks || [];
+
+    const updatedBooks = uniqByName([...currentBooks, addedBook]);
+
+    console.log("Updated books", updatedBooks);
+
+    return { allBooks: updatedBooks };
   });
 };
 
