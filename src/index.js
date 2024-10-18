@@ -36,8 +36,12 @@ const httpUri =
     : "http://localhost:4000/";
 const httpLink = createHttpLink({
   uri: httpUri,
-  fetchOptions: {
-    timeout: 60000,
+  fetch: (uri, options) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 240000); // 240 seconds timeout
+
+    options.signal = controller.signal;
+    return fetch(uri, options).finally(() => clearTimeout(timeoutId));
   },
 });
 
